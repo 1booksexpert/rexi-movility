@@ -1,0 +1,19 @@
+[
+  {
+    "id": "ivan-rivera",
+    "nombre": "Iván Rivera",
+    "telefono": "8992165262",
+    "telefonoFormateado": "899 216 5262",
+    "titulo": "Movilidad Ejecutiva",
+    "zona": "Reynosa, Tamaulipas",
+    "servicios": [
+      { "nombre": "Puentes y Local", "icono": "" },
+      { "nombre": "Aeropuerto REX y MMTY", "icono": "✈️" },
+      { "nombre": "Turismo Médico", "icono": "" },
+      { "nombre": "Paquetería Urgente", "icono": "" },
+      { "nombre": "Facturación CFDI", "icono": "🧾" }
+    ],
+    "logo": "ivan-rivera.png",
+    "urlDigital": "https://rexi-movilidad.pages.dev/t/ivan-rivera"
+  }
+]
