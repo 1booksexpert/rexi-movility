@@ -6,7 +6,9 @@
 //   npm run reporte -- 2026-11 --no-pagaron ivan-rivera,juan-perez
 //
 // Reglas (cámbialas en private/tarifas.json, que NO se sube a GitHub):
-//  - El mes del alta se cobra el alta (la primera mensualidad va incluida).
+//  - Pago mensual: el mes del alta se cobra el alta (la primera mensualidad va incluida).
+//  - Pago anual (campo "pago": "anual" en choferes.json): se cobra todo junto el mes del alta;
+//    al vendedor 25% (15% en Flota) de lo cobrado, una sola vez; a los 12 meses se cobra la renovación, sin comisión.
 //  - Después, mensualidad cada mes. Al vendedor: 30% del alta una sola vez
 //    y 15% de la mensualidad durante 12 meses. Si el chofer no pagó, no hay comisión.
 import { readFileSync, existsSync } from 'node:fs';
@@ -17,11 +19,13 @@ const RAIZ = join(dirname(fileURLToPath(import.meta.url)), '..');
 const PRIV = join(RAIZ, 'private', 'tarifas.json');
 const defecto = {
   planes: {
-    tarjeta: { alta: 650, mensualidad: 119 },
-    pro: { alta: 1200, mensualidad: 249 },
-    flota: { alta: 700, mensualidad: 175 },
+    // altaLanzamiento: alta en la oferta de lanzamiento (mensual). anual: pago anual de lanzamiento, todo incluido.
+    // renovacion: precio al renovar el año (10 mensualidades).
+    tarjeta: { alta: 650, altaLanzamiento: 325, mensualidad: 119, anual: 990, renovacion: 1190 },
+    pro: { alta: 1200, altaLanzamiento: 600, mensualidad: 249, anual: 1990, renovacion: 2490 },
+    flota: { alta: 700, altaLanzamiento: 350, mensualidad: 175, anual: 1490, renovacion: 1750, anualPct: 15 },
   },
-  comision: { altaPct: 30, mensualPct: 15, mesesRecurrente: 12 },
+  comision: { altaPct: 30, mensualPct: 15, mesesRecurrente: 12, anualPct: 25 },
   vendedores: { /* "V01": { "nombre": "Nombre del vendedor", "telefono": "55..." } */ },
 };
 const cfg = existsSync(PRIV) ? { ...defecto, ...JSON.parse(readFileSync(PRIV, 'utf8')) } : defecto;
@@ -41,13 +45,20 @@ for (const c of choferes) {
   const dif = idx(mes) - idx(c.fechaAlta.slice(0, 7));
   if (dif < 0) continue; // todavía no existía
   const pago = !impagos.has(c.id);
-  const cobro = dif === 0 ? plan.alta : plan.mensualidad;
+  const anual = c.pago === 'anual';
+  let cobro = dif === 0 ? (plan.altaLanzamiento ?? plan.alta) : plan.mensualidad;
+  let concepto = dif === 0 ? 'alta' : 'mensualidad';
   let comision = 0;
-  if (c.referido && pago) {
-    if (dif === 0) comision = plan.alta * cfg.comision.altaPct / 100;
+  if (anual) {
+    if (dif === 0) { cobro = plan.anual; concepto = 'anual'; }
+    else if (dif === 12) { cobro = plan.renovacion; concepto = 'renovación'; }
+    else continue; // año ya pagado
+    if (c.referido && pago && dif === 0) comision = cobro * (plan.anualPct ?? cfg.comision.anualPct) / 100;
+  } else if (c.referido && pago) {
+    if (dif === 0) comision = (plan.altaLanzamiento ?? plan.alta) * cfg.comision.altaPct / 100;
     else if (dif <= cfg.comision.mesesRecurrente) comision = plan.mensualidad * cfg.comision.mensualPct / 100;
   }
-  filas.push({ id: c.id, plan: c.plan || 'pro', ref: c.referido || '-', concepto: dif === 0 ? 'alta' : 'mensualidad', cobro: pago ? cobro : 0, esperado: cobro, pago, comision });
+  filas.push({ id: c.id, plan: c.plan || 'pro', ref: c.referido || '-', concepto, cobro: pago ? cobro : 0, esperado: cobro, pago, comision });
 }
 
 console.log(`\nReporte ${mes}\n`);

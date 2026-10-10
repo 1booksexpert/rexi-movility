@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Alta, cambio de PIN y baja de choferes.
 //
-//   npm run chofer -- nuevo "Nombre Apellido" 8991234567 [--titulo "Movilidad Ejecutiva"] [--plan pro] [--ref V01] [--aplicar]
+//   npm run chofer -- nuevo "Nombre Apellido" 8991234567 [--titulo "Movilidad Ejecutiva"] [--plan pro] [--pago anual] [--ref V01] [--aplicar]
 //   npm run chofer -- ref   <id> <codigo-vendedor>      (asigna o cambia el vendedor que lo colocó)
 //   npm run chofer -- pin   <id> [--aplicar]
 //   npm run chofer -- baja  <id> [--aplicar]
@@ -57,6 +57,7 @@ if (cmd === 'nuevo') {
     logo: `${id}.png`,
     referido: opt('ref') || '',
     plan: opt('plan') || 'pro',
+    pago: opt('pago') === 'anual' ? 'anual' : 'mensual',
     fechaAlta: new Date().toISOString().slice(0, 10),
     mensajes: { general: 'Hola, me interesa tu servicio de movilidad ejecutiva.' },
   });

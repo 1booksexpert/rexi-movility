@@ -76,7 +76,7 @@ npm run chofer -- baja  nombre-apellido --aplicar
 ## Vendedores, planes y comisiones
 
 ```bash
-npm run chofer -- nuevo "Nombre Apellido" 8991234567 --plan pro --ref V01 --aplicar
+npm run chofer -- nuevo "Nombre Apellido" 8991234567 --plan pro --ref V01 [--pago anual] --aplicar
 npm run chofer -- ref nombre-apellido V01      # asignar o cambiar vendedor
 npm run reporte                                # mes actual
 npm run reporte -- 2026-11 --no-pagaron nombre-apellido
@@ -84,7 +84,8 @@ npm run reporte -- 2026-11 --no-pagaron nombre-apellido
 
 - `referido` (código del vendedor), `plan` (`tarjeta`, `pro`, `flota`) y `fechaAlta` se guardan en `choferes.json`. **No se publican en el sitio** (`datos.ts` no los copia).
 - Precios, porcentajes y datos de los vendedores viven en `private/tarifas.json`, que está en `.gitignore`: no se sube a GitHub. Respáldalo aparte.
-- Regla por defecto: 30% del alta una sola vez + 15% de la mensualidad durante 12 meses, solo si el chofer pagó.
+- Pago mensual: 30% del alta una sola vez + 15% de la mensualidad durante 12 meses, solo si el chofer pagó.
+- Pago anual (`--pago anual`): 25% de lo cobrado una sola vez (15% en Flota). Se cobra todo junto y a los 12 meses se renueva.
 
 ## Pendientes tuyos
 
