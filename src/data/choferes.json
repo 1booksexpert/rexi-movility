@@ -6,14 +6,48 @@
     "telefonoFormateado": "899 216 5262",
     "titulo": "Movilidad Ejecutiva",
     "zona": "Reynosa, Tamaulipas",
+    "placa": "",
+    "unidad": "",
     "servicios": [
-      { "nombre": "Puentes y Local", "icono": "" },
-      { "nombre": "Aeropuerto REX y MMTY", "icono": "✈️" },
-      { "nombre": "Turismo Médico", "icono": "" },
-      { "nombre": "Paquetería Urgente", "icono": "" },
-      { "nombre": "Facturación CFDI", "icono": "🧾" }
+      {
+        "nombre": "Puentes y Local",
+        "icono": "🚖",
+        "color": "blue",
+        "descripcion": "Traslados dentro de Reynosa y a los puentes internacionales.",
+        "mensaje": "Hola, necesito un traslado local o a un puente internacional."
+      },
+      {
+        "nombre": "Aeropuerto REX y MMTY",
+        "icono": "✈️",
+        "color": "purple",
+        "descripcion": "Salida programada al aeropuerto de Reynosa y al de Monterrey.",
+        "mensaje": "Hola, quiero cotizar un traslado al aeropuerto."
+      },
+      {
+        "nombre": "Turismo Médico",
+        "icono": "🏥",
+        "color": "teal",
+        "descripcion": "Traslado puntual a clínicas y hospitales, con espera y regreso.",
+        "mensaje": "Hola, necesito un traslado para una consulta médica."
+      },
+      {
+        "nombre": "Paquetería Urgente",
+        "icono": "📦",
+        "color": "orange",
+        "descripcion": "Sobres, documentos y paquetes pequeños entregados el mismo día.",
+        "mensaje": "Hola, necesito enviar un sobre o paquete urgente."
+      },
+      {
+        "nombre": "Facturación CFDI",
+        "icono": "🧾",
+        "color": "slate",
+        "descripcion": "Servicio con factura para empresas y viajes de trabajo.",
+        "mensaje": "Hola, necesito el servicio con factura (CFDI)."
+      }
     ],
     "logo": "ivan-rivera.png",
-    "urlDigital": "https://rexi-movilidad.pages.dev/t/ivan-rivera"
+    "mensajes": {
+      "general": "Hola, me interesa tu servicio de movilidad ejecutiva."
+    }
   }
 ]

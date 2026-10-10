@@ -1,11 +1,89 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
+import Credito from '../components/Credito.astro';
+import { choferes, negocio } from '../lib/datos';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const wa = negocio.whatsappDueno
+  ? `https://wa.me/${negocio.whatsappDueno}?text=${encodeURIComponent('Hola, necesito un servicio de movilidad.')}`
+  : '';
 ---
 
-<Layout>
-	<Welcome />
+<Layout titulo="Movilidad ejecutiva en Reynosa" descripcion={`${negocio.lema}. Elige a tu chofer, pide por WhatsApp con tu ubicación y sigue tu viaje en tiempo real.`}>
+  <header class="portada">
+    <div class="contenedor">
+      <img src="/logos/rexi.png" alt={`Logo ${negocio.marca}`} width="84" height="112" />
+      <h1>{negocio.marca}</h1>
+      <p class="lema">{negocio.lema}</p>
+      <p class="sub">Elige a tu chofer, pide por WhatsApp con tu ubicación y mira su unidad llegar en el mapa.</p>
+      {wa && <a class="btn btn-verde" href={wa}>Pedir por WhatsApp</a>}
+    </div>
+  </header>
+
+  <main class="contenedor">
+    <section aria-labelledby="t-choferes">
+      <h2 id="t-choferes">Nuestros choferes</h2>
+      <ul class="choferes">
+        {choferes.map((c) => (
+          <li>
+            <a class="chofer" href={`/t/${c.id}/`}>
+              <img src={c.logo} alt="" width="56" height="56" />
+              <span class="datos">
+                <b>{c.nombre}</b>
+                <span>{c.titulo}</span>
+                <span class="tel">{c.telefonoFormateado}</span>
+              </span>
+              <span class="ver">Ver tarjeta</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <section class="seguir" aria-labelledby="t-seguir">
+      <h2 id="t-seguir">¿Ya tienes tu enlace de viaje?</h2>
+      <form id="codigo-form">
+        <label class="sr" for="codigo">Código o enlace de tu viaje</label>
+        <input id="codigo" autocomplete="off" autocapitalize="off" placeholder="Pega aquí tu código o enlace" />
+        <button class="btn btn-amarillo" type="submit">Ver mi viaje</button>
+      </form>
+      <p class="nota">El viaje deja de verse cuando el chofer lo termina.</p>
+    </section>
+  </main>
+
+  <footer class="pie">
+    <Credito origen="directorio" />
+  </footer>
+
+  <script is:inline>
+    document.getElementById('codigo-form').addEventListener('submit', function (e) {
+      e.preventDefault();
+      var i = document.getElementById('codigo');
+      var m = i.value.toLowerCase().match(/[2-9a-hj-km-np-z]{10}(?![2-9a-hj-km-np-z])/g);
+      if (!m) { i.setCustomValidity('Revisa el código: tiene 10 letras y números.'); i.reportValidity(); return; }
+      location.href = '/viaje/?t=' + m[m.length - 1];
+    });
+    document.getElementById('codigo').addEventListener('input', function (e) { e.target.setCustomValidity(''); });
+  </script>
 </Layout>
+
+<style>
+  .portada { background: #ffc72c; padding: 2.5rem 0 3rem; text-align: center; }
+  .portada img { margin: 0 auto 1rem; display: block; height: auto; }
+  .portada h1 { font-size: clamp(2rem, 8vw, 3rem); font-weight: 800; letter-spacing: -.03em; line-height: 1.05; }
+  .lema { margin-top: .4rem; font-weight: 600; color: #1e293b; }
+  .sub { margin: .75rem auto 1.25rem; max-width: 30rem; color: #334155; }
+  main { padding: 2rem 0 1rem; display: grid; gap: 2.5rem; }
+  h2 { font-size: 1.4rem; font-weight: 800; letter-spacing: -.02em; }
+  .choferes { list-style: none; margin-top: 1rem; display: grid; gap: .75rem; grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr)); }
+  .chofer { display: grid; grid-template-columns: auto 1fr auto; gap: .9rem; align-items: center; padding: 1rem; background: #fff; border: 1px solid #e2e8f0; border-radius: 1rem; text-decoration: none; transition: box-shadow .2s; }
+  .chofer:hover { box-shadow: 0 10px 25px rgba(0,0,0,.07); }
+  .chofer img { object-fit: contain; border-radius: .75rem; background: #f8fafc; }
+  .datos { display: grid; line-height: 1.3; }
+  .datos span { font-size: .85rem; color: #64748b; }
+  .datos .tel { color: #0f172a; font-weight: 600; }
+  .ver { font-size: .85rem; font-weight: 700; color: #d97706; }
+  .seguir form { margin-top: .9rem; display: flex; gap: .6rem; flex-wrap: wrap; }
+  .seguir input { flex: 1 1 14rem; min-height: 48px; padding: .6rem .9rem; border: 2px solid #e2e8f0; border-radius: .75rem; background: #fff; }
+  .nota { margin-top: .5rem; font-size: .85rem; color: #64748b; }
+  .pie { margin-top: 1rem; background: #fff; border-top: 1px solid #e2e8f0; }
+</style>

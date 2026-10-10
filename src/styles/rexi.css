@@ -1,0 +1,67 @@
+/* Estilos compartidos de las páginas nuevas (directorio, panel del chofer, seguimiento).
+   Mismo lenguaje visual que la tarjeta: Inter, amarillo REXI, grises pizarra. */
+:root {
+  --amarillo: #ffc72c;
+  --amarillo-osc: #d97706;
+  --pizarra: #0f172a;
+  --pizarra-2: #1e293b;
+  --pizarra-3: #334155;
+  --gris: #64748b;
+  --borde: #e2e8f0;
+  --fondo: #f1f5f9;
+  --blanco: #ffffff;
+  --verde: #16a34a;
+  --verde-osc: #15803d;
+  --azul: #2563eb;
+  --rojo: #dc2626;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background: var(--fondo);
+  color: var(--pizarra);
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.5;
+}
+a { color: inherit; }
+button, input, select, textarea { font: inherit; color: inherit; }
+:focus-visible { outline: 3px solid var(--amarillo); outline-offset: 2px; }
+[hidden] { display: none !important; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+.contenedor { width: min(64rem, 100% - 2rem); margin-inline: auto; }
+
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
+  min-height: 48px; padding: .75rem 1.25rem; border: 0; border-radius: .75rem;
+  font-weight: 700; font-size: .95rem; cursor: pointer; text-decoration: none;
+  transition: transform .1s, background .2s;
+}
+.btn:active { transform: scale(.98); }
+.btn[disabled] { opacity: .55; cursor: not-allowed; }
+.btn-amarillo { background: var(--amarillo); color: #000; }
+.btn-amarillo:hover { background: #ffd24f; }
+.btn-verde { background: var(--verde); color: #fff; }
+.btn-verde:hover { background: var(--verde-osc); }
+.btn-oscuro { background: var(--pizarra); color: #fff; }
+.btn-oscuro:hover { background: var(--pizarra-2); }
+.btn-borde { background: transparent; color: inherit; box-shadow: inset 0 0 0 2px currentColor; }
+.btn-rojo { background: var(--rojo); color: #fff; }
+
+.campo { display: grid; gap: .35rem; }
+.campo > span { font-weight: 600; font-size: .9rem; }
+.campo input, .campo select {
+  width: 100%; min-height: 50px; padding: .65rem .9rem;
+  background: #fff; border: 2px solid var(--borde); border-radius: .75rem;
+}
+.campo input:focus, .campo select:focus { border-color: var(--pizarra); outline: none; box-shadow: 0 0 0 3px rgba(255,199,44,.6); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+
+/* Marcadores del mapa */
+.mk-taxi { width: 40px; height: 40px; border-radius: 50%; background: var(--amarillo); border: 3px solid var(--pizarra); box-shadow: 0 2px 8px rgba(0,0,0,.4); display: grid; place-items: center; }
+.mk-taxi svg { width: 22px; height: 22px; }
+.mk-yo { width: 18px; height: 18px; border-radius: 50%; background: #1a73e8; border: 3px solid #fff; box-shadow: 0 0 0 6px rgba(26,115,232,.25); }

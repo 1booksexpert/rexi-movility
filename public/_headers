@@ -1,0 +1,14 @@
+/*
+  X-Content-Type-Options: nosniff
+  Permissions-Policy: geolocation=(self), camera=(), microphone=()
+
+/viaje/*
+  Referrer-Policy: origin
+  X-Robots-Tag: noindex
+
+/chofer/*
+  Referrer-Policy: origin
+  X-Robots-Tag: noindex
+
+/api/*
+  Cache-Control: no-store

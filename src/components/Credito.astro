@@ -1,0 +1,31 @@
+---
+// Crédito del desarrollador: genera leads de ventas desde cada tarjeta.
+import { negocio } from '../lib/datos';
+const d = negocio.desarrollador;
+const origen = Astro.props.origen || 'tarjeta';
+const wa = `https://wa.me/${d.whatsapp}?text=${encodeURIComponent(`Hola ${d.nombre}, vi la tarjeta digital de ${negocio.marca} y quiero una para mi negocio.`)}`;
+const mail = `mailto:${d.email}?subject=${encodeURIComponent(`Quiero una tarjeta digital como la de ${negocio.marca}`)}`;
+const web = `${d.sitio}${d.sitio.includes('?') ? '&' : '?'}utm_source=rexi&utm_medium=${origen}`;
+---
+
+<aside class="credito" aria-label="Desarrollador de esta tarjeta">
+  <p class="credito-titulo">¿Quieres una tarjeta digital como esta para tu negocio?</p>
+  <p class="credito-texto">Diseñada y desarrollada por {d.nombre}.</p>
+  <div class="credito-acciones">
+    <a class="credito-btn credito-wa" href={wa} target="_blank" rel="noopener">Cotizar por WhatsApp</a>
+    <a class="credito-btn" href={`tel:+${d.whatsapp}`}>{d.celular}</a>
+    <a class="credito-btn" href={mail}>Correo</a>
+    <a class="credito-btn" href={web} target="_blank" rel="noopener">Portafolio</a>
+  </div>
+</aside>
+
+<style>
+  .credito { max-width: 40rem; margin: 0 auto; padding: 1.5rem 1rem; text-align: center; }
+  .credito-titulo { font-weight: 700; font-size: 1rem; color: #0f172a; }
+  .credito-texto { margin-top: .15rem; font-size: .875rem; color: #64748b; }
+  .credito-acciones { margin-top: .9rem; display: flex; flex-wrap: wrap; gap: .5rem; justify-content: center; }
+  .credito-btn { display: inline-flex; align-items: center; min-height: 44px; padding: .45rem .95rem; border-radius: .75rem; border: 2px solid #cbd5e1; font-weight: 600; font-size: .875rem; color: #0f172a; text-decoration: none; background: #fff; }
+  .credito-btn:hover { border-color: #0f172a; }
+  .credito-wa { background: #16a34a; border-color: #16a34a; color: #fff; }
+  .credito-wa:hover { background: #15803d; border-color: #15803d; }
+</style>

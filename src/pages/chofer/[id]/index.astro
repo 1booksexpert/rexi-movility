@@ -1,0 +1,105 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import { choferes, negocio } from '../../../lib/datos';
+
+export async function getStaticPaths() {
+  return choferes.map((chofer) => ({ params: { id: chofer.id }, props: { chofer } }));
+}
+const { chofer } = Astro.props;
+const datos = {
+  id: chofer.id,
+  nombre: chofer.nombre,
+  placa: chofer.placa,
+  unidad: chofer.unidad,
+  marca: negocio.marca,
+  whatsappDueno: negocio.whatsappDueno,
+  centro: negocio.centroMapa,
+  tarjeta: `/t/${chofer.id}/`,
+};
+---
+
+<Layout titulo={`Panel de ${chofer.nombre}`} noindex referrer="origin" tema="#0f172a">
+  <link slot="head" rel="manifest" href={`/chofer/${chofer.id}/manifest.webmanifest`} />
+  <link slot="head" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" />
+
+  <div class="panel-app">
+    <div class="wrap">
+      <header>
+        <img src={chofer.logo} alt="" width="48" height="48" />
+        <div>
+          <h1>Hola, {chofer.nombre.split(' ')[0]}</h1>
+          <p>Panel del chofer · {negocio.marca}</p>
+        </div>
+      </header>
+
+      <!-- Inicio de viaje -->
+      <form class="caja" id="inicio">
+        <label class="campo"><span>Tu PIN</span><input id="pin" type="password" inputmode="numeric" autocomplete="current-password" required /></label>
+        <div class="dos">
+          <label class="campo"><span>Placa</span><input id="placa" autocapitalize="characters" required /></label>
+          <label class="campo"><span>Unidad</span><input id="unidad" placeholder="Ej. Nissan Versa blanco" /></label>
+        </div>
+        <button class="btn btn-amarillo grande" type="submit">Iniciar viaje y compartir ubicación</button>
+        <p class="msg" id="msg-inicio" role="status" aria-live="polite"></p>
+        <p class="ayuda">Mantén esta pantalla abierta y encendida durante el viaje. Si bloqueas el teléfono, el navegador puede pausar el GPS.</p>
+      </form>
+
+      <!-- Viaje activo -->
+      <div id="activo" hidden>
+        <div class="caja">
+          <div class="estado"><span class="luz" id="luz"></span><b id="estado">Iniciando…</b><small id="detalle"></small></div>
+          <div id="mapa" role="application" aria-label="Mapa del viaje"></div>
+          <a class="btn btn-verde" id="ir-pax" href="#" target="_blank" rel="noopener" hidden>Navegar hacia el pasajero</a>
+        </div>
+
+        <div class="caja">
+          <b>Enviar enlace de seguimiento</b>
+          <label class="campo"><span>Celular del pasajero (opcional)</span><input id="cel" inputmode="tel" placeholder="10 dígitos" /><small>Si lo dejas vacío, WhatsApp te deja elegir el contacto.</small></label>
+          <div class="dos">
+            <a class="btn btn-verde" id="wa-pax" href="#" target="_blank" rel="noopener">Al pasajero</a>
+            <a class="btn btn-borde" id="wa-dueno" href="#" target="_blank" rel="noopener" hidden>Al dueño</a>
+          </div>
+          <button class="btn btn-borde" id="copiar" type="button">Copiar enlace</button>
+          <div class="enlace" id="enlace"></div>
+        </div>
+
+        <button class="btn btn-rojo grande" id="terminar" type="button">Terminar viaje</button>
+      </div>
+
+      <p class="pie"><a href={`/t/${chofer.id}/`}>Ver mi tarjeta</a></p>
+    </div>
+  </div>
+
+  <script type="application/json" id="datos" set:html={JSON.stringify(datos)} />
+  <script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+  <script is:inline src="/js/rexi.js"></script>
+  <script is:inline src="/js/panel-chofer.js"></script>
+</Layout>
+
+<style is:global>
+  .panel-app { min-height: 100vh; background: #0f172a; color: #fff; }
+  .panel-app .wrap { width: min(34rem, 100% - 1.75rem); margin: 0 auto; padding: 1.25rem 0 2.5rem; display: grid; gap: 1rem; }
+  .panel-app header { display: flex; gap: .85rem; align-items: center; }
+  .panel-app header img { border-radius: .75rem; background: #ffc72c; padding: .25rem; object-fit: contain; }
+  .panel-app h1 { font-size: 1.6rem; font-weight: 800; letter-spacing: -.02em; line-height: 1.1; }
+  .panel-app header p { color: #94a3b8; font-size: .875rem; }
+  .panel-app .caja { background: #1e293b; border-radius: 1rem; padding: 1.1rem; display: grid; gap: .9rem; }
+  .panel-app #activo { display: grid; gap: 1rem; }
+  .panel-app #activo[hidden] { display: none; }
+  .panel-app .campo > span { color: #e2e8f0; }
+  .panel-app .campo small { color: #94a3b8; }
+  .panel-app .campo input { background: #0f172a; color: #fff; border-color: #334155; }
+  .panel-app .campo input:focus { border-color: #ffc72c; }
+  .panel-app .dos { display: grid; grid-template-columns: 1fr 1fr; gap: .6rem; }
+  .panel-app .grande { min-height: 60px; font-size: 1.05rem; }
+  .panel-app .msg { min-height: 1.4em; color: #ffc72c; font-size: .9rem; }
+  .panel-app .ayuda { color: #94a3b8; font-size: .85rem; }
+  .panel-app #mapa { height: 300px; border-radius: .85rem; overflow: hidden; background: #334155; }
+  .panel-app .estado { display: grid; grid-template-columns: auto 1fr; gap: .15rem .7rem; align-items: center; }
+  .panel-app .estado small { grid-column: 2; color: #94a3b8; }
+  .panel-app .luz { width: 14px; height: 14px; border-radius: 50%; background: #64748b; }
+  .panel-app .luz.ok { background: #3ddc84; box-shadow: 0 0 10px #3ddc84; }
+  .panel-app .luz.mal { background: #dc2626; }
+  .panel-app .enlace { word-break: break-all; padding: .75rem; background: #0f172a; border-radius: .6rem; font-size: .85rem; color: #cbd5e1; }
+  .panel-app .pie { text-align: center; font-size: .85rem; color: #94a3b8; }
+</style>
