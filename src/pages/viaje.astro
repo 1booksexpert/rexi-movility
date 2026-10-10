@@ -1,0 +1,77 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Credito from '../components/Credito.astro';
+import { directorioPublico, negocio } from '../lib/datos';
+
+const datos = { directorio: directorioPublico, centro: negocio.centroMapa, marca: negocio.marca, whatsapp: negocio.whatsappDueno };
+---
+
+<Layout titulo="Tu viaje en vivo" noindex referrer="origin" tema="#0f172a">
+  <link slot="head" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" />
+
+  <div class="viaje-app">
+    <header class="viaje-top">
+      <b>{negocio.marca}</b>
+      <span class="pill" id="pill">Conectando…</span>
+    </header>
+
+    <div id="mapa" role="application" aria-label="Mapa del viaje"></div>
+
+    <section class="hoja" id="hoja">
+      <div id="vista-viaje">
+        <div class="unidad">
+          <div>
+            <h1 id="chofer">Tu chofer</h1>
+            <p id="unidad"></p>
+          </div>
+          <span class="placa" id="placa" hidden></span>
+        </div>
+        <div class="eta" id="eta" role="status" aria-live="polite">Buscando la señal del chofer…</div>
+        <div class="botones">
+          <button class="btn btn-amarillo full" id="compartir-yo" type="button">Compartir mi ubicación con el chofer</button>
+          <button class="btn btn-borde" id="compartir-viaje" type="button">Compartir viaje</button>
+          <button class="btn btn-borde" id="centrar" type="button">Centrar mapa</button>
+          <a class="btn btn-verde" id="llamar" href="#">Llamar al chofer</a>
+          <a class="btn btn-rojo" href="tel:911">Emergencia 911</a>
+        </div>
+      </div>
+
+      <div class="fin" id="vista-fin" hidden>
+        <h1 id="fin-titulo">Tu viaje terminó</h1>
+        <p id="fin-texto">La ubicación ya no se muestra ni se guarda. Gracias por viajar con nosotros.</p>
+        <a class="btn btn-amarillo" id="fin-tarjeta" href="/">Ver choferes</a>
+      </div>
+      <Credito origen="viaje" />
+    </section>
+  </div>
+
+  <script type="application/json" id="datos" set:html={JSON.stringify(datos)} />
+  <script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+  <script is:inline src="/js/rexi.js"></script>
+  <script is:inline src="/js/viaje.js"></script>
+</Layout>
+
+<style is:global>
+  html:has(.viaje-app), body:has(.viaje-app) { height: 100%; overflow: hidden; }
+  .viaje-app { height: 100dvh; display: grid; grid-template-rows: auto 1fr auto; }
+  .viaje-top { background: #0f172a; color: #fff; display: flex; align-items: center; justify-content: space-between; gap: .75rem; padding: .75rem 1rem; }
+  .viaje-top b { font-weight: 800; letter-spacing: -.01em; }
+  .pill { padding: .25rem .75rem; border-radius: 999px; font-size: .8rem; font-weight: 700; background: #334155; color: #fff; }
+  .pill.vivo { background: #16a34a; }
+  .pill.aviso { background: #ffc72c; color: #0f172a; }
+  .pill.fin { background: #64748b; }
+  .viaje-app #mapa { min-height: 0; background: #dfe5e0; }
+  .viaje-app .hoja { background: #fff; border-radius: 1.4rem 1.4rem 0 0; margin-top: -1.1rem; position: relative; z-index: 500; padding: 1.1rem 1rem calc(.5rem + env(safe-area-inset-bottom)); box-shadow: 0 -10px 30px -12px rgba(0,0,0,.4); max-height: 55vh; overflow: auto; }
+  .viaje-app .unidad { display: flex; justify-content: space-between; gap: .75rem; align-items: flex-start; }
+  .viaje-app .unidad h1 { font-size: 1.3rem; font-weight: 800; letter-spacing: -.02em; line-height: 1.15; }
+  .viaje-app .unidad p { color: #64748b; font-size: .9rem; }
+  .viaje-app .placa { padding: .25rem .65rem; border: 2px solid #0f172a; border-radius: .5rem; font-weight: 800; letter-spacing: .08em; white-space: nowrap; }
+  .viaje-app .eta { margin-top: .75rem; padding: .75rem .9rem; background: #f1f5f9; border-radius: .75rem; font-weight: 600; }
+  .viaje-app .eta small { display: block; color: #64748b; font-weight: 400; }
+  .viaje-app .botones { margin-top: .85rem; display: grid; grid-template-columns: 1fr 1fr; gap: .6rem; }
+  .viaje-app .botones .btn { min-height: 46px; font-size: .9rem; padding: .5rem .7rem; }
+  .viaje-app .botones .full { grid-column: 1 / -1; }
+  .viaje-app .fin { padding: 1.5rem 0 .5rem; text-align: center; display: grid; gap: .6rem; justify-items: center; }
+  .viaje-app .fin h1 { font-size: 1.5rem; font-weight: 800; }
+  .viaje-app .fin p { color: #64748b; }
+</style>

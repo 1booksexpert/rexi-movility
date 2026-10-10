@@ -1,23 +1,37 @@
-<!doctype html>
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
-	</head>
-	<body>
-		<slot />
-	</body>
-</html>
+---
+// Layout base para las páginas que no son la tarjeta (directorio, panel, seguimiento).
+import '../styles/rexi.css';
+import { negocio } from '../lib/datos';
 
-<style>
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		height: 100%;
-	}
-</style>
+export interface Props {
+  titulo?: string;
+  descripcion?: string;
+  noindex?: boolean;
+  referrer?: string;
+  tema?: string;
+}
+const { titulo, descripcion, noindex = false, referrer, tema = '#FFC72C' } = Astro.props;
+const t = titulo ? `${titulo} | ${negocio.marca}` : negocio.marca;
+---
+
+<!doctype html>
+<html lang="es-MX">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{t}</title>
+    <meta name="description" content={descripcion || negocio.lema} />
+    <meta name="theme-color" content={tema} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    {referrer && <meta name="referrer" content={referrer} />}
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <slot name="head" />
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

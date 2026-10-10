@@ -1,42 +1,40 @@
 ---
+import Credito from '../components/Credito.astro';
+import { negocio, sitioBase } from '../lib/datos';
+import type { Chofer } from '../lib/datos';
+
 export interface Props {
-  chofer: {
-    id: string;
-    nombre: string;
-    titulo: string;
-    telefono: string;
-    telefonoFormateado: string;
-    zona: string;
-    logo: string;
-    servicios: Array<{ nombre: string; icono: string; color: string }>;
-    mensajes: Record<string, string>;
-  };
+  chofer: Chofer;
   titulo?: string;
 }
 
 const { chofer, titulo } = Astro.props;
-const siteUrl = Astro.site?.toString() || 'https://rexi-movilidad.pages.dev';
-const tarjetaUrl = `${siteUrl}t/${chofer.id}/`;
+const tarjetaUrl = chofer.urlTarjeta;
+const marca = negocio.marca;
+const wsDueno = negocio.whatsappDueno;
 ---
 
 <!DOCTYPE html>
 <html lang="es-MX">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>{titulo || `${chofer.nombre} | REXI Movilidad`}</title>
-  <meta name="description" content={`Chofer ejecutivo de confianza en Reynosa. ${chofer.nombre} - ${chofer.titulo}`} />
-  <meta property="og:title" content={`${chofer.nombre} | REXI Movilidad Ejecutiva`} />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{titulo || `${chofer.nombre} | ${marca}`}</title>
+  <meta name="description" content={`${chofer.nombre}, ${chofer.titulo} en ${chofer.zona}. Pide por WhatsApp con tu ubicación y sigue tu viaje en tiempo real.`} />
+  <meta property="og:title" content={`${chofer.nombre} | ${marca}`} />
   <meta property="og:description" content={`Servicio premium 24/7 en Reynosa y la Frontera. ${chofer.telefonoFormateado}`} />
   <meta property="og:url" content={tarjetaUrl} />
   <meta property="og:type" content="website" />
+  <meta property="og:image" content={`${sitioBase()}${chofer.logo}`} />
+  <link rel="icon" type="image/png" href="/favicon.png" />
+  <link rel="canonical" href={tarjetaUrl} />
   <meta name="theme-color" content="#FFC72C" />
   
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
   
-  <style>
+  <style is:global>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     
     body {
@@ -422,6 +420,28 @@ const tarjetaUrl = `${siteUrl}t/${chofer.id}/`;
     .sticky-wa {
       background: #16a34a;
     }
+
+    /* Accesibilidad y extras */
+    :focus-visible { outline: 3px solid #FFC72C; outline-offset: 3px; }
+    .flip-card:focus-visible { outline-offset: 6px; border-radius: 1.5rem; }
+    @media (prefers-reduced-motion: reduce) {
+      .flip-card-inner { transition: none; }
+      .flip-hint { animation: none; }
+    }
+    .estado-ubic { max-width: 22rem; margin: -1rem auto 1.5rem; min-height: 1.25rem; font-size: .8125rem; color: #475569; text-align: center; }
+    .seguimiento {
+      max-width: 22rem; margin: 0 auto 2rem; padding: 1rem 1.25rem; text-align: left;
+      background: #0f172a; color: #fff; border-radius: 1rem; font-size: .875rem;
+    }
+    .seguimiento b { display: block; font-size: .9375rem; margin-bottom: .15rem; }
+    .seguimiento span { color: #cbd5e1; }
+    .flip-card { height: 35rem; }
+    .qr-container { display: flex; flex-direction: column; align-items: center; }
+    .qr-svg { width: 4.75rem; height: 4.75rem; }
+    .qr-svg svg { width: 100%; height: 100%; display: block; }
+    .acceso-chofer { text-align: center; margin: 1rem 0 0; font-size: .8125rem; }
+    .acceso-chofer a { color: #94a3b8; }
+    .main-footer .marca-pie { font-weight: 700; color: #0f172a; }
   </style>
 </head>
 <body>
@@ -439,90 +459,116 @@ const tarjetaUrl = `${siteUrl}t/${chofer.id}/`;
     </button>
   </div>
 
-  <script define:vars={{ chofer }}>
+  <script define:vars={{ chofer, marca, wsDueno, tarjetaUrl }}>
     const CONFIG = {
       phoneNumber: chofer.telefono,
       businessName: `REXI | ${chofer.nombre}`,
       jobTitle: chofer.titulo,
       location: chofer.zona,
-      currentUrl: window.location.href,
-      mensajes: chofer.mensajes
+      currentUrl: tarjetaUrl,
+      mensajes: chofer.mensajes || { general: 'Hola, necesito un servicio de transporte.' }
     };
-
-    document.addEventListener('DOMContentLoaded', function() {
-      const qrUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&margin=10&color=0f172a&bgcolor=ffffff&data=' + encodeURIComponent(CONFIG.currentUrl);
-      const qrImg = document.getElementById('qrCodeImage');
-      if (qrImg) qrImg.src = qrUrl;
-    });
 
     function toggleFlipCard() {
       const card = document.getElementById('flipCardInner');
-      if (card) card.classList.toggle('is-flipped');
+      if (!card) return;
+      const abierta = card.classList.toggle('is-flipped');
+      const cont = document.getElementById('flipCard');
+      if (cont) cont.setAttribute('aria-pressed', String(abierta));
+    }
+    function teclaTarjeta(e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleFlipCard(); }
     }
 
+    function abrirWhatsApp(texto) {
+      const url = 'https://wa.me/52' + CONFIG.phoneNumber + '?text=' + encodeURIComponent(texto);
+      window.location.href = url;
+    }
     function enviarWhatsApp(tipo) {
-      const mensaje = CONFIG.mensajes[tipo] || CONFIG.mensajes.general;
-      const url = 'https://wa.me/52' + CONFIG.phoneNumber + '?text=' + encodeURIComponent(mensaje);
-      window.open(url, '_blank');
+      abrirWhatsApp(CONFIG.mensajes[tipo] || CONFIG.mensajes.general);
     }
 
-    function enviarUbicacion() {
-      const btn = event.target;
-      const originalText = btn.textContent;
-      
-      if (!navigator.geolocation) {
-        alert('Tu navegador no soporta geolocalización.');
-        enviarWhatsApp('general');
-        return;
+    // Pide la ubicación una vez; si no se puede, sigue sin ella.
+    function obtenerUbicacion() {
+      return new Promise(function (ok) {
+        if (!navigator.geolocation) return ok(null);
+        navigator.geolocation.getCurrentPosition(
+          function (p) { ok(p.coords); },
+          function () { ok(null); },
+          { enableHighAccuracy: true, timeout: 9000, maximumAge: 30000 }
+        );
+      });
+    }
+    function lineaUbicacion(c) {
+      return 'Mi ubicación: https://maps.google.com/?q=' + c.latitude.toFixed(6) + ',' + c.longitude.toFixed(6) +
+        ' (precisión aprox. ' + Math.round(c.accuracy) + ' m)';
+    }
+    function estado(txt) {
+      const e = document.getElementById('estadoUbic');
+      if (e) e.textContent = txt;
+    }
+
+    async function enviarUbicacion() {
+      // El botón se toma de forma síncrona: después del await el evento ya no existe.
+      const btn = (window.event && window.event.currentTarget) || null;
+      const original = btn ? btn.textContent : '';
+      if (btn) { btn.disabled = true; btn.textContent = 'Obteniendo ubicación...'; }
+      const c = await obtenerUbicacion();
+      if (btn) { btn.disabled = false; btn.textContent = original; }
+      if (!c) {
+        estado('No pudimos leer tu ubicación. Revisa el permiso del navegador; te la pediremos por WhatsApp.');
+        return abrirWhatsApp('Hola, necesito un servicio de transporte. ¿Te comparto mi ubicación?');
       }
+      estado('');
+      abrirWhatsApp('Hola, necesito un servicio de transporte.\n' + lineaUbicacion(c));
+    }
 
-      btn.disabled = true;
-      btn.textContent = 'Obteniendo ubicación...';
-
-      navigator.geolocation.getCurrentPosition(
-        function(position) {
-          const lat = position.coords.latitude;
-          const lng = position.coords.longitude;
-          const mapsLink = 'https://www.google.com/maps?q=' + lat + ',' + lng;
-          const mensaje = 'Hola, necesito un servicio de transporte. Mi ubicación actual es:\n\n' + mapsLink;
-          const url = 'https://wa.me/52' + CONFIG.phoneNumber + '?text=' + encodeURIComponent(mensaje);
-          window.open(url, '_blank');
-          
-          btn.disabled = false;
-          btn.textContent = originalText;
-        },
-        function(error) {
-          alert('No se pudo obtener la ubicación. Por favor, escríbela manualmente.');
-          enviarWhatsApp('general');
-          btn.disabled = false;
-          btn.textContent = originalText;
-        },
-        { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
-      );
+    async function pedirServicio(indice) {
+      const s = chofer.servicios[indice];
+      if (!s) return;
+      estado('Buscando tu ubicación…');
+      const c = await obtenerUbicacion();
+      estado('');
+      abrirWhatsApp(s.mensaje + (c ? '\n' + lineaUbicacion(c) : ''));
     }
 
     function downloadVCard() {
-      const vCard = [
+      const tel = '+52' + CONFIG.phoneNumber;
+      const lineas = [
         'BEGIN:VCARD',
         'VERSION:3.0',
+        'N:;' + CONFIG.businessName + ';;;',
         'FN:' + CONFIG.businessName,
+        'ORG:' + marca,
         'TITLE:' + CONFIG.jobTitle,
-        'TEL;TYPE=CELL:+' + CONFIG.phoneNumber,
-        'ADR;TYPE=WORK:;;' + CONFIG.location + ';;;;',
+        'TEL;TYPE=CELL,VOICE:' + tel,
+        'ADR;TYPE=WORK:;;;' + CONFIG.location.split(',')[0].trim() + ';' + (CONFIG.location.split(',')[1] || '').trim() + ';;México',
         'URL:' + CONFIG.currentUrl,
         'END:VCARD'
-      ].join('\n');
-
-      const blob = new Blob([vCard], { type: 'text/vcard;charset=utf-8' });
+      ];
+      const blob = new Blob([lineas.join('\r\n')], { type: 'text/vcard;charset=utf-8' });
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
-      link.download = 'REXI_Contacto.vcf';
+      link.download = 'REXI_' + chofer.id + '.vcf';
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-      URL.revokeObjectURL(url);
+      setTimeout(function () { URL.revokeObjectURL(url); }, 4000);
     }
+
+    async function compartirTarjeta() {
+      const d = { title: CONFIG.businessName, text: 'Movilidad ejecutiva en Reynosa', url: CONFIG.currentUrl };
+      if (navigator.share) { try { await navigator.share(d); } catch (e) {} }
+      else if (navigator.clipboard) { await navigator.clipboard.writeText(CONFIG.currentUrl); estado('Enlace de la tarjeta copiado.'); }
+    }
+
+    // Astro envuelve los scripts con define:vars en un bloque: se exponen a mano
+    // para que funcionen los onclick del HTML.
+    Object.assign(window, {
+      toggleFlipCard, teclaTarjeta, enviarWhatsApp, enviarUbicacion,
+      pedirServicio, downloadVCard, compartirTarjeta
+    });
   </script>
 </body>
 </html>

@@ -5,9 +5,14 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "preview": "astro preview"
+    "preview": "astro preview",
+    "chofer": "node scripts/chofer.mjs",
+    "api:install": "cd api && npm install",
+    "api:dev": "cd api && npm run dev",
+    "api:deploy": "cd api && npm run deploy"
   },
   "dependencies": {
-    "astro": "^4.16.0"
+    "astro": "^4.16.0",
+    "qrcode": "^1.5.4"
   }
 }

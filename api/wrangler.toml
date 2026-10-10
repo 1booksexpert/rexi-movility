@@ -1,0 +1,22 @@
+name = "rexi-api"
+main = "src/worker.js"
+compatibility_date = "2025-09-01"
+
+# Una llave "pin:<id-chofer>" por chofer con el hash de su PIN.
+# Espacio "rexi-pins" ya creado en tu cuenta de Cloudflare.
+[[kv_namespaces]]
+binding = "PINS"
+id = "b70cb22a6812415cb48763ac14a8d6d1"
+
+[[durable_objects.bindings]]
+name = "TRIPS"
+class_name = "Trip"
+
+[[durable_objects.bindings]]
+name = "GUARD"
+class_name = "Guard"
+
+# SQLite-backed: disponible también en el plan gratuito de Workers.
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["Trip", "Guard"]

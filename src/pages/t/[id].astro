@@ -1,6 +1,8 @@
 ---
+import QRCode from 'qrcode';
 import TarjetaLayout from '../../layouts/TarjetaLayout.astro';
-import choferes from '../../data/choferes.json';
+import Credito from '../../components/Credito.astro';
+import { choferes, negocio } from '../../lib/datos';
 
 export async function getStaticPaths() {
   return choferes.map((chofer) => ({
@@ -10,19 +12,33 @@ export async function getStaticPaths() {
 }
 
 const { chofer } = Astro.props;
-const siteUrl = Astro.site?.toString() || 'https://rexi-movilidad.pages.dev';
-const tarjetaUrl = `${siteUrl}t/${chofer.id}/`;
+
+// QR generado al construir el sitio: no depende de ningún servicio externo.
+const qrSvg = await QRCode.toString(chofer.urlTarjeta, {
+  type: 'svg',
+  margin: 0,
+  color: { dark: '#0f172a', light: '#ffffff' },
+});
 ---
 
-<TarjetaLayout chofer={chofer} titulo={`${chofer.nombre} | REXI Movilidad`}>
+<TarjetaLayout chofer={chofer} titulo={`${chofer.nombre} | ${negocio.marca}`}>
   <main class="main-container">
     
     <!-- FRENTE DE LA TARJETA -->
-    <div class="perspective-1000 flip-card" onclick="toggleFlipCard()">
+    <div
+      id="flipCard"
+      class="perspective-1000 flip-card"
+      role="button"
+      tabindex="0"
+      aria-pressed="false"
+      aria-label="Tarjeta de contacto. Presiona para ver el reverso con servicios y código QR"
+      onclick="toggleFlipCard()"
+      onkeydown="teclaTarjeta(event)"
+    >
       <div id="flipCardInner" class="flip-card-inner transform-style-3d">
         <div class="card-face card-front backface-hidden">
           <div class="logo-container">
-            <img src={`/logos/${chofer.logo}`} alt="Logo REXI" />
+            <img src={chofer.logo} alt={`Logo ${negocio.marca}`} />
           </div>
           <h1 class="card-name">{chofer.nombre}</h1>
           <p class="card-title">{chofer.titulo}</p>
@@ -47,15 +63,22 @@ const tarjetaUrl = `${siteUrl}t/${chofer.id}/`;
 
           <div class="back-bottom">
             <div class="qr-container">
-              <img id="qrCodeImage" src="" alt="QR Code" />
+              <div class="qr-svg" role="img" aria-label="Código QR de esta tarjeta" set:html={qrSvg} />
               <div class="qr-label">Escanea para abrir esta tarjeta</div>
             </div>
-            <button class="btn-action-full" onclick="downloadVCard()">Guardar en Contactos</button>
-            <button class="btn-action-full btn-location" onclick="enviarUbicacion()">Enviar Mi Ubicación por WhatsApp</button>
-            <button class="btn-action-full btn-print" onclick="window.print()">Imprimir Tarjeta Física</button>
+            <button class="btn-action-full" onclick="event.stopPropagation(); downloadVCard()">Guardar en Contactos</button>
+            <button class="btn-action-full btn-location" onclick="event.stopPropagation(); enviarUbicacion()">Enviar Mi Ubicación por WhatsApp</button>
+            <button class="btn-action-full btn-print" onclick="event.stopPropagation(); window.print()">Imprimir Tarjeta Física</button>
           </div>
         </div>
       </div>
+    </div>
+
+    <p id="estadoUbic" class="estado-ubic" role="status" aria-live="polite"></p>
+
+    <div class="seguimiento">
+      <b>Sigue tu viaje en tiempo real</b>
+      <span>Cuando tu chofer salga, te enviará un enlace por WhatsApp para ver su unidad en el mapa.</span>
     </div>
 
     <!-- SOLUCIONES DE MOVILIDAD (GRID) -->
@@ -72,7 +95,7 @@ const tarjetaUrl = `${siteUrl}t/${chofer.id}/`;
         </div>
 
         <div class="service-card">
-          <div class="service-card-icon">️</div>
+          <div class="service-card-icon">✈️</div>
           <h3>Aeropuerto y Foráneos</h3>
           <p>Recepción en REX o traslados a Monterrey (MMTY).</p>
           <button class="btn-service" onclick="enviarWhatsApp('aeropuerto')">Cotizar Viaje</button>
@@ -122,7 +145,9 @@ const tarjetaUrl = `${siteUrl}t/${chofer.id}/`;
 
     <!-- FOOTER -->
     <footer class="main-footer">
-      <p>© 2026 REXI | {chofer.nombre}. Reynosa, Tamaulipas, México.</p>
+      <p>© 2026 {negocio.marca} | {chofer.nombre}. Reynosa, Tamaulipas, México.</p>
+      <Credito origen="tarjeta" />
+      <p class="acceso-chofer"><a href={`/chofer/${chofer.id}/`} rel="nofollow">Acceso para choferes</a></p>
     </footer>
 
   </main>
