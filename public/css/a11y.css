@@ -120,3 +120,7 @@ html[data-texto="grande"] .card-phone, html[data-texto="muy-grande"] .card-phone
 html[data-texto="grande"] .chofer, html[data-texto="muy-grande"] .chofer { grid-template-columns: auto minmax(0, 1fr); }
 html[data-texto="grande"] .chofer .ver, html[data-texto="muy-grande"] .chofer .ver { grid-column: 1 / -1; }
 html[data-texto="grande"] .choferes > *, html[data-texto="muy-grande"] .choferes > * { min-width: 0; }
+
+/* En los modos con frente y reverso apilados, las dos caras siempre se ven. */
+html[data-texto="grande"] .card-face, html[data-texto="muy-grande"] .card-face,
+html[data-contraste="alto"] .card-face, html[data-contraste="negro"] .card-face { opacity: 1 !important; visibility: visible !important; }

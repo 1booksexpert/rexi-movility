@@ -161,7 +161,7 @@ const wsDueno = negocio.whatsappDueno;
       color: #475569;
       font-size: 0.9375rem;
       margin-top: 1rem;
-      animation: pulse 2s infinite;
+      animation: none;
     }
     
     @keyframes pulse {
@@ -439,6 +439,16 @@ const wsDueno = negocio.whatsappDueno;
     .seguimiento b { display: block; font-size: .9375rem; margin-bottom: .15rem; }
     .seguimiento span { color: #cbd5e1; }
     .flip-card { height: 35rem; }
+    /* Cambio frente/reverso en 2D (desvanecido). El giro 3D hacía que Chrome pintara el reverso blanco
+       encima de todo después de un segundo. Sin perspective, preserve-3d ni backface-visibility. */
+    .perspective-1000 { perspective: none; }
+    .transform-style-3d { transform-style: flat; }
+    .flip-card-inner, .flip-card-inner.is-flipped { transform: none !important; transition: none; }
+    .card-face { backface-visibility: visible; -webkit-backface-visibility: visible; transition: opacity .3s ease, visibility .3s; }
+    .card-front { opacity: 1; visibility: visible; }
+    .card-back, .card-back.rotate-y-180 { transform: none; opacity: 0; visibility: hidden; }
+    .is-flipped .card-front { opacity: 0; visibility: hidden; }
+    .is-flipped .card-back { opacity: 1; visibility: visible; }
     .qr-container { display: flex; flex-direction: column; align-items: center; }
     .qr-svg { width: 4.75rem; height: 4.75rem; }
     .qr-svg svg { width: 100%; height: 100%; display: block; }
