@@ -65,3 +65,4 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .mk-taxi { width: 40px; height: 40px; border-radius: 50%; background: var(--amarillo); border: 3px solid var(--pizarra); box-shadow: 0 2px 8px rgba(0,0,0,.4); display: grid; place-items: center; }
 .mk-taxi svg { width: 22px; height: 22px; }
 .mk-yo { width: 18px; height: 18px; border-radius: 50%; background: #1a73e8; border: 3px solid #fff; box-shadow: 0 0 0 6px rgba(26,115,232,.25); }
+input, select, textarea { max-width: 100%; min-width: 0; }
