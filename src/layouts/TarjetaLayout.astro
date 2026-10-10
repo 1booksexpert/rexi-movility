@@ -402,22 +402,14 @@ const tarjetaUrl = `${siteUrl}t/${chofer.id}/`;
     </button>
   </div>
 
-  <script>
+  <script define:vars={{ chofer }}>
     const CONFIG = {
-      phoneNumber: '{chofer.telefono}',
-      businessName: 'REXI | {chofer.nombre}',
-      jobTitle: '{chofer.titulo}',
-      location: '{chofer.zona}',
+      phoneNumber: chofer.telefono,
+      businessName: `REXI | ${chofer.nombre}`,
+      jobTitle: chofer.titulo,
+      location: chofer.zona,
       currentUrl: window.location.href,
-      mensajes: {
-        local: `{chofer.mensajes.local}`,
-        aeropuerto: `{chofer.mensajes.aeropuerto}`,
-        medico: `{chofer.mensajes.medico}`,
-        paqueteria: `{chofer.mensajes.paqueteria}`,
-        corporativo: `{chofer.mensajes.corporativo}`,
-        mascotas: `{chofer.mensajes.mascotas}`,
-        general: `{chofer.mensajes.general}`
-      }
+      mensajes: chofer.mensajes
     };
 
     // QR Code
