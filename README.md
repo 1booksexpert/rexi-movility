@@ -73,6 +73,19 @@ npm run chofer -- baja  nombre-apellido --aplicar
 - Placa y unidad: el chofer las captura en su panel (se recuerdan en su teléfono). También puedes fijarlas en `choferes.json`.
 - Seguridad: 5 PIN incorrectos bloquean ese chofer 15 minutos.
 
+## Vendedores, planes y comisiones
+
+```bash
+npm run chofer -- nuevo "Nombre Apellido" 8991234567 --plan pro --ref V01 --aplicar
+npm run chofer -- ref nombre-apellido V01      # asignar o cambiar vendedor
+npm run reporte                                # mes actual
+npm run reporte -- 2026-11 --no-pagaron nombre-apellido
+```
+
+- `referido` (código del vendedor), `plan` (`tarjeta`, `pro`, `flota`) y `fechaAlta` se guardan en `choferes.json`. **No se publican en el sitio** (`datos.ts` no los copia).
+- Precios, porcentajes y datos de los vendedores viven en `private/tarifas.json`, que está en `.gitignore`: no se sube a GitHub. Respáldalo aparte.
+- Regla por defecto: 30% del alta una sola vez + 15% de la mensualidad durante 12 meses, solo si el chofer pagó.
+
 ## Pendientes tuyos
 
 - `src/data/negocio.json` → `whatsappDueno` (formato `521899XXXXXXX`). Con él aparece "Pedir por WhatsApp" en el inicio y "Al dueño" en el panel del chofer.

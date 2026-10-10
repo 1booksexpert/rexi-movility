@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 // Alta, cambio de PIN y baja de choferes.
 //
-//   npm run chofer -- nuevo "Nombre Apellido" 8991234567 [--titulo "Movilidad Ejecutiva"] [--aplicar]
+//   npm run chofer -- nuevo "Nombre Apellido" 8991234567 [--titulo "Movilidad Ejecutiva"] [--plan pro] [--ref V01] [--aplicar]
+//   npm run chofer -- ref   <id> <codigo-vendedor>      (asigna o cambia el vendedor que lo colocó)
 //   npm run chofer -- pin   <id> [--aplicar]
 //   npm run chofer -- baja  <id> [--aplicar]
 //
@@ -54,17 +55,27 @@ if (cmd === 'nuevo') {
     titulo: opt('titulo') || 'Movilidad Ejecutiva', zona: 'Reynosa, Tamaulipas', placa: '', unidad: '',
     servicios: JSON.parse(JSON.stringify(lista[0]?.servicios || [])),
     logo: `${id}.png`,
+    referido: opt('ref') || '',
+    plan: opt('plan') || 'pro',
+    fechaAlta: new Date().toISOString().slice(0, 10),
     mensajes: { general: 'Hola, me interesa tu servicio de movilidad ejecutiva.' },
   });
   guardar(lista);
   const pin = nuevoPin();
   console.log(`\nChofer agregado: ${nombre} (${id})`);
+  console.log(`  Plan: ${opt('plan') || 'pro'}   Vendedor: ${opt('ref') || '(ninguno)'}`);
   console.log(`  Tarjeta:  /t/${id}/`);
   console.log(`  Panel:    /chofer/${id}/`);
   console.log(`  PIN:      ${pin}   <- entrégaselo al chofer; no se vuelve a mostrar`);
   console.log(`  Logo (opcional): public/logos/${id}.png  (si no existe se usa rexi.png)`);
   kv('put', id, hashPin(id, pin));
   console.log('Después: git add -A && git commit -m "Alta de chofer ' + nombre + '" && git push');
+} else if (cmd === 'ref') {
+  if (!a1 || !a2) { console.error('Uso: npm run chofer -- ref <id> <codigo-vendedor>'); process.exit(1); }
+  const lista = leer(); const c = lista.find((x) => x.id === a1);
+  if (!c) { console.error(`No existe el chofer "${a1}" en choferes.json.`); process.exit(1); }
+  c.referido = a2; guardar(lista);
+  console.log(`\n${a1} ahora está asignado al vendedor ${a2}.`);
 } else if (cmd === 'pin') {
   if (!a1) { console.error('Uso: npm run chofer -- pin <id>'); process.exit(1); }
   if (!leer().some((c) => c.id === a1)) { console.error(`No existe el chofer "${a1}" en choferes.json.`); process.exit(1); }
@@ -79,6 +90,6 @@ if (cmd === 'nuevo') {
   console.log(`\nChofer ${a1} quitado de choferes.json (su tarjeta desaparece en el próximo despliegue).`);
   kv('delete', a1);
 } else {
-  console.log('Comandos: nuevo | pin | baja. Mira el encabezado de scripts/chofer.mjs.');
+  console.log('Comandos: nuevo | pin | baja | ref. Mira el encabezado de scripts/chofer.mjs.');
   process.exit(cmd ? 1 : 0);
 }
