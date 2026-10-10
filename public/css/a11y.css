@@ -3,8 +3,9 @@
    Futuro: data-modo="viajero" (adultos mayores / ciegos) cuelga de este mismo mecanismo. */
 
 /* ---- Botón y panel ---- */
+.a11y-bar { display: flex; justify-content: flex-end; padding: .5rem .75rem; background: #0f172a; position: relative; z-index: 2000; }
 .a11y-btn {
-  position: fixed; top: .75rem; right: .75rem; z-index: 2000;
+  position: static;
   display: inline-flex; align-items: center; gap: .5rem;
   min-height: 48px; padding: .5rem 1rem; border-radius: 999px;
   background: #0f172a; color: #fff; border: 2px solid #ffc72c;
@@ -13,7 +14,7 @@
 }
 .a11y-btn .aa { font-size: 1.15rem; letter-spacing: -.03em; color: #ffc72c; }
 .a11y-panel {
-  position: fixed; top: 4.5rem; right: .75rem; z-index: 2000;
+  position: fixed; top: 4.25rem; right: .75rem; z-index: 2001;
   width: min(22rem, calc(100vw - 1.5rem)); max-height: calc(100vh - 6rem); overflow: auto;
   background: #fff; color: #0f172a; border: 3px solid #0f172a; border-radius: 1.25rem;
   padding: 1.1rem; box-shadow: 0 16px 40px rgba(0,0,0,.4);
@@ -29,7 +30,7 @@
   background: #f1f5f9; color: #0f172a; border: 2px solid #94a3b8; font: 700 1rem/1.15 'Inter', system-ui, sans-serif;
 }
 .a11y-op[aria-pressed="true"] { background: #0f172a; color: #ffc72c; border-color: #0f172a; }
-.a11y-op.t1 { font-size: 1rem; } .a11y-op.t2 { font-size: 1.2rem; } .a11y-op.t3 { font-size: 1.4rem; }
+.a11y-op.t1 { font-size: 1rem; } .a11y-op.t2 { font-size: 1.2rem; } .a11y-op.t3 { font-size: 1.15rem; }
 .a11y-reset { margin-top: 1rem; width: 100%; min-height: 48px; border-radius: .75rem; border: 2px solid #0f172a; background: #fff; color: #0f172a; font: 700 1rem 'Inter', system-ui, sans-serif; cursor: pointer; }
 .a11y-cerrar { margin-top: .6rem; width: 100%; min-height: 48px; border-radius: .75rem; border: 0; background: #ffc72c; color: #000; font: 800 1rem 'Inter', system-ui, sans-serif; cursor: pointer; }
 .a11y-live { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
@@ -74,4 +75,11 @@ html[data-contraste="alto"] .leaflet-container { filter: contrast(1.15) saturate
 html[data-contraste="alto"] img { background: #fff !important; border-radius: .5rem; }
 html[data-contraste="alto"] .card-phone { background-color: #ffe44d !important; color: #000 !important; border: 3px solid #fff !important; }
 html[data-contraste="alto"] .card-phone * { color: #000 !important; background: transparent !important; }
-html[data-texto="grande"] .card-phone-number, html[data-texto="muy-grande"] .card-phone-number { white-space: nowrap; font-size: 1.4rem; }
+html[data-texto="grande"] .card-phone-number, html[data-texto="muy-grande"] .card-phone-number { white-space: nowrap; font-size: 1.15rem; }
+html[data-texto="grande"] .flip-card-inner, html[data-texto="muy-grande"] .flip-card-inner { grid-template-columns: minmax(0, 1fr); }
+html[data-texto="grande"] .card-face, html[data-texto="muy-grande"] .card-face { min-width: 0; width: 100% !important; }
+html[data-texto="grande"] .card-title, html[data-texto="muy-grande"] .card-title { letter-spacing: .06em; overflow-wrap: anywhere; }
+html[data-texto="grande"] .card-phone, html[data-texto="muy-grande"] .card-phone { padding: .75rem 1rem; gap: .5rem; }
+html[data-texto="grande"] .chofer, html[data-texto="muy-grande"] .chofer { grid-template-columns: auto minmax(0, 1fr); }
+html[data-texto="grande"] .chofer .ver, html[data-texto="muy-grande"] .chofer .ver { grid-column: 1 / -1; }
+html[data-texto="grande"] .choferes > *, html[data-texto="muy-grande"] .choferes > * { min-width: 0; }
