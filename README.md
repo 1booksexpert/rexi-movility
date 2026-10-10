@@ -89,7 +89,7 @@ npm run reporte -- 2026-11 --no-pagaron nombre-apellido
 
 ## Tarjeta física (para imprimir)
 
-En la tarjeta digital, reverso, el botón **Crear Tarjeta Física** abre `/t/<id>/imprimir/`. Ahí se genera, en el propio teléfono y a 300 DPI:
+En el panel del chofer (`/chofer/<id>/`), el botón **Crear mi tarjeta física** abre `/chofer/<id>/tarjeta-fisica/`. Es solo para el chofer: la tarjeta pública del pasajero no lo muestra. Ahí se genera, en el propio teléfono y a 300 DPI:
 
 - **Frente y reverso individuales** (9 × 5 cm con 3 mm de sangrado): lo que pide una imprenta.
 - **Hoja carta de frentes y de reversos** (10 tarjetas con marcas de corte): para imprimir en casa u oficina.

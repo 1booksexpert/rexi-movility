@@ -44,6 +44,13 @@ const datos = {
         <p class="ayuda">Mantén esta pantalla abierta y encendida durante el viaje. Si bloqueas el teléfono, el navegador puede pausar el GPS.</p>
       </form>
 
+      <!-- Herramientas del chofer (se ocultan durante un viaje) -->
+      <div class="caja" id="herramientas">
+        <b>Mi tarjeta física</b>
+        <p class="ayuda">Imprime tus tarjetas de presentación con tu foto, tu teléfono y el QR.</p>
+        <a class="btn btn-borde" href={`/chofer/${chofer.id}/tarjeta-fisica/`}>Crear mi tarjeta física</a>
+      </div>
+
       <!-- Viaje activo -->
       <div id="activo" hidden>
         <div class="caja">

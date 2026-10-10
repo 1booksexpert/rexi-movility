@@ -68,7 +68,6 @@ const qrSvg = await QRCode.toString(chofer.urlTarjeta, {
             </div>
             <button class="btn-action-full" onclick="event.stopPropagation(); downloadVCard()">Guardar en Contactos</button>
             <button class="btn-action-full btn-location" onclick="event.stopPropagation(); enviarUbicacion()">Enviar Mi Ubicación por WhatsApp</button>
-            <button class="btn-action-full btn-print" onclick={`event.stopPropagation(); location.href='/t/${chofer.id}/imprimir/'`}>Crear Tarjeta Física</button>
           </div>
         </div>
       </div>
@@ -147,7 +146,6 @@ const qrSvg = await QRCode.toString(chofer.urlTarjeta, {
     <footer class="main-footer">
       <p>© 2026 {negocio.marca} | {chofer.nombre}. Reynosa, Tamaulipas, México.</p>
       <Credito origen="tarjeta" />
-      <p class="acceso-chofer"><a href={`/chofer/${chofer.id}/`} rel="nofollow">Acceso para choferes</a></p>
     </footer>
 
   </main>
