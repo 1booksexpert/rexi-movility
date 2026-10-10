@@ -2,6 +2,8 @@
 // Layout base para las páginas que no son la tarjeta (directorio, panel, seguimiento).
 import '../styles/rexi.css';
 import { negocio } from '../lib/datos';
+import Accesibilidad from '../components/Accesibilidad.astro';
+import AccesibilidadHead from '../components/AccesibilidadHead.astro';
 
 export interface Props {
   titulo?: string;
@@ -29,9 +31,11 @@ const t = titulo ? `${titulo} | ${negocio.marca}` : negocio.marca;
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <AccesibilidadHead />
     <slot name="head" />
   </head>
   <body>
+    <Accesibilidad />
     <slot />
   </body>
 </html>

@@ -1,5 +1,7 @@
 ---
 import Credito from '../components/Credito.astro';
+import Accesibilidad from '../components/Accesibilidad.astro';
+import AccesibilidadHead from '../components/AccesibilidadHead.astro';
 import { negocio, sitioBase } from '../lib/datos';
 import type { Chofer } from '../lib/datos';
 
@@ -29,6 +31,7 @@ const wsDueno = negocio.whatsappDueno;
   <link rel="icon" type="image/png" href="/favicon.png" />
   <link rel="canonical" href={tarjetaUrl} />
   <meta name="theme-color" content="#FFC72C" />
+  <AccesibilidadHead />
   
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -123,9 +126,9 @@ const wsDueno = negocio.whatsappDueno;
     }
     
     .card-title {
-      font-size: 0.75rem;
+      font-size: 0.875rem;
       font-weight: 600;
-      color: #d97706;
+      color: #b45309;
       text-transform: uppercase;
       letter-spacing: 0.2em;
       margin-bottom: 1.5rem;
@@ -155,8 +158,8 @@ const wsDueno = negocio.whatsappDueno;
       display: flex;
       align-items: center;
       gap: 0.5rem;
-      color: #94a3b8;
-      font-size: 0.75rem;
+      color: #475569;
+      font-size: 0.9375rem;
       margin-top: 1rem;
       animation: pulse 2s infinite;
     }
@@ -220,11 +223,11 @@ const wsDueno = negocio.whatsappDueno;
     }
     
     .qr-label {
-      font-size: 0.625rem;
+      font-size: 0.8125rem;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.08em;
-      color: #64748b;
+      color: #475569;
       text-align: center;
       margin-top: 0.5rem;
     }
@@ -251,7 +254,7 @@ const wsDueno = negocio.whatsappDueno;
     }
     
     .btn-location {
-      background: #16a34a;
+      background: #15803d;
     }
     
     .btn-location:hover {
@@ -281,7 +284,7 @@ const wsDueno = negocio.whatsappDueno;
     
     .section-subtitle {
       text-align: center;
-      color: #64748b;
+      color: #475569;
       margin-bottom: 2rem;
       font-size: 0.9375rem;
     }
@@ -319,7 +322,7 @@ const wsDueno = negocio.whatsappDueno;
     }
     
     .service-card p {
-      color: #64748b;
+      color: #475569;
       font-size: 0.875rem;
       line-height: 1.5;
       flex-grow: 1;
@@ -369,7 +372,7 @@ const wsDueno = negocio.whatsappDueno;
     /* FOOTER */
     .main-footer {
       text-align: center;
-      color: #64748b;
+      color: #475569;
       font-size: 0.875rem;
       padding: 2rem 0;
       border-top: 1px solid #e2e8f0;
@@ -418,7 +421,7 @@ const wsDueno = negocio.whatsappDueno;
     }
     
     .sticky-wa {
-      background: #16a34a;
+      background: #15803d;
     }
 
     /* Accesibilidad y extras */
@@ -428,7 +431,7 @@ const wsDueno = negocio.whatsappDueno;
       .flip-card-inner { transition: none; }
       .flip-hint { animation: none; }
     }
-    .estado-ubic { max-width: 22rem; margin: -1rem auto 1.5rem; min-height: 1.25rem; font-size: .8125rem; color: #475569; text-align: center; }
+    .estado-ubic { max-width: 22rem; margin: -1rem auto 1.5rem; min-height: 1.25rem; font-size: .9375rem; color: #475569; text-align: center; }
     .seguimiento {
       max-width: 22rem; margin: 0 auto 2rem; padding: 1rem 1.25rem; text-align: left;
       background: #0f172a; color: #fff; border-radius: 1rem; font-size: .875rem;
@@ -439,12 +442,13 @@ const wsDueno = negocio.whatsappDueno;
     .qr-container { display: flex; flex-direction: column; align-items: center; }
     .qr-svg { width: 4.75rem; height: 4.75rem; }
     .qr-svg svg { width: 100%; height: 100%; display: block; }
-    .acceso-chofer { text-align: center; margin: 1rem 0 0; font-size: .8125rem; }
-    .acceso-chofer a { color: #94a3b8; }
+    .acceso-chofer { text-align: center; margin: 1rem 0 0; font-size: .9375rem; }
+    .acceso-chofer a { color: #475569; }
     .main-footer .marca-pie { font-weight: 700; color: #0f172a; }
   </style>
 </head>
 <body>
+  <Accesibilidad />
   <slot />
   
   <!-- STICKY BAR -->

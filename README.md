@@ -87,6 +87,21 @@ npm run reporte -- 2026-11 --no-pagaron nombre-apellido
 - Pago mensual: 30% del alta una sola vez + 15% de la mensualidad durante 12 meses, solo si el chofer pagó.
 - Pago anual (`--pago anual`): 25% de lo cobrado una sola vez (15% en Flota). Se cobra todo junto y a los 12 meses se renueva.
 
+## Tarjeta física (para imprimir)
+
+En la tarjeta digital, reverso, el botón **Crear Tarjeta Física** abre `/t/<id>/imprimir/`. Ahí se genera, en el propio teléfono y a 300 DPI:
+
+- **Frente y reverso individuales** (9 × 5 cm con 3 mm de sangrado): lo que pide una imprenta.
+- **Hoja carta de frentes y de reversos** (10 tarjetas con marcas de corte): para imprimir en casa u oficina.
+- Frente: foto del chofer (si existe), logotipo REXI, nombre, título y teléfono. Reverso: servicios más comunes y QR de la tarjeta.
+- Foto: guarda `public/fotos/<id>.jpg` (o `.png`/`.webp`, cuadrada, 600 px o más) y aparece sola. También se puede elegir una foto en la propia página; no se sube a ningún servidor.
+- El logo `public/logos/rexi.png` mide solo 150×200 px y se nota algo suave al imprimir. Con una versión de 600 px de alto o más (o SVG) la tarjeta queda nítida.
+
+## Accesibilidad
+
+Botón **Accesibilidad** (arriba a la derecha en todas las páginas): texto normal, grande y muy grande; colores normales o alto contraste. Se recuerda en el teléfono y respeta `prefers-contrast: more`. Los textos cumplen contraste AA (4.5:1). Con texto grande la tarjeta deja de girar y muestra frente y reverso uno debajo del otro.
+Pendiente: modo viajero para adultos mayores y personas ciegas (aviso por voz, botón único de pedir taxi). Se cuelga del mismo mecanismo (`data-modo` en `<html>`).
+
 ## Pendientes tuyos
 
 - `src/data/negocio.json` → `whatsappDueno` (formato `521899XXXXXXX`). Con él aparece "Pedir por WhatsApp" en el inicio y "Al dueño" en el panel del chofer.

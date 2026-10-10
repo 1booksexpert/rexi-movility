@@ -2,16 +2,16 @@
    Mismo lenguaje visual que la tarjeta: Inter, amarillo REXI, grises pizarra. */
 :root {
   --amarillo: #ffc72c;
-  --amarillo-osc: #d97706;
+  --amarillo-osc: #b45309;
   --pizarra: #0f172a;
   --pizarra-2: #1e293b;
   --pizarra-3: #334155;
-  --gris: #64748b;
+  --gris: #475569;
   --borde: #e2e8f0;
   --fondo: #f1f5f9;
   --blanco: #ffffff;
-  --verde: #16a34a;
-  --verde-osc: #15803d;
+  --verde: #15803d;
+  --verde-osc: #166534;
   --azul: #2563eb;
   --rojo: #dc2626;
 }

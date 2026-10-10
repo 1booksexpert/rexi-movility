@@ -23,6 +23,7 @@ export interface Chofer {
   unidad: string;
   servicios: Servicio[];
   logo: string; // ruta pública, siempre existe
+  foto: string; // foto del chofer (public/fotos/<id>.jpg|png|webp) o '' si no hay
   mensajes: Record<string, string> & { general: string };
   urlTarjeta: string;
 }
@@ -38,6 +39,13 @@ function formatoTel(t: string): string {
 function logoPublico(logo?: string): string {
   if (logo && existsSync(join(process.cwd(), 'public', 'logos', logo))) return `/logos/${logo}`;
   return '/logos/rexi.png';
+}
+
+function fotoPublica(id: string): string {
+  for (const ext of ['jpg', 'jpeg', 'png', 'webp']) {
+    if (existsSync(join(process.cwd(), 'public', 'fotos', `${id}.${ext}`))) return `/fotos/${id}.${ext}`;
+  }
+  return '';
 }
 
 export function sitioBase(): string {
@@ -63,6 +71,7 @@ export const choferes: Chofer[] = (choferesRaw as any[]).map((c) => {
       mensaje: s.mensaje || `Hola, me interesa el servicio: ${s.nombre}.`,
     })),
     logo: logoPublico(c.logo),
+    foto: fotoPublica(c.id),
     mensajes: {
       general: 'Hola, necesito un servicio de transporte.',
       local: 'Hola, necesito un traslado local o a un puente internacional.',
