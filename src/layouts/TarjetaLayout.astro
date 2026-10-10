@@ -38,13 +38,23 @@ const tarjetaUrl = `${siteUrl}t/${chofer.id}/`;
   
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
+    
     body {
       font-family: 'Inter', sans-serif;
-      background: #f1f5f9;
+      background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
       color: #0f172a;
       -webkit-font-smoothing: antialiased;
       padding-bottom: 100px;
+      min-height: 100vh;
     }
+    
+    .main-container {
+      max-width: 48rem;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+    }
+    
+    /* FLIP CARD */
     .perspective-1000 { perspective: 1000px; }
     .transform-style-3d { transform-style: preserve-3d; }
     .backface-hidden {
@@ -52,31 +62,25 @@ const tarjetaUrl = `${siteUrl}t/${chofer.id}/`;
       -webkit-backface-visibility: hidden;
     }
     .rotate-y-180 { transform: rotateY(180deg); }
+    
     .flip-card-inner {
       transition: transform 0.8s cubic-bezier(0.4, 0.0, 0.2, 1);
+      position: relative;
+      width: 100%;
+      height: 100%;
     }
-    .flip-card-inner.is-flipped { transform: rotateY(180deg); }
-
-    /* HERO */
-    .hero {
-      background: #ffffff;
-      padding: 3rem 1rem 4rem;
-      text-align: center;
+    
+    .flip-card-inner.is-flipped {
+      transform: rotateY(180deg);
     }
-    .hero-label {
-      font-size: 0.75rem;
-      font-weight: 600;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: #64748b;
-      margin-bottom: 2rem;
-    }
+    
     .flip-card {
       max-width: 22rem;
-      height: 28rem;
-      margin: 0 auto;
+      height: 32rem;
+      margin: 0 auto 2rem;
       cursor: pointer;
     }
+    
     .card-face {
       position: absolute;
       width: 100%;
@@ -87,19 +91,16 @@ const tarjetaUrl = `${siteUrl}t/${chofer.id}/`;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-    }
-    .card-front {
       background: #ffffff;
       border: 1px solid #e2e8f0;
       box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
     }
+    
     .card-back {
-      background: #ffffff;
-      border: 1px solid #e2e8f0;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
       justify-content: flex-start;
       padding-top: 1.5rem;
     }
+    
     .logo-container {
       width: 6rem;
       height: 6rem;
@@ -108,11 +109,13 @@ const tarjetaUrl = `${siteUrl}t/${chofer.id}/`;
       align-items: center;
       justify-content: center;
     }
+    
     .logo-container img {
       width: 100%;
       height: 100%;
       object-fit: contain;
     }
+    
     .card-name {
       font-size: 1.875rem;
       font-weight: 800;
@@ -120,6 +123,7 @@ const tarjetaUrl = `${siteUrl}t/${chofer.id}/`;
       color: #0f172a;
       margin-bottom: 0.25rem;
     }
+    
     .card-title {
       font-size: 0.75rem;
       font-weight: 600;
@@ -128,6 +132,7 @@ const tarjetaUrl = `${siteUrl}t/${chofer.id}/`;
       letter-spacing: 0.2em;
       margin-bottom: 1.5rem;
     }
+    
     .card-phone {
       display: flex;
       align-items: center;
@@ -136,13 +141,18 @@ const tarjetaUrl = `${siteUrl}t/${chofer.id}/`;
       padding: 0.75rem 1.5rem;
       border-radius: 0.75rem;
     }
-    .card-phone svg { color: #000000; }
+    
+    .card-phone svg {
+      color: #000000;
+    }
+    
     .card-phone-number {
       font-size: 1.25rem;
       font-weight: 700;
       color: #000000;
       letter-spacing: 0.02em;
     }
+    
     .flip-hint {
       display: flex;
       align-items: center;
@@ -152,19 +162,20 @@ const tarjetaUrl = `${siteUrl}t/${chofer.id}/`;
       margin-top: 1rem;
       animation: pulse 2s infinite;
     }
+    
     @keyframes pulse {
       0%, 100% { opacity: 1; }
       50% { opacity: 0.5; }
     }
-
-    /* BACK */
+    
+    /* BACK OF CARD */
     .back-title {
       font-size: 1.25rem;
       font-weight: 800;
       color: #0f172a;
       margin-bottom: 1rem;
-      letter-spacing: -0.02em;
     }
+    
     .services-list {
       list-style: none;
       width: 100%;
@@ -172,7 +183,9 @@ const tarjetaUrl = `${siteUrl}t/${chofer.id}/`;
       flex-direction: column;
       gap: 0.5rem;
       margin-bottom: 1.5rem;
+      text-align: left;
     }
+    
     .services-list li {
       display: flex;
       align-items: center;
@@ -181,39 +194,33 @@ const tarjetaUrl = `${siteUrl}t/${chofer.id}/`;
       font-weight: 500;
       color: #334155;
     }
-    .service-icon {
-      width: 1.75rem;
-      height: 1.75rem;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.875rem;
-      flex-shrink: 0;
+    
+    .service-icon-text {
+      font-size: 1.25rem;
     }
-    .icon-blue { background: #dbeafe; }
-    .icon-purple { background: #f3e8ff; }
-    .icon-teal { background: #ccfbf1; }
-    .icon-orange { background: #ffedd5; }
-    .icon-slate { background: #f1f5f9; }
+    
     .back-bottom {
       display: flex;
       flex-direction: column;
       align-items: center;
       width: 100%;
       gap: 0.75rem;
+      margin-top: auto;
     }
+    
     .qr-container {
       background: #f8fafc;
       padding: 0.75rem;
       border-radius: 0.75rem;
       border: 1px solid #e2e8f0;
     }
+    
     .qr-container img {
       width: 5rem;
       height: 5rem;
       display: block;
     }
+    
     .qr-label {
       font-size: 0.625rem;
       font-weight: 700;
@@ -223,7 +230,8 @@ const tarjetaUrl = `${siteUrl}t/${chofer.id}/`;
       text-align: center;
       margin-top: 0.5rem;
     }
-    .btn-save {
+    
+    .btn-action-full {
       width: 100%;
       background: #0f172a;
       color: #ffffff;
@@ -239,62 +247,53 @@ const tarjetaUrl = `${siteUrl}t/${chofer.id}/`;
       font-size: 0.875rem;
       transition: background 0.2s;
     }
-    .btn-save:hover { background: #1e293b; }
-
-    /* ACTIONS */
-    .actions-row {
-      display: flex;
-      gap: 0.75rem;
-      max-width: 22rem;
-      margin: 1.5rem auto 0;
+    
+    .btn-action-full:hover {
+      background: #1e293b;
     }
-    .btn-action {
-      flex: 1;
-      padding: 0.875rem;
-      border-radius: 0.75rem;
-      font-weight: 600;
-      font-size: 0.875rem;
-      border: none;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-      transition: all 0.2s;
-      font-family: 'Inter', sans-serif;
-    }
+    
     .btn-location {
       background: #16a34a;
-      color: #ffffff;
     }
-    .btn-location:hover { background: #15803d; }
-    .btn-location:disabled { opacity: 0.6; cursor: not-allowed; }
-
+    
+    .btn-location:hover {
+      background: #15803d;
+    }
+    
+    .btn-print {
+      background: #64748b;
+    }
+    
+    .btn-print:hover {
+      background: #475569;
+    }
+    
     /* SERVICES GRID */
     .services-section {
-      padding: 3rem 1rem;
-      max-width: 64rem;
-      margin: 0 auto;
+      padding: 2rem 0;
     }
+    
     .section-title {
       text-align: center;
-      font-size: 1.75rem;
+      font-size: 1.5rem;
       font-weight: 800;
       color: #0f172a;
       margin-bottom: 0.5rem;
-      letter-spacing: -0.02em;
     }
+    
     .section-subtitle {
       text-align: center;
       color: #64748b;
       margin-bottom: 2rem;
       font-size: 0.9375rem;
     }
+    
     .services-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
       gap: 1rem;
     }
+    
     .service-card {
       background: #ffffff;
       border: 1px solid #e2e8f0;
@@ -304,23 +303,23 @@ const tarjetaUrl = `${siteUrl}t/${chofer.id}/`;
       flex-direction: column;
       transition: box-shadow 0.2s;
     }
-    .service-card:hover { box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06); }
-    .service-card-icon {
-      width: 3rem;
-      height: 3rem;
-      border-radius: 0.75rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.25rem;
-      margin-bottom: 1rem;
+    
+    .service-card:hover {
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
     }
+    
+    .service-card-icon {
+      font-size: 2rem;
+      margin-bottom: 0.75rem;
+    }
+    
     .service-card h3 {
       font-size: 1.125rem;
       font-weight: 700;
       color: #0f172a;
       margin-bottom: 0.5rem;
     }
+    
     .service-card p {
       color: #64748b;
       font-size: 0.875rem;
@@ -328,6 +327,7 @@ const tarjetaUrl = `${siteUrl}t/${chofer.id}/`;
       flex-grow: 1;
       margin-bottom: 1rem;
     }
+    
     .btn-service {
       width: 100%;
       background: #2563eb;
@@ -340,18 +340,44 @@ const tarjetaUrl = `${siteUrl}t/${chofer.id}/`;
       font-size: 0.875rem;
       transition: background 0.2s;
     }
-    .btn-service:hover { background: #1d4ed8; }
-
+    
+    .btn-service:hover {
+      background: #1d4ed8;
+    }
+    
+    /* COVERAGE */
+    .coverage-section {
+      padding: 2rem 0;
+      text-align: center;
+    }
+    
+    .coverage-tags {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.75rem;
+      margin-top: 1rem;
+    }
+    
+    .tag {
+      background: #e0f2fe;
+      color: #0369a1;
+      padding: 0.5rem 1rem;
+      border-radius: 9999px;
+      font-size: 0.875rem;
+      font-weight: 600;
+    }
+    
     /* FOOTER */
-    footer {
-      background: #ffffff;
-      border-top: 1px solid #e2e8f0;
-      padding: 2rem 1rem;
+    .main-footer {
       text-align: center;
       color: #64748b;
       font-size: 0.875rem;
+      padding: 2rem 0;
+      border-top: 1px solid #e2e8f0;
+      margin-top: 2rem;
     }
-
+    
     /* STICKY BAR */
     .sticky-bar {
       position: fixed;
@@ -367,6 +393,7 @@ const tarjetaUrl = `${siteUrl}t/${chofer.id}/`;
       z-index: 50;
       box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08);
     }
+    
     .sticky-btn {
       flex: 1;
       padding: 0.875rem;
@@ -381,10 +408,20 @@ const tarjetaUrl = `${siteUrl}t/${chofer.id}/`;
       gap: 0.5rem;
       color: #ffffff;
       transition: transform 0.1s;
+      text-decoration: none;
     }
-    .sticky-btn:active { transform: scale(0.97); }
-    .sticky-call { background: #2563eb; }
-    .sticky-wa { background: #16a34a; }
+    
+    .sticky-btn:active {
+      transform: scale(0.97);
+    }
+    
+    .sticky-call {
+      background: #2563eb;
+    }
+    
+    .sticky-wa {
+      background: #16a34a;
+    }
   </style>
 </head>
 <body>
@@ -412,7 +449,6 @@ const tarjetaUrl = `${siteUrl}t/${chofer.id}/`;
       mensajes: chofer.mensajes
     };
 
-    // QR Code
     document.addEventListener('DOMContentLoaded', function() {
       const qrUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&margin=10&color=0f172a&bgcolor=ffffff&data=' + encodeURIComponent(CONFIG.currentUrl);
       const qrImg = document.getElementById('qrCodeImage');
@@ -431,8 +467,8 @@ const tarjetaUrl = `${siteUrl}t/${chofer.id}/`;
     }
 
     function enviarUbicacion() {
-      const btn = document.getElementById('btnUbicacion');
-      const btnText = document.getElementById('btnUbicacionText');
+      const btn = event.target;
+      const originalText = btn.textContent;
       
       if (!navigator.geolocation) {
         alert('Tu navegador no soporta geolocalización.');
@@ -441,7 +477,7 @@ const tarjetaUrl = `${siteUrl}t/${chofer.id}/`;
       }
 
       btn.disabled = true;
-      btnText.textContent = 'Obteniendo ubicación...';
+      btn.textContent = 'Obteniendo ubicación...';
 
       navigator.geolocation.getCurrentPosition(
         function(position) {
@@ -453,13 +489,13 @@ const tarjetaUrl = `${siteUrl}t/${chofer.id}/`;
           window.open(url, '_blank');
           
           btn.disabled = false;
-          btnText.textContent = 'Enviar Mi Ubicación';
+          btn.textContent = originalText;
         },
         function(error) {
           alert('No se pudo obtener la ubicación. Por favor, escríbela manualmente.');
           enviarWhatsApp('general');
           btn.disabled = false;
-          btnText.textContent = 'Enviar Mi Ubicación';
+          btn.textContent = originalText;
         },
         { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
       );

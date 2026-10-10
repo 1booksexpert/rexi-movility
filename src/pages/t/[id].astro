@@ -10,41 +10,36 @@ export async function getStaticPaths() {
 }
 
 const { chofer } = Astro.props;
+const siteUrl = Astro.site?.toString() || 'https://rexi-movilidad.pages.dev';
+const tarjetaUrl = `${siteUrl}t/${chofer.id}/`;
 ---
 
-<TarjetaLayout chofer={chofer}>
-  <main class="hero">
-    <div class="hero-label">REXI MOVILIDAD</div>
+<TarjetaLayout chofer={chofer} titulo={`${chofer.nombre} | REXI Movilidad`}>
+  <main class="main-container">
     
+    <!-- FRENTE DE LA TARJETA -->
     <div class="perspective-1000 flip-card" onclick="toggleFlipCard()">
-      <div id="flipCardInner" class="flip-card-inner transform-style-3d" style="position: relative; width: 100%; height: 100%;">
-        
-        <!-- FRENTE DE LA TARJETA -->
+      <div id="flipCardInner" class="flip-card-inner transform-style-3d">
         <div class="card-face card-front backface-hidden">
           <div class="logo-container">
             <img src={`/logos/${chofer.logo}`} alt="Logo REXI" />
           </div>
           <h1 class="card-name">{chofer.nombre}</h1>
           <p class="card-title">{chofer.titulo}</p>
-          
           <div class="card-phone">
             <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
             <span class="card-phone-number">{chofer.telefonoFormateado}</span>
           </div>
-
-          <div class="flip-hint">
-            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
-            Toca para ver servicios
-          </div>
+          <div class="flip-hint">Toca la tarjeta para ver el reverso</div>
         </div>
 
         <!-- REVERSO DE LA TARJETA -->
         <div class="card-face card-back backface-hidden rotate-y-180">
-          <h2 class="back-title">Mis Servicios</h2>
+          <h2 class="back-title">Servicios Premium</h2>
           <ul class="services-list">
             {chofer.servicios.map(servicio => (
               <li>
-                <span class={`service-icon icon-${servicio.color}`}>{servicio.icono || '🚖'}</span>
+                <span class="service-icon-text">{servicio.icono || '🚖'}</span>
                 {servicio.nombre}
               </li>
             ))}
@@ -53,24 +48,81 @@ const { chofer } = Astro.props;
           <div class="back-bottom">
             <div class="qr-container">
               <img id="qrCodeImage" src="" alt="QR Code" />
-              <div class="qr-label">Escanea para guardar contacto</div>
+              <div class="qr-label">Escanea para abrir esta tarjeta</div>
             </div>
-            <button class="btn-save" onclick="downloadVCard()">
-              <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path></svg>
-              Guardar en Contactos
-            </button>
+            <button class="btn-action-full" onclick="downloadVCard()">Guardar en Contactos</button>
+            <button class="btn-action-full btn-location" onclick="enviarUbicacion()">Enviar Mi Ubicación por WhatsApp</button>
+            <button class="btn-action-full btn-print" onclick="window.print()">Imprimir Tarjeta Física</button>
           </div>
         </div>
-
       </div>
     </div>
 
-    <!-- BOTONES DE ACCIÓN RÁPIDA -->
-    <div class="actions-row">
-      <button id="btnUbicacion" class="btn-action btn-location" onclick="enviarUbicacion()">
-        <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-        <span id="btnUbicacionText">Enviar Mi Ubicación</span>
-      </button>
-    </div>
+    <!-- SOLUCIONES DE MOVILIDAD (GRID) -->
+    <section class="services-section">
+      <h2 class="section-title">Soluciones de Movilidad</h2>
+      <p class="section-subtitle">Selecciona una opción para enviarme un mensaje predeterminado por WhatsApp.</p>
+      
+      <div class="services-grid">
+        <div class="service-card">
+          <div class="service-card-icon">🚕</div>
+          <h3>Local y Puentes</h3>
+          <p>Traslados rápidos a Hidalgo, Pharr o Anzaldúas.</p>
+          <button class="btn-service" onclick="enviarWhatsApp('local')">Pedir Taxi</button>
+        </div>
+
+        <div class="service-card">
+          <div class="service-card-icon">️</div>
+          <h3>Aeropuerto y Foráneos</h3>
+          <p>Recepción en REX o traslados a Monterrey (MMTY).</p>
+          <button class="btn-service" onclick="enviarWhatsApp('aeropuerto')">Cotizar Viaje</button>
+        </div>
+
+        <div class="service-card">
+          <div class="service-card-icon">🏥</div>
+          <h3>Turismo Médico</h3>
+          <p>Traslados discretos a clínicas, hospitales o recogida en hotel.</p>
+          <button class="btn-service" onclick="enviarWhatsApp('medico')">Reservar Traslado</button>
+        </div>
+
+        <div class="service-card">
+          <div class="service-card-icon">📦</div>
+          <h3>Paquetería Express</h3>
+          <p>Envío seguro de documentos, refacciones o compras.</p>
+          <button class="btn-service" onclick="enviarWhatsApp('paqueteria')">Enviar Paquete</button>
+        </div>
+
+        <div class="service-card">
+          <div class="service-card-icon">🏢</div>
+          <h3>Corporativo</h3>
+          <p>Convenios para traslado de personal y facturación mensual.</p>
+          <button class="btn-service" onclick="enviarWhatsApp('corporativo')">Consultar Convenio</button>
+        </div>
+
+        <div class="service-card">
+          <div class="service-card-icon">🐾</div>
+          <h3>Pet-Friendly</h3>
+          <p>Vehículo adaptado para mascotas. Traslados al veterinario.</p>
+          <button class="btn-service" onclick="enviarWhatsApp('mascotas')">Cotizar Servicio</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ZONAS DE COBERTURA -->
+    <section class="coverage-section">
+      <h2 class="section-title">Zonas de Cobertura</h2>
+      <div class="coverage-tags">
+        <span class="tag">Centro y Zona Dorada</span>
+        <span class="tag">Parque Industrial</span>
+        <span class="tag">Jarachina y Las Fuentes</span>
+        <span class="tag">Puentes Internacionales</span>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="main-footer">
+      <p>© 2026 REXI | {chofer.nombre}. Reynosa, Tamaulipas, México.</p>
+    </footer>
+
   </main>
 </TarjetaLayout>
