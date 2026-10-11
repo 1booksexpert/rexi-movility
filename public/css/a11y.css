@@ -124,3 +124,7 @@ html[data-texto="grande"] .choferes > *, html[data-texto="muy-grande"] .choferes
 /* En los modos con frente y reverso apilados, las dos caras siempre se ven. */
 html[data-texto="grande"] .card-face, html[data-texto="muy-grande"] .card-face,
 html[data-contraste="alto"] .card-face, html[data-contraste="negro"] .card-face { opacity: 1 !important; visibility: visible !important; }
+
+/* Con las caras apiladas, ninguna se oculta */
+html[data-texto="grande"] .flip-card-inner .card-face, html[data-texto="muy-grande"] .flip-card-inner .card-face,
+html[data-contraste="alto"] .flip-card-inner .card-face, html[data-contraste="negro"] .flip-card-inner .card-face { visibility: visible !important; opacity: 1 !important; transform: none !important; }
