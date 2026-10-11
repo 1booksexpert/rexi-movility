@@ -48,8 +48,8 @@ npx wrangler deploy                       # crea el Worker "rexi-api" (el KV "re
 ```
 
 **2. Sitio (Cloudflare Pages, igual que ahora)**
-Tu proyecto `rexi-movilidad` en Pages ya se despliega desde GitHub. Solo falta unirlo a la API:
-Pages > rexi-movilidad > Settings > Functions > **Service bindings** > agrega `API` → `rexi-api` (producción y vista previa).
+Tu proyecto `rexi-movility` en Pages ya se despliega desde GitHub. Solo falta unirlo a la API:
+Pages > rexi-movility > Settings > Functions > **Service bindings** > agrega `API` → `rexi-api` (producción y vista previa).
 Si prefieres no usar el binding, define la variable de entorno `API_URL = https://rexi-api.<tu-subdominio>.workers.dev`.
 
 **3. Registrar a cada chofer** (ver abajo) y hacer `git push`.

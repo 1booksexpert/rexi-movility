@@ -1,7 +1,7 @@
 import { defineConfig } from 'astro/config';
 
 export default defineConfig({
-  site: 'https://rexi-movilidad.pages.dev',
+  site: 'https://rexi-movility.pages.dev',
   output: 'static',
   build: {
     assets: '_assets'
