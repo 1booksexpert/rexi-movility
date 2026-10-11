@@ -48,13 +48,8 @@ npx wrangler deploy                       # crea el Worker "rexi-api" (el KV "re
 ```
 
 **2. Sitio (Cloudflare Pages, igual que ahora)**
-<<<<<<< HEAD
-Tu proyecto `rexi-movilidad` en Pages ya se despliega desde GitHub. Solo falta unirlo a la API:
-Pages > rexi-movilidad > Settings > Functions > **Service bindings** > agrega `API` → `rexi-api` (producción y vista previa).
-=======
 Tu proyecto `rexi-movility` en Pages ya se despliega desde GitHub. Solo falta unirlo a la API:
 Pages > rexi-movility > Settings > Functions > **Service bindings** > agrega `API` → `rexi-api` (producción y vista previa).
->>>>>>> 183a5c0cc8c6a4256b186c5139295ecc004e4fee
 Si prefieres no usar el binding, define la variable de entorno `API_URL = https://rexi-api.<tu-subdominio>.workers.dev`.
 
 **3. Registrar a cada chofer** (ver abajo) y hacer `git push`.
@@ -78,8 +73,6 @@ npm run chofer -- baja  nombre-apellido --aplicar
 - Placa y unidad: el chofer las captura en su panel (se recuerdan en su teléfono). También puedes fijarlas en `choferes.json`.
 - Seguridad: 5 PIN incorrectos bloquean ese chofer 15 minutos.
 
-<<<<<<< HEAD
-=======
 ## Vendedores, planes y comisiones
 
 ```bash
@@ -129,7 +122,6 @@ En el panel del chofer (`/chofer/<id>/`), el botón **Crear mi tarjeta física**
 Botón **Accesibilidad** (arriba a la derecha en todas las páginas): texto normal, grande y muy grande; colores normales o alto contraste. Se recuerda en el teléfono y respeta `prefers-contrast: more`. Los textos cumplen contraste AA (4.5:1). Con texto grande la tarjeta deja de girar y muestra frente y reverso uno debajo del otro.
 Pendiente: modo viajero para adultos mayores y personas ciegas (aviso por voz, botón único de pedir taxi). Se cuelga del mismo mecanismo (`data-modo` en `<html>`).
 
->>>>>>> 183a5c0cc8c6a4256b186c5139295ecc004e4fee
 ## Pendientes tuyos
 
 - `src/data/negocio.json` → `whatsappDueno` (formato `521899XXXXXXX`). Con él aparece "Pedir por WhatsApp" en el inicio y "Al dueño" en el panel del chofer.

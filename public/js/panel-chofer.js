@@ -37,11 +37,7 @@
   });
 
   function pantallaActiva() {
-<<<<<<< HEAD
-    $("#inicio").hidden = true; $("#activo").hidden = false;
-=======
     $("#inicio").hidden = true; $("#herramientas").hidden = true; $("#activo").hidden = false;
->>>>>>> 183a5c0cc8c6a4256b186c5139295ecc004e4fee
     if (!map) map = U.mapa("mapa", D.centro);
     setTimeout(function () { map.invalidateSize(); }, 200);
     enlaces();
@@ -98,11 +94,7 @@
     if (wake) { try { wake.release(); } catch (e) {} }
     LS(KEY + "_viaje", null); viaje = null; ultima = null; taxi = null; pax = null; encuadre = false; ajustado = false;
     if (map) { map.remove(); map = null; }
-<<<<<<< HEAD
-    $("#activo").hidden = true; $("#inicio").hidden = false;
-=======
     $("#activo").hidden = true; $("#inicio").hidden = false; $("#herramientas").hidden = false;
->>>>>>> 183a5c0cc8c6a4256b186c5139295ecc004e4fee
     $("#ir-pax").hidden = true;
     $("#msg-inicio").textContent = txt || "";
   }

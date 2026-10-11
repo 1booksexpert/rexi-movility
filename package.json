@@ -7,10 +7,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "chofer": "node scripts/chofer.mjs",
-<<<<<<< HEAD
-=======
     "reporte": "node scripts/reporte.mjs",
->>>>>>> 183a5c0cc8c6a4256b186c5139295ecc004e4fee
     "api:install": "cd api && npm install",
     "api:dev": "cd api && npm run dev",
     "api:deploy": "cd api && npm run deploy"

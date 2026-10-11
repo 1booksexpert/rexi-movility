@@ -1,14 +1,10 @@
 #!/usr/bin/env node
 // Alta, cambio de PIN y baja de choferes.
 //
-<<<<<<< HEAD
-//   npm run chofer -- nuevo "Nombre Apellido" 8991234567 [--titulo "Movilidad Ejecutiva"] [--aplicar]
-=======
 //   npm run chofer -- nuevo "Nombre Apellido" 8991234567 [--titulo "Movilidad Ejecutiva"] [--plan pro] [--pago anual] [--ref V01] [--flota id] [--id otro-id] [--aplicar]
 //   npm run chofer -- flota-nueva "Nombre de la flota" 5218991234567 [--id taxis-norte]
 //   npm run chofer -- validar
 //   npm run chofer -- ref   <id> <codigo-vendedor>      (asigna o cambia el vendedor que lo colocó)
->>>>>>> 183a5c0cc8c6a4256b186c5139295ecc004e4fee
 //   npm run chofer -- pin   <id> [--aplicar]
 //   npm run chofer -- baja  <id> [--aplicar]
 //
@@ -28,11 +24,8 @@ const flags = new Set(args.filter((a) => a.startsWith('--') && !a.includes('='))
 const opt = (n) => { const i = args.indexOf(`--${n}`); return i >= 0 ? args[i + 1] : undefined; };
 const pos = args.filter((a, i) => !a.startsWith('--') && !(i > 0 && args[i - 1].startsWith('--') && !flags.has(args[i - 1])));
 const [cmd, a1, a2] = pos;
-<<<<<<< HEAD
-=======
 const ARCHIVO_FLOTAS = join(RAIZ, 'src', 'data', 'flotas.json');
 const leerFlotas = () => JSON.parse(readFileSync(ARCHIVO_FLOTAS, 'utf8'));
->>>>>>> 183a5c0cc8c6a4256b186c5139295ecc004e4fee
 
 const slug = (s) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 const hashPin = (id, pin) => createHash('sha256').update(`${id}:${pin}`).digest('hex');
@@ -58,11 +51,6 @@ function kv(accion, id, valor) {
 if (cmd === 'nuevo') {
   const nombre = a1; const tel = (a2 || '').replace(/\D/g, '').slice(-10);
   if (!nombre || tel.length !== 10) { console.error('Uso: npm run chofer -- nuevo "Nombre Apellido" 8991234567'); process.exit(1); }
-<<<<<<< HEAD
-  const id = slug(nombre);
-  const lista = leer();
-  if (lista.some((c) => c.id === id)) { console.error(`Ya existe un chofer con id "${id}".`); process.exit(1); }
-=======
   const id = opt('id') ? slug(opt('id')) : slug(nombre);
   const lista = leer();
   const flotaId = opt('flota') || '';
@@ -70,37 +58,28 @@ if (cmd === 'nuevo') {
   const repetido = lista.find((c) => String(c.telefono).replace(/\D/g, '').slice(-10) === tel);
   if (repetido && !flags.has('--tel-repetido')) { console.error(`El teléfono ${tel} ya es de "${repetido.id}". Si es correcto, agrega --tel-repetido.`); process.exit(1); }
   if (lista.some((c) => c.id === id)) { console.error(`Ya existe un chofer con id "${id}". Si es otra persona con el mismo nombre, usa --id (ej. --id ${id}-2).`); process.exit(1); }
->>>>>>> 183a5c0cc8c6a4256b186c5139295ecc004e4fee
   lista.push({
     id, nombre, telefono: tel, telefonoFormateado: fmt(tel),
     titulo: opt('titulo') || 'Movilidad Ejecutiva', zona: 'Reynosa, Tamaulipas', placa: '', unidad: '',
     servicios: JSON.parse(JSON.stringify(lista[0]?.servicios || [])),
     logo: `${id}.png`,
-<<<<<<< HEAD
-=======
     flota: flotaId,
     referido: opt('ref') || '',
     plan: opt('plan') || 'pro',
     pago: opt('pago') === 'anual' ? 'anual' : 'mensual',
     fechaAlta: new Date().toISOString().slice(0, 10),
->>>>>>> 183a5c0cc8c6a4256b186c5139295ecc004e4fee
     mensajes: { general: 'Hola, me interesa tu servicio de movilidad ejecutiva.' },
   });
   guardar(lista);
   const pin = nuevoPin();
   console.log(`\nChofer agregado: ${nombre} (${id})`);
-<<<<<<< HEAD
-=======
   console.log(`  Plan: ${opt('plan') || 'pro'}   Vendedor: ${opt('ref') || '(ninguno)'}`);
->>>>>>> 183a5c0cc8c6a4256b186c5139295ecc004e4fee
   console.log(`  Tarjeta:  /t/${id}/`);
   console.log(`  Panel:    /chofer/${id}/`);
   console.log(`  PIN:      ${pin}   <- entrégaselo al chofer; no se vuelve a mostrar`);
   console.log(`  Logo (opcional): public/logos/${id}.png  (si no existe se usa rexi.png)`);
   kv('put', id, hashPin(id, pin));
   console.log('Después: git add -A && git commit -m "Alta de chofer ' + nombre + '" && git push');
-<<<<<<< HEAD
-=======
 } else if (cmd === 'flota-nueva') {
   const nombre = a1; const wa = (a2 || '').replace(/\D/g, '');
   if (!nombre) { console.error('Uso: npm run chofer -- flota-nueva "Nombre de la flota" 5218991234567'); process.exit(1); }
@@ -120,7 +99,6 @@ if (cmd === 'nuevo') {
   if (!c) { console.error(`No existe el chofer "${a1}" en choferes.json.`); process.exit(1); }
   c.referido = a2; guardar(lista);
   console.log(`\n${a1} ahora está asignado al vendedor ${a2}.`);
->>>>>>> 183a5c0cc8c6a4256b186c5139295ecc004e4fee
 } else if (cmd === 'pin') {
   if (!a1) { console.error('Uso: npm run chofer -- pin <id>'); process.exit(1); }
   if (!leer().some((c) => c.id === a1)) { console.error(`No existe el chofer "${a1}" en choferes.json.`); process.exit(1); }
@@ -135,10 +113,6 @@ if (cmd === 'nuevo') {
   console.log(`\nChofer ${a1} quitado de choferes.json (su tarjeta desaparece en el próximo despliegue).`);
   kv('delete', a1);
 } else {
-<<<<<<< HEAD
-  console.log('Comandos: nuevo | pin | baja. Mira el encabezado de scripts/chofer.mjs.');
-=======
   console.log('Comandos: nuevo | pin | baja | ref | flota-nueva | validar. Mira el encabezado de scripts/chofer.mjs.');
->>>>>>> 183a5c0cc8c6a4256b186c5139295ecc004e4fee
   process.exit(cmd ? 1 : 0);
 }

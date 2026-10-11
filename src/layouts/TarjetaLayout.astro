@@ -1,10 +1,7 @@
 ---
 import Credito from '../components/Credito.astro';
-<<<<<<< HEAD
-=======
 import Accesibilidad from '../components/Accesibilidad.astro';
 import AccesibilidadHead from '../components/AccesibilidadHead.astro';
->>>>>>> 183a5c0cc8c6a4256b186c5139295ecc004e4fee
 import { negocio, sitioBase } from '../lib/datos';
 import type { Chofer } from '../lib/datos';
 
@@ -16,11 +13,7 @@ export interface Props {
 const { chofer, titulo } = Astro.props;
 const tarjetaUrl = chofer.urlTarjeta;
 const marca = negocio.marca;
-<<<<<<< HEAD
-const wsDueno = negocio.whatsappDueno;
-=======
 const wsDueno = chofer.whatsappDueno;
->>>>>>> 183a5c0cc8c6a4256b186c5139295ecc004e4fee
 ---
 
 <!DOCTYPE html>
@@ -444,11 +437,7 @@ const wsDueno = chofer.whatsappDueno;
       .flip-card-inner { transition: none; }
       .flip-hint { animation: none; }
     }
-<<<<<<< HEAD
-    .estado-ubic { max-width: 22rem; margin: -1rem auto 1.5rem; min-height: 1.25rem; font-size: .8125rem; color: #475569; text-align: center; }
-=======
     .estado-ubic { max-width: 22rem; margin: -1rem auto 1.5rem; min-height: 1.25rem; font-size: .9375rem; color: #475569; text-align: center; }
->>>>>>> 183a5c0cc8c6a4256b186c5139295ecc004e4fee
     .seguimiento {
       max-width: 22rem; margin: 0 auto 2rem; padding: 1rem 1.25rem; text-align: left;
       background: #0f172a; color: #fff; border-radius: 1rem; font-size: .875rem;
@@ -456,13 +445,6 @@ const wsDueno = chofer.whatsappDueno;
     .seguimiento b { display: block; font-size: .9375rem; margin-bottom: .15rem; }
     .seguimiento span { color: #cbd5e1; }
     .flip-card { height: 35rem; }
-<<<<<<< HEAD
-    .qr-container { display: flex; flex-direction: column; align-items: center; }
-    .qr-svg { width: 4.75rem; height: 4.75rem; }
-    .qr-svg svg { width: 100%; height: 100%; display: block; }
-    .acceso-chofer { text-align: center; margin: 1rem 0 0; font-size: .8125rem; }
-    .acceso-chofer a { color: #94a3b8; }
-=======
     /* Giro 3D (el diseño original) en Firefox, Safari y Chrome del celular. En Chrome/Edge de computadora
        (Windows) pintaba el reverso blanco encima de todo después de un segundo, así que ahí se usa un
        cambio 2D con desvanecido. La clase .flip2d la pone el script del <head>. */
@@ -480,7 +462,6 @@ const wsDueno = chofer.whatsappDueno;
     .acceso-chofer { text-align: center; margin: 1rem 0 0; font-size: .9375rem; }
     .acceso-chofer a { color: #475569; }
 
->>>>>>> 183a5c0cc8c6a4256b186c5139295ecc004e4fee
     .main-footer .marca-pie { font-weight: 700; color: #0f172a; }
   </style>
 </head>
