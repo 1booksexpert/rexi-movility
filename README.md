@@ -87,6 +87,26 @@ npm run reporte -- 2026-11 --no-pagaron nombre-apellido
 - Pago mensual: 30% del alta una sola vez + 15% de la mensualidad durante 12 meses, solo si el chofer pagó.
 - Pago anual (`--pago anual`): 25% de lo cobrado una sola vez (15% en Flota). Se cobra todo junto y a los 12 meses se renueva.
 
+## Registrar choferes y flotas (archivos .json)
+
+Todo se registra en `src/data/choferes.json` y `src/data/flotas.json`, con el comando o editando a mano.
+
+```bash
+npm run chofer -- flota-nueva "Taxis del Norte" 5218991234567        # flota con el WhatsApp de su dueño
+npm run chofer -- nuevo "Nombre Apellido" 8991234567 --flota taxis-del-norte --plan pro --ref V01 --aplicar
+npm run chofer -- nuevo "Juan Pérez" 8990000000 --id juan-perez-2     # otro chofer con el mismo nombre
+npm run chofer -- validar                                             # revisa los .json (corre el build)
+```
+
+- Cada chofer puede pertenecer a una flota (`"flota": "taxis-del-norte"`). Su botón "Al dueño" usa el WhatsApp de esa flota; si no tiene flota, el de `negocio.json`.
+- Al construir el sitio se validan los datos: id repetido o con acentos, teléfono que no tiene 10 dígitos, flota inexistente. El error sale en español y dice qué corregir. Un teléfono repetido solo da aviso.
+- Si el build falla en Cloudflare, el sitio anterior sigue publicado.
+
+## Dos interfaces
+
+- **Pasajero** (claro): inicio `/`, tarjeta `/t/<id>/`, seguimiento `/viaje/`.
+- **Chofer** (oscuro, con la etiqueta "Zona del chofer"): `/chofer/`, panel `/chofer/<id>/`, tarjeta física `/chofer/<id>/tarjeta-fisica/`. Nada de esto aparece en la tarjeta del pasajero.
+
 ## Tarjeta física (para imprimir)
 
 En el panel del chofer (`/chofer/<id>/`), el botón **Crear mi tarjeta física** abre `/chofer/<id>/tarjeta-fisica/`. Es solo para el chofer: la tarjeta pública del pasajero no lo muestra. Ahí se genera, en el propio teléfono y a 300 DPI:
