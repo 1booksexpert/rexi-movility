@@ -1,0 +1,25 @@
+---
+// Botón flotante "Accesibilidad" (texto grande y alto contraste). Va al inicio del <body>.
+---
+<div class="a11y-bar"><button id="a11yBtn" class="a11y-btn" type="button" aria-expanded="false" aria-controls="a11yPanel">
+  <span class="aa" aria-hidden="true">Aa</span> Accesibilidad
+</button></div>
+<div id="a11yPanel" class="a11y-panel" role="dialog" aria-labelledby="a11yTitulo" hidden>
+  <h2 id="a11yTitulo">Ver mejor</h2>
+  <h3>Tamaño del texto</h3>
+  <div class="a11y-grupo">
+    <button type="button" class="a11y-op t1" data-a11y-t="" aria-pressed="true">Normal</button>
+    <button type="button" class="a11y-op t2" data-a11y-t="grande" aria-pressed="false">Grande</button>
+    <button type="button" class="a11y-op t3" data-a11y-t="muy-grande" aria-pressed="false">Muy grande</button>
+  </div>
+  <h3>Colores</h3>
+  <div class="a11y-grupo">
+    <button type="button" class="a11y-op" data-a11y-c="" aria-pressed="true">Normal</button>
+    <button type="button" class="a11y-op" data-a11y-c="alto" aria-pressed="false">Alto contraste</button>
+    <button type="button" class="a11y-op" data-a11y-c="negro" aria-pressed="false">Fondo negro</button>
+  </div>
+  <button type="button" id="a11yReset" class="a11y-reset">Restablecer</button>
+  <button type="button" id="a11yCerrar" class="a11y-cerrar">Listo</button>
+</div>
+<div id="a11yLive" class="a11y-live" role="status" aria-live="polite"></div>
+<script is:inline src="/js/a11y.js" defer></script>

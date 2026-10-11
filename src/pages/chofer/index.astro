@@ -1,0 +1,26 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { choferes, negocio } from '../../lib/datos';
+---
+<Layout titulo="Acceso para choferes" noindex tema="#0f172a">
+  <div class="acceso-app">
+    <div class="wrap">
+      <a class="volver" href="/">← Volver al inicio</a>
+      <h1>Acceso para choferes</h1>
+      <p>Elige tu nombre para entrar a tu panel: iniciar viaje, compartir tu ubicación e imprimir tu tarjeta. Para iniciar un viaje necesitas tu PIN.</p>
+      <ul>
+        {choferes.map((c) => (
+          <li><a class="btn btn-amarillo" href={`/chofer/${c.id}/`}>{c.nombre}</a></li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</Layout>
+<style is:global>
+  .acceso-app { min-height: 100vh; background: #0f172a; color: #fff; }
+  .acceso-app .wrap { width: min(34rem, 100% - 1.75rem); margin: 0 auto; padding: 1.5rem 0 2.5rem; display: grid; gap: 1rem; }
+  .acceso-app h1 { font-size: 1.8rem; font-weight: 800; }
+  .acceso-app p { color: #cbd5e1; }
+  .acceso-app ul { list-style: none; display: grid; gap: .75rem; }
+  .acceso-app .volver { color: #ffc72c; font-weight: 600; min-height: 44px; display: inline-block; padding: .6rem 0; }
+</style>

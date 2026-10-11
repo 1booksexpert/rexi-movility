@@ -48,6 +48,13 @@
     "logo": "ivan-rivera.png",
     "mensajes": {
       "general": "Hola, me interesa tu servicio de movilidad ejecutiva."
+<<<<<<< HEAD
     }
+=======
+    },
+    "referido": "",
+    "plan": "pro",
+    "fechaAlta": "2026-10-10"
+>>>>>>> 183a5c0cc8c6a4256b186c5139295ecc004e4fee
   }
 ]

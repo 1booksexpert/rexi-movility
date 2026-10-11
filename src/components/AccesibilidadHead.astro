@@ -1,0 +1,14 @@
+---
+// Va dentro de <head>: aplica la preferencia guardada antes de pintar (sin parpadeo).
+---
+<link rel="stylesheet" href="/css/a11y.css" />
+<script is:inline>
+  (function () {
+    try {
+      var r = document.documentElement, s = JSON.parse(localStorage.getItem('rexi-a11y') || 'null');
+      if (!s && window.matchMedia && matchMedia('(prefers-contrast: more)').matches) s = { t: '', c: 'alto' };
+      if (s && s.t) r.setAttribute('data-texto', s.t);
+      if (s && s.c) r.setAttribute('data-contraste', s.c);
+    } catch (e) {}
+  })();
+</script>

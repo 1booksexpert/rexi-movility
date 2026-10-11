@@ -1,0 +1,130 @@
+/* Accesibilidad: tamaño de texto, alto contraste y el botón "Accesibilidad".
+   Se controla con atributos en <html>: data-texto="grande|muy-grande" y data-contraste="alto".
+   Futuro: data-modo="viajero" (adultos mayores / ciegos) cuelga de este mismo mecanismo. */
+
+/* ---- Botón y panel ---- */
+.a11y-bar { display: flex; justify-content: flex-end; padding: .5rem .75rem; background: #0f172a; position: relative; z-index: 2000; }
+.a11y-btn {
+  position: static;
+  display: inline-flex; align-items: center; gap: .5rem;
+  min-height: 48px; padding: .5rem 1rem; border-radius: 999px;
+  background: #0f172a; color: #fff; border: 2px solid #ffc72c;
+  font: 700 1rem/1 'Inter', system-ui, sans-serif; cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0,0,0,.35);
+}
+.a11y-btn .aa { font-size: 1.15rem; letter-spacing: -.03em; color: #ffc72c; }
+.a11y-panel {
+  position: fixed; top: 4.25rem; right: .75rem; z-index: 2001;
+  width: min(22rem, calc(100vw - 1.5rem)); max-height: calc(100vh - 6rem); overflow: auto;
+  background: #fff; color: #0f172a; border: 3px solid #0f172a; border-radius: 1.25rem;
+  padding: 1.1rem; box-shadow: 0 16px 40px rgba(0,0,0,.4);
+  font: 500 1rem/1.4 'Inter', system-ui, sans-serif;
+}
+.a11y-panel[hidden] { display: none; }
+.a11y-panel h2 { font-size: 1.2rem; font-weight: 800; margin-bottom: .75rem; }
+.a11y-panel h3 { font-size: 1rem; font-weight: 700; margin: .9rem 0 .4rem; }
+.a11y-grupo { display: grid; grid-template-columns: repeat(3, 1fr); gap: .5rem; }
+.a11y-grupo.dos { grid-template-columns: repeat(2, 1fr); }
+.a11y-op { font-size: .95rem; }
+.a11y-op {
+  min-height: 52px; padding: .4rem; border-radius: .75rem; cursor: pointer;
+  background: #f1f5f9; color: #0f172a; border: 2px solid #94a3b8; font: 700 1rem/1.15 'Inter', system-ui, sans-serif;
+}
+.a11y-op[aria-pressed="true"] { background: #0f172a; color: #ffc72c; border-color: #0f172a; }
+.a11y-op.t1 { font-size: 1rem; } .a11y-op.t2 { font-size: 1.2rem; } .a11y-op.t3 { font-size: 1.15rem; }
+.a11y-reset { margin-top: 1rem; width: 100%; min-height: 48px; border-radius: .75rem; border: 2px solid #0f172a; background: #fff; color: #0f172a; font: 700 1rem 'Inter', system-ui, sans-serif; cursor: pointer; }
+.a11y-cerrar { margin-top: .6rem; width: 100%; min-height: 48px; border-radius: .75rem; border: 0; background: #ffc72c; color: #000; font: 800 1rem 'Inter', system-ui, sans-serif; cursor: pointer; }
+.a11y-live { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* ---- Tamaño de texto (todo está en rem, así que escala la raíz) ---- */
+html[data-texto="grande"] { font-size: 125%; }
+html[data-texto="muy-grande"] { font-size: 150%; }
+html[data-texto="grande"] body, html[data-texto="muy-grande"] body { line-height: 1.55; }
+/* Con texto grande la tarjeta no gira: frente y reverso se ven uno debajo del otro. */
+html[data-texto="grande"] .flip-card, html[data-texto="muy-grande"] .flip-card { height: auto !important; perspective: none; cursor: default; }
+html[data-texto="grande"] .flip-card-inner, html[data-texto="muy-grande"] .flip-card-inner { height: auto !important; transform: none !important; display: grid; gap: 1rem; transition: none; }
+html[data-texto="grande"] .card-face, html[data-texto="muy-grande"] .card-face { position: relative !important; height: auto !important; transform: none !important; backface-visibility: visible; -webkit-backface-visibility: visible; padding: 1.5rem 1.25rem; }
+html[data-texto="grande"] .flip-hint, html[data-texto="muy-grande"] .flip-hint { display: none; }
+html[data-texto="grande"] .actions-row, html[data-texto="muy-grande"] .actions-row { flex-wrap: wrap; }
+html[data-texto="muy-grande"] .sticky-bar { flex-wrap: wrap; }
+
+/* ---- Alto contraste (fondo blanco, texto negro, bordes gruesos) ---- */
+html[data-contraste="alto"] body { background: #fff !important; background-image: none !important; color: #000 !important; }
+:where(html[data-contraste="alto"] body *:not(svg):not(svg *):not(.leaflet-container *):not(.a11y-panel):not(.a11y-panel *):not(.a11y-bar *)) {
+  background-color: #fff !important; background-image: none !important; color: #000 !important;
+  border-color: #000 !important; text-shadow: none !important; box-shadow: none !important;
+}
+html[data-contraste="alto"] a { color: #0000b3 !important; text-decoration: underline; }
+html[data-contraste="alto"] .card-face, html[data-contraste="alto"] .service-card, html[data-contraste="alto"] .seguimiento,
+html[data-contraste="alto"] .credito, html[data-contraste="alto"] .chofer { border: 3px solid #000 !important; }
+html[data-contraste="alto"] .btn, html[data-contraste="alto"] button:not(.a11y-op):not(.a11y-reset):not(.a11y-cerrar):not(.a11y-btn),
+html[data-contraste="alto"] .sticky-btn, html[data-contraste="alto"] .btn-service, html[data-contraste="alto"] .btn-save,
+html[data-contraste="alto"] .btn-action, html[data-contraste="alto"] .btn-action-full, html[data-contraste="alto"] .credito-btn {
+  background-color: #000 !important; color: #fff !important; border: 3px solid #000 !important; font-weight: 800; text-decoration: none;
+}
+html[data-contraste="alto"] .btn-amarillo, html[data-contraste="alto"] .card-phone, html[data-contraste="alto"] .card-phone * {
+  background-color: #ffd400 !important; color: #000 !important; border-color: #000 !important;
+}
+html[data-contraste="alto"] .card-phone { border: 3px solid #000 !important; }
+html[data-contraste="alto"] .card-phone * { background: transparent !important; border: 0 !important; }
+html[data-contraste="alto"] .btn-rojo { background-color: #b00020 !important; color: #fff !important; }
+html[data-contraste="alto"] input, html[data-contraste="alto"] select, html[data-contraste="alto"] textarea { background-color: #fff !important; color: #000 !important; border: 3px solid #000 !important; }
+html[data-contraste="alto"] ::placeholder { color: #333 !important; opacity: 1; }
+html[data-contraste="alto"] .qr-svg { border: 0 !important; }
+html[data-contraste="alto"] :focus-visible { outline: 4px solid #0000b3 !important; outline-offset: 3px; }
+
+/* ---- Panel de accesibilidad: siempre legible, sin importar el modo ---- */
+html[data-contraste] .a11y-panel h2, html[data-contraste] .a11y-panel h3 { color: #0f172a !important; }
+html[data-contraste] .a11y-btn .aa { background: transparent !important; color: #ffc72c !important; }
+html[data-contraste] .a11y-bar { background: #0f172a !important; }
+
+/* ---- Sin giro 3D con texto grande o con alto contraste: frente y reverso a la vista ---- */
+html[data-contraste="alto"] .flip-card, html[data-contraste="negro"] .flip-card { height: auto !important; perspective: none; cursor: default; background: transparent !important; border: 0 !important; }
+html[data-contraste="alto"] .flip-card-inner, html[data-contraste="negro"] .flip-card-inner { height: auto !important; transform: none !important; display: grid; grid-template-columns: minmax(0, 1fr); gap: 1rem; transition: none; background: transparent !important; border: 0 !important; }
+html[data-contraste="alto"] .card-face, html[data-contraste="negro"] .card-face { position: relative !important; height: auto !important; transform: none !important; backface-visibility: visible; -webkit-backface-visibility: visible; padding: 1.5rem 1.25rem; width: 100% !important; min-width: 0; }
+html[data-contraste="alto"] .flip-hint, html[data-contraste="negro"] .flip-hint { display: none; }
+
+/* ---- Fondo negro: texto blanco y acentos amarillos ---- */
+html[data-contraste="negro"] body { background: #000 !important; color: #fff !important; }
+:where(html[data-contraste="negro"] body *:not(svg):not(svg *):not(img):not(.leaflet-container *):not(.a11y-btn):not(.a11y-panel):not(.a11y-panel *):not(.a11y-bar *)) {
+  background-color: #000 !important; background-image: none !important; color: #fff !important;
+  border-color: #fff !important; text-shadow: none !important; box-shadow: none !important;
+}
+html[data-contraste="negro"] a { color: #ffe44d !important; text-decoration: underline; }
+html[data-contraste="negro"] h1, html[data-contraste="negro"] h2, html[data-contraste="negro"] h3 { color: #ffe44d !important; }
+html[data-contraste="negro"] .card-face, html[data-contraste="negro"] .service-card, html[data-contraste="negro"] .seguimiento,
+html[data-contraste="negro"] .credito, html[data-contraste="negro"] .tarjeta-chofer { border: 2px solid #fff !important; }
+html[data-contraste="negro"] .btn, html[data-contraste="negro"] button:not(.a11y-op):not(.a11y-reset):not(.a11y-cerrar):not(.a11y-btn),
+html[data-contraste="negro"] .sticky-btn, html[data-contraste="negro"] .btn-service, html[data-contraste="negro"] .btn-save,
+html[data-contraste="negro"] .btn-action, html[data-contraste="negro"] .credito-btn, html[data-contraste="negro"] .ver {
+  background-color: #ffe44d !important; color: #000 !important; border: 3px solid #fff !important; font-weight: 800; text-decoration: none;
+}
+html[data-contraste="negro"] .btn-rojo { background-color: #ff8a80 !important; color: #000 !important; }
+html[data-contraste="negro"] input, html[data-contraste="negro"] select, html[data-contraste="negro"] textarea {
+  background-color: #000 !important; color: #fff !important; border: 3px solid #fff !important;
+}
+html[data-contraste="negro"] ::placeholder { color: #e5e7eb !important; opacity: 1; }
+html[data-contraste="negro"] .qr-svg { background: #fff !important; padding: 4px; border: 0 !important; }
+html[data-contraste="negro"] :focus-visible { outline: 4px solid #ffe44d !important; outline-offset: 3px; }
+html[data-contraste="negro"] .leaflet-container { filter: contrast(1.15) saturate(.8); }
+
+/* Ajustes finos */
+html[data-contraste="negro"] img { background: #fff !important; border-radius: .5rem; }
+html[data-contraste="negro"] .card-phone { background-color: #ffe44d !important; color: #000 !important; border: 3px solid #fff !important; }
+html[data-contraste="negro"] .card-phone * { color: #000 !important; background: transparent !important; }
+html[data-texto="grande"] .card-phone-number, html[data-texto="muy-grande"] .card-phone-number { white-space: nowrap; font-size: 1.15rem; }
+html[data-texto="grande"] .flip-card-inner, html[data-texto="muy-grande"] .flip-card-inner { grid-template-columns: minmax(0, 1fr); }
+html[data-texto="grande"] .card-face, html[data-texto="muy-grande"] .card-face { min-width: 0; width: 100% !important; }
+html[data-texto="grande"] .card-title, html[data-texto="muy-grande"] .card-title { letter-spacing: .06em; overflow-wrap: anywhere; }
+html[data-texto="grande"] .card-phone, html[data-texto="muy-grande"] .card-phone { padding: .75rem 1rem; gap: .5rem; }
+html[data-texto="grande"] .chofer, html[data-texto="muy-grande"] .chofer { grid-template-columns: auto minmax(0, 1fr); }
+html[data-texto="grande"] .chofer .ver, html[data-texto="muy-grande"] .chofer .ver { grid-column: 1 / -1; }
+html[data-texto="grande"] .choferes > *, html[data-texto="muy-grande"] .choferes > * { min-width: 0; }
+
+/* En los modos con frente y reverso apilados, las dos caras siempre se ven. */
+html[data-texto="grande"] .card-face, html[data-texto="muy-grande"] .card-face,
+html[data-contraste="alto"] .card-face, html[data-contraste="negro"] .card-face { opacity: 1 !important; visibility: visible !important; }
+
+/* Con las caras apiladas, ninguna se oculta */
+html[data-texto="grande"] .flip-card-inner .card-face, html[data-texto="muy-grande"] .flip-card-inner .card-face,
+html[data-contraste="alto"] .flip-card-inner .card-face, html[data-contraste="negro"] .flip-card-inner .card-face { visibility: visible !important; opacity: 1 !important; transform: none !important; }

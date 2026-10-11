@@ -12,7 +12,11 @@ const datos = {
   placa: chofer.placa,
   unidad: chofer.unidad,
   marca: negocio.marca,
+<<<<<<< HEAD
   whatsappDueno: negocio.whatsappDueno,
+=======
+  whatsappDueno: chofer.whatsappDueno,
+>>>>>>> 183a5c0cc8c6a4256b186c5139295ecc004e4fee
   centro: negocio.centroMapa,
   tarjeta: `/t/${chofer.id}/`,
 };
@@ -44,6 +48,16 @@ const datos = {
         <p class="ayuda">Mantén esta pantalla abierta y encendida durante el viaje. Si bloqueas el teléfono, el navegador puede pausar el GPS.</p>
       </form>
 
+<<<<<<< HEAD
+=======
+      <!-- Herramientas del chofer (se ocultan durante un viaje) -->
+      <div class="caja" id="herramientas">
+        <b>Mi tarjeta física</b>
+        <p class="ayuda">Imprime tus tarjetas de presentación con tu foto, tu teléfono y el QR.</p>
+        <a class="btn btn-borde" href={`/chofer/${chofer.id}/tarjeta-fisica/`}>Crear mi tarjeta física</a>
+      </div>
+
+>>>>>>> 183a5c0cc8c6a4256b186c5139295ecc004e4fee
       <!-- Viaje activo -->
       <div id="activo" hidden>
         <div class="caja">
@@ -82,16 +96,25 @@ const datos = {
   .panel-app header { display: flex; gap: .85rem; align-items: center; }
   .panel-app header img { border-radius: .75rem; background: #ffc72c; padding: .25rem; object-fit: contain; }
   .panel-app h1 { font-size: 1.6rem; font-weight: 800; letter-spacing: -.02em; line-height: 1.1; }
+<<<<<<< HEAD
   .panel-app header p { color: #94a3b8; font-size: .875rem; }
+=======
+  .panel-app header p { color: #cbd5e1; font-size: .875rem; }
+>>>>>>> 183a5c0cc8c6a4256b186c5139295ecc004e4fee
   .panel-app .caja { background: #1e293b; border-radius: 1rem; padding: 1.1rem; display: grid; gap: .9rem; }
   .panel-app #activo { display: grid; gap: 1rem; }
   .panel-app #activo[hidden] { display: none; }
   .panel-app .campo > span { color: #e2e8f0; }
+<<<<<<< HEAD
   .panel-app .campo small { color: #94a3b8; }
+=======
+  .panel-app .campo small { color: #cbd5e1; }
+>>>>>>> 183a5c0cc8c6a4256b186c5139295ecc004e4fee
   .panel-app .campo input { background: #0f172a; color: #fff; border-color: #334155; }
   .panel-app .campo input:focus { border-color: #ffc72c; }
   .panel-app .dos { display: grid; grid-template-columns: 1fr 1fr; gap: .6rem; }
   .panel-app .grande { min-height: 60px; font-size: 1.05rem; }
+<<<<<<< HEAD
   .panel-app .msg { min-height: 1.4em; color: #ffc72c; font-size: .9rem; }
   .panel-app .ayuda { color: #94a3b8; font-size: .85rem; }
   .panel-app #mapa { height: 300px; border-radius: .85rem; overflow: hidden; background: #334155; }
@@ -102,4 +125,16 @@ const datos = {
   .panel-app .luz.mal { background: #dc2626; }
   .panel-app .enlace { word-break: break-all; padding: .75rem; background: #0f172a; border-radius: .6rem; font-size: .85rem; color: #cbd5e1; }
   .panel-app .pie { text-align: center; font-size: .85rem; color: #94a3b8; }
+=======
+  .panel-app .msg { min-height: 1.4em; color: #ffc72c; font-size: 1rem; }
+  .panel-app .ayuda { color: #cbd5e1; font-size: .9375rem; }
+  .panel-app #mapa { height: 300px; border-radius: .85rem; overflow: hidden; background: #334155; }
+  .panel-app .estado { display: grid; grid-template-columns: auto 1fr; gap: .15rem .7rem; align-items: center; }
+  .panel-app .estado small { grid-column: 2; color: #cbd5e1; }
+  .panel-app .luz { width: 14px; height: 14px; border-radius: 50%; background: #64748b; }
+  .panel-app .luz.ok { background: #3ddc84; box-shadow: 0 0 10px #3ddc84; }
+  .panel-app .luz.mal { background: #dc2626; }
+  .panel-app .enlace { word-break: break-all; padding: .75rem; background: #0f172a; border-radius: .6rem; font-size: .9375rem; color: #cbd5e1; }
+  .panel-app .pie { text-align: center; font-size: .9375rem; color: #cbd5e1; }
+>>>>>>> 183a5c0cc8c6a4256b186c5139295ecc004e4fee
 </style>

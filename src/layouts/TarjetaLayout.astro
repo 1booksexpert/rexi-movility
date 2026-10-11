@@ -1,5 +1,10 @@
 ---
 import Credito from '../components/Credito.astro';
+<<<<<<< HEAD
+=======
+import Accesibilidad from '../components/Accesibilidad.astro';
+import AccesibilidadHead from '../components/AccesibilidadHead.astro';
+>>>>>>> 183a5c0cc8c6a4256b186c5139295ecc004e4fee
 import { negocio, sitioBase } from '../lib/datos';
 import type { Chofer } from '../lib/datos';
 
@@ -11,7 +16,11 @@ export interface Props {
 const { chofer, titulo } = Astro.props;
 const tarjetaUrl = chofer.urlTarjeta;
 const marca = negocio.marca;
+<<<<<<< HEAD
 const wsDueno = negocio.whatsappDueno;
+=======
+const wsDueno = chofer.whatsappDueno;
+>>>>>>> 183a5c0cc8c6a4256b186c5139295ecc004e4fee
 ---
 
 <!DOCTYPE html>
@@ -29,6 +38,14 @@ const wsDueno = negocio.whatsappDueno;
   <link rel="icon" type="image/png" href="/favicon.png" />
   <link rel="canonical" href={tarjetaUrl} />
   <meta name="theme-color" content="#FFC72C" />
+  <AccesibilidadHead />
+  <script is:inline>
+    (function () {
+      var u = navigator.userAgent;
+      // Chrome y Edge de computadora (no Firefox, no celular): giro 2D
+      if (/Chrome\//.test(u) && !/Android|Mobile|Firefox/.test(u)) document.documentElement.classList.add('flip2d');
+    })();
+  </script>
   
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -123,9 +140,9 @@ const wsDueno = negocio.whatsappDueno;
     }
     
     .card-title {
-      font-size: 0.75rem;
+      font-size: 0.875rem;
       font-weight: 600;
-      color: #d97706;
+      color: #b45309;
       text-transform: uppercase;
       letter-spacing: 0.2em;
       margin-bottom: 1.5rem;
@@ -155,10 +172,10 @@ const wsDueno = negocio.whatsappDueno;
       display: flex;
       align-items: center;
       gap: 0.5rem;
-      color: #94a3b8;
-      font-size: 0.75rem;
+      color: #475569;
+      font-size: 0.9375rem;
       margin-top: 1rem;
-      animation: pulse 2s infinite;
+      animation: none;
     }
     
     @keyframes pulse {
@@ -220,11 +237,11 @@ const wsDueno = negocio.whatsappDueno;
     }
     
     .qr-label {
-      font-size: 0.625rem;
+      font-size: 0.8125rem;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.08em;
-      color: #64748b;
+      color: #475569;
       text-align: center;
       margin-top: 0.5rem;
     }
@@ -251,7 +268,7 @@ const wsDueno = negocio.whatsappDueno;
     }
     
     .btn-location {
-      background: #16a34a;
+      background: #15803d;
     }
     
     .btn-location:hover {
@@ -281,14 +298,14 @@ const wsDueno = negocio.whatsappDueno;
     
     .section-subtitle {
       text-align: center;
-      color: #64748b;
+      color: #475569;
       margin-bottom: 2rem;
       font-size: 0.9375rem;
     }
     
     .services-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(min(16rem, 100%), 1fr));
       gap: 1rem;
     }
     
@@ -319,7 +336,7 @@ const wsDueno = negocio.whatsappDueno;
     }
     
     .service-card p {
-      color: #64748b;
+      color: #475569;
       font-size: 0.875rem;
       line-height: 1.5;
       flex-grow: 1;
@@ -369,7 +386,7 @@ const wsDueno = negocio.whatsappDueno;
     /* FOOTER */
     .main-footer {
       text-align: center;
-      color: #64748b;
+      color: #475569;
       font-size: 0.875rem;
       padding: 2rem 0;
       border-top: 1px solid #e2e8f0;
@@ -382,8 +399,7 @@ const wsDueno = negocio.whatsappDueno;
       bottom: 0;
       left: 0;
       right: 0;
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(10px);
+      background: #ffffff;
       border-top: 1px solid #e2e8f0;
       padding: 0.75rem;
       display: flex;
@@ -418,7 +434,7 @@ const wsDueno = negocio.whatsappDueno;
     }
     
     .sticky-wa {
-      background: #16a34a;
+      background: #15803d;
     }
 
     /* Accesibilidad y extras */
@@ -428,7 +444,11 @@ const wsDueno = negocio.whatsappDueno;
       .flip-card-inner { transition: none; }
       .flip-hint { animation: none; }
     }
+<<<<<<< HEAD
     .estado-ubic { max-width: 22rem; margin: -1rem auto 1.5rem; min-height: 1.25rem; font-size: .8125rem; color: #475569; text-align: center; }
+=======
+    .estado-ubic { max-width: 22rem; margin: -1rem auto 1.5rem; min-height: 1.25rem; font-size: .9375rem; color: #475569; text-align: center; }
+>>>>>>> 183a5c0cc8c6a4256b186c5139295ecc004e4fee
     .seguimiento {
       max-width: 22rem; margin: 0 auto 2rem; padding: 1rem 1.25rem; text-align: left;
       background: #0f172a; color: #fff; border-radius: 1rem; font-size: .875rem;
@@ -436,15 +456,36 @@ const wsDueno = negocio.whatsappDueno;
     .seguimiento b { display: block; font-size: .9375rem; margin-bottom: .15rem; }
     .seguimiento span { color: #cbd5e1; }
     .flip-card { height: 35rem; }
+<<<<<<< HEAD
     .qr-container { display: flex; flex-direction: column; align-items: center; }
     .qr-svg { width: 4.75rem; height: 4.75rem; }
     .qr-svg svg { width: 100%; height: 100%; display: block; }
     .acceso-chofer { text-align: center; margin: 1rem 0 0; font-size: .8125rem; }
     .acceso-chofer a { color: #94a3b8; }
+=======
+    /* Giro 3D (el diseño original) en Firefox, Safari y Chrome del celular. En Chrome/Edge de computadora
+       (Windows) pintaba el reverso blanco encima de todo después de un segundo, así que ahí se usa un
+       cambio 2D con desvanecido. La clase .flip2d la pone el script del <head>. */
+    .flip2d .perspective-1000 { perspective: none; }
+    .flip2d .transform-style-3d { transform-style: flat; }
+    .flip2d .flip-card-inner, .flip2d .flip-card-inner.is-flipped { transform: none !important; transition: none; }
+    .flip2d .card-face { backface-visibility: visible; -webkit-backface-visibility: visible; transition: opacity .3s ease, visibility .3s; }
+    .flip2d .card-front { opacity: 1; visibility: visible; }
+    .flip2d .card-back, .flip2d .card-back.rotate-y-180 { transform: none; opacity: 0; visibility: hidden; }
+    .flip2d .is-flipped .card-front { opacity: 0; visibility: hidden; }
+    .flip2d .is-flipped .card-back { opacity: 1; visibility: visible; }
+    .qr-container { display: flex; flex-direction: column; align-items: center; }
+    .qr-svg { width: 4.75rem; height: 4.75rem; }
+    .qr-svg svg { width: 100%; height: 100%; display: block; }
+    .acceso-chofer { text-align: center; margin: 1rem 0 0; font-size: .9375rem; }
+    .acceso-chofer a { color: #475569; }
+
+>>>>>>> 183a5c0cc8c6a4256b186c5139295ecc004e4fee
     .main-footer .marca-pie { font-weight: 700; color: #0f172a; }
   </style>
 </head>
 <body>
+  <Accesibilidad />
   <slot />
   
   <!-- STICKY BAR -->

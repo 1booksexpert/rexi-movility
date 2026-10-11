@@ -48,8 +48,13 @@ npx wrangler deploy                       # crea el Worker "rexi-api" (el KV "re
 ```
 
 **2. Sitio (Cloudflare Pages, igual que ahora)**
+<<<<<<< HEAD
 Tu proyecto `rexi-movilidad` en Pages ya se despliega desde GitHub. Solo falta unirlo a la API:
 Pages > rexi-movilidad > Settings > Functions > **Service bindings** > agrega `API` → `rexi-api` (producción y vista previa).
+=======
+Tu proyecto `rexi-movility` en Pages ya se despliega desde GitHub. Solo falta unirlo a la API:
+Pages > rexi-movility > Settings > Functions > **Service bindings** > agrega `API` → `rexi-api` (producción y vista previa).
+>>>>>>> 183a5c0cc8c6a4256b186c5139295ecc004e4fee
 Si prefieres no usar el binding, define la variable de entorno `API_URL = https://rexi-api.<tu-subdominio>.workers.dev`.
 
 **3. Registrar a cada chofer** (ver abajo) y hacer `git push`.
@@ -73,6 +78,58 @@ npm run chofer -- baja  nombre-apellido --aplicar
 - Placa y unidad: el chofer las captura en su panel (se recuerdan en su teléfono). También puedes fijarlas en `choferes.json`.
 - Seguridad: 5 PIN incorrectos bloquean ese chofer 15 minutos.
 
+<<<<<<< HEAD
+=======
+## Vendedores, planes y comisiones
+
+```bash
+npm run chofer -- nuevo "Nombre Apellido" 8991234567 --plan pro --ref V01 [--pago anual] --aplicar
+npm run chofer -- ref nombre-apellido V01      # asignar o cambiar vendedor
+npm run reporte                                # mes actual
+npm run reporte -- 2026-11 --no-pagaron nombre-apellido
+```
+
+- `referido` (código del vendedor), `plan` (`tarjeta`, `pro`, `flota`) y `fechaAlta` se guardan en `choferes.json`. **No se publican en el sitio** (`datos.ts` no los copia).
+- Precios, porcentajes y datos de los vendedores viven en `private/tarifas.json`, que está en `.gitignore`: no se sube a GitHub. Respáldalo aparte.
+- Pago mensual: 30% del alta una sola vez + 15% de la mensualidad durante 12 meses, solo si el chofer pagó.
+- Pago anual (`--pago anual`): 25% de lo cobrado una sola vez (15% en Flota). Se cobra todo junto y a los 12 meses se renueva.
+
+## Registrar choferes y flotas (archivos .json)
+
+Todo se registra en `src/data/choferes.json` y `src/data/flotas.json`, con el comando o editando a mano.
+
+```bash
+npm run chofer -- flota-nueva "Taxis del Norte" 5218991234567        # flota con el WhatsApp de su dueño
+npm run chofer -- nuevo "Nombre Apellido" 8991234567 --flota taxis-del-norte --plan pro --ref V01 --aplicar
+npm run chofer -- nuevo "Juan Pérez" 8990000000 --id juan-perez-2     # otro chofer con el mismo nombre
+npm run chofer -- validar                                             # revisa los .json (corre el build)
+```
+
+- Cada chofer puede pertenecer a una flota (`"flota": "taxis-del-norte"`). Su botón "Al dueño" usa el WhatsApp de esa flota; si no tiene flota, el de `negocio.json`.
+- Al construir el sitio se validan los datos: id repetido o con acentos, teléfono que no tiene 10 dígitos, flota inexistente. El error sale en español y dice qué corregir. Un teléfono repetido solo da aviso.
+- Si el build falla en Cloudflare, el sitio anterior sigue publicado.
+
+## Dos interfaces
+
+- **Pasajero** (claro): inicio `/`, tarjeta `/t/<id>/`, seguimiento `/viaje/`.
+- **Chofer** (oscuro, con la etiqueta "Zona del chofer"): `/chofer/`, panel `/chofer/<id>/`, tarjeta física `/chofer/<id>/tarjeta-fisica/`. Nada de esto aparece en la tarjeta del pasajero.
+
+## Tarjeta física (para imprimir)
+
+En el panel del chofer (`/chofer/<id>/`), el botón **Crear mi tarjeta física** abre `/chofer/<id>/tarjeta-fisica/`. Es solo para el chofer: la tarjeta pública del pasajero no lo muestra. Ahí se genera, en el propio teléfono y a 300 DPI:
+
+- **Frente y reverso individuales** (9 × 5 cm con 3 mm de sangrado): lo que pide una imprenta.
+- **Hoja carta de frentes y de reversos** (10 tarjetas con marcas de corte): para imprimir en casa u oficina.
+- Frente: foto del chofer (si existe), logotipo REXI, nombre, título y teléfono. Reverso: servicios más comunes y QR de la tarjeta.
+- Foto: guarda `public/fotos/<id>.jpg` (o `.png`/`.webp`, cuadrada, 600 px o más) y aparece sola. También se puede elegir una foto en la propia página; no se sube a ningún servidor.
+- El logo `public/logos/rexi.png` mide solo 150×200 px y se nota algo suave al imprimir. Con una versión de 600 px de alto o más (o SVG) la tarjeta queda nítida.
+
+## Accesibilidad
+
+Botón **Accesibilidad** (arriba a la derecha en todas las páginas): texto normal, grande y muy grande; colores normales o alto contraste. Se recuerda en el teléfono y respeta `prefers-contrast: more`. Los textos cumplen contraste AA (4.5:1). Con texto grande la tarjeta deja de girar y muestra frente y reverso uno debajo del otro.
+Pendiente: modo viajero para adultos mayores y personas ciegas (aviso por voz, botón único de pedir taxi). Se cuelga del mismo mecanismo (`data-modo` en `<html>`).
+
+>>>>>>> 183a5c0cc8c6a4256b186c5139295ecc004e4fee
 ## Pendientes tuyos
 
 - `src/data/negocio.json` → `whatsappDueno` (formato `521899XXXXXXX`). Con él aparece "Pedir por WhatsApp" en el inicio y "Al dueño" en el panel del chofer.

@@ -5,3 +5,7 @@ dist/
 .wrangler/
 .dev.vars
 .env
+<<<<<<< HEAD
+=======
+private/
+>>>>>>> 183a5c0cc8c6a4256b186c5139295ecc004e4fee

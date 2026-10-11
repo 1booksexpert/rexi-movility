@@ -1,0 +1,90 @@
+---
+import QRCode from 'qrcode';
+import Layout from '../../../layouts/Layout.astro';
+import { choferes, negocio } from '../../../lib/datos';
+
+export async function getStaticPaths() {
+  return choferes.map((chofer) => ({ params: { id: chofer.id }, props: { chofer } }));
+}
+const { chofer } = Astro.props;
+const qrSvg = await QRCode.toString(chofer.urlTarjeta, { type: 'svg', margin: 0, color: { dark: '#0f172a', light: '#ffffff' } });
+const cfg = {
+  id: chofer.id,
+  nombre: chofer.nombre,
+  telefono: chofer.telefonoFormateado,
+  titulo: chofer.titulo,
+  servicios: chofer.servicios.slice(0, 5).map((s) => ({ nombre: s.nombre, icono: s.icono })),
+  logo: chofer.logo,
+  foto: chofer.foto,
+  qrSvg,
+};
+---
+<Layout titulo={`Tarjeta física de ${chofer.nombre}`} noindex referrer="no-referrer" tema="#0f172a">
+  <div class="zona-chofer">
+  <main class="contenedor impr">
+    <span class="modo-chofer">Zona del chofer</span>
+    <a class="volver" href={`/chofer/${chofer.id}/`}>← Volver a mi panel</a>
+    <h1>Tu tarjeta física</h1>
+    <p class="intro">Tarjeta horizontal de 9 cm de ancho × 5 cm de alto, con tu teléfono (llamadas y WhatsApp) al frente y tus servicios con el código QR atrás. Todo se genera en tu teléfono o computadora; tus fotos no se suben a ningún lado.</p>
+
+    <div class="vistas">
+      <figure><canvas id="cvFrente" aria-label="Vista previa del frente de la tarjeta"></canvas><figcaption>Frente</figcaption></figure>
+      <figure><canvas id="cvReverso" aria-label="Vista previa del reverso de la tarjeta"></canvas><figcaption>Reverso</figcaption></figure>
+    </div>
+
+    <section class="foto">
+      <h2>Foto del chofer</h2>
+      <p id="fotoEstado">{chofer.foto ? 'Se usa la foto guardada de este chofer.' : 'Sin foto. Agrega una de tu rostro (cuadrada y bien iluminada) y aparece en el frente.'}</p>
+      <label class="btn btn-borde btn-foto">
+        <input type="file" id="fotoArchivo" accept="image/*" class="sr" />
+        <span>Elegir foto</span>
+      </label>
+      <button type="button" id="quitarFoto" class="btn btn-borde" hidden>Quitar foto</button>
+    </section>
+
+    <section class="descargas">
+      <h2>Para llevar a la imprenta <small>recomendado</small></h2>
+      <p>Una imagen por lado, 9 × 5 cm con 3 mm de sangrado, 300 DPI.</p>
+      <div class="fila">
+        <button type="button" class="btn btn-amarillo" data-bajar="frente">Descargar frente</button>
+        <button type="button" class="btn btn-amarillo" data-bajar="reverso">Descargar reverso</button>
+      </div>
+      <h2>Para imprimir tú mismo</h2>
+      <p>Hoja tamaño carta con 10 tarjetas y marcas de corte. Imprime la de frentes, voltea la hoja e imprime la de reversos. Usa «tamaño real» o «100%», nunca «ajustar a la página».</p>
+      <div class="fila">
+        <button type="button" class="btn btn-oscuro" data-bajar="hoja-frentes">Hoja de frentes</button>
+        <button type="button" class="btn btn-oscuro" data-bajar="hoja-reversos">Hoja de reversos</button>
+      </div>
+      <p id="estadoDescarga" class="estado" role="status" aria-live="polite"></p>
+    </section>
+
+    
+  </main>
+  </div>
+  <script type="application/json" id="cfgTarjeta" is:inline set:html={JSON.stringify(cfg)} />
+  <script is:inline src="/js/tarjeta-fisica.js" defer></script>
+</Layout>
+
+<style is:global>
+  .zona-chofer { min-height: 100vh; background: #0f172a; color: #fff; }
+  .zona-chofer .modo-chofer { display: inline-block; background: #ffc72c; color: #000; font-weight: 800; font-size: .875rem; letter-spacing: .06em; text-transform: uppercase; padding: .25rem .75rem; border-radius: 99px; }
+  .zona-chofer .volver { color: #ffc72c; }
+  .zona-chofer .btn-oscuro { background: #1e293b; color: #fff; box-shadow: inset 0 0 0 2px #475569; }
+  .impr { padding: 4.5rem 0 3rem; }
+  .impr .volver { display: inline-block; min-height: 44px; padding: .6rem 0; font-weight: 600; }
+  .impr h1 { font-size: 1.9rem; font-weight: 800; margin: .25rem 0 .5rem; }
+  .impr h2 { font-size: 1.2rem; font-weight: 800; margin: 1.5rem 0 .35rem; }
+  .impr h2 small { font-size: .875rem; font-weight: 700; background: #ffc72c; padding: .15rem .55rem; border-radius: 99px; margin-left: .4rem; }
+  .impr .intro, .impr p { color: #cbd5e1; }
+  .impr .vistas { display: grid; gap: 1rem; margin: 1.25rem 0; }
+  @media (min-width: 40rem) { .impr .vistas { grid-template-columns: 1fr 1fr; } }
+  .impr figure { margin: 0; }
+  .impr canvas { width: 100%; height: auto; display: block; background: #fff; border: 2px solid #cbd5e1; border-radius: .6rem; box-shadow: 0 8px 22px rgba(0,0,0,.4); }
+  .impr figcaption { font-size: .9375rem; font-weight: 700; color: #cbd5e1; margin-top: .35rem; text-align: center; }
+  .impr .fila { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: .75rem; }
+  .impr .fila .btn { flex: 1 1 12rem; }
+  .impr .btn-foto { cursor: pointer; margin-top: .5rem; }
+  .impr .btn-foto:focus-within { outline: 3px solid #ffc72c; outline-offset: 3px; }
+  .impr .estado { min-height: 1.5rem; font-weight: 600; margin-top: .75rem; }
+  html[data-contraste="alto"] .impr canvas { background: #fff !important; }
+</style>
