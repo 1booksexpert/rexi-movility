@@ -99,7 +99,6 @@ export const choferes: Chofer[] = (choferesRaw as any[]).map((c) => {
       medico: 'Hola, necesito un traslado para una consulta médica.',
       paqueteria: 'Hola, necesito enviar un sobre o paquete urgente.',
       corporativo: 'Hola, quiero información de un convenio para mi empresa.',
-      mascotas: 'Hola, necesito un traslado con mi mascota.',
       ...(c.mensajes || {}),
     },
     urlTarjeta: `${sitioBase()}/t/${c.id}/`,
