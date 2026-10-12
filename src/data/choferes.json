@@ -17,10 +17,10 @@
         "mensaje": "Hola, necesito un traslado local o a un puente internacional."
       },
       {
-        "nombre": "Aeropuerto REX y MMTY",
+        "nombre": "Aeropuerto REX",
         "icono": "✈️",
         "color": "purple",
-        "descripcion": "Salida programada al aeropuerto de Reynosa y al de Monterrey.",
+        "descripcion": "Salida programada al aeropuerto de Reynosa.",
         "mensaje": "Hola, quiero cotizar un traslado al aeropuerto."
       },
       {
