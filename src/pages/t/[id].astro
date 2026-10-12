@@ -1,8 +1,9 @@
 ---
 import QRCode from 'qrcode';
 import TarjetaLayout from '../../layouts/TarjetaLayout.astro';
+import Layout from '../../layouts/Layout.astro';
 import Credito from '../../components/Credito.astro';
-import { choferes, negocio } from '../../lib/datos';
+import { choferesTodos as choferes, negocio } from '../../lib/datos';
 
 export async function getStaticPaths() {
   return choferes.map((chofer) => ({
@@ -21,6 +22,15 @@ const qrSvg = await QRCode.toString(chofer.urlTarjeta, {
 });
 ---
 
+{!chofer.activo ? (
+  <Layout titulo="Servicio no disponible" noindex>
+    <main style="min-height:70vh;display:grid;place-content:center;gap:1rem;text-align:center;padding:2rem 1rem;max-width:34rem;margin:0 auto">
+      <h1 style="font-size:1.7rem;font-weight:800">Este servicio no está disponible por el momento</h1>
+      <p>La tarjeta de <strong>{chofer.nombre}</strong> está desactivada. Puedes ver a los choferes disponibles en el directorio.</p>
+      <p><a class="btn btn-amarillo" href="/">Ver choferes disponibles</a></p>
+    </main>
+  </Layout>
+) : (
 <TarjetaLayout chofer={chofer} titulo={`${chofer.nombre} | ${negocio.marca}`}>
   <main class="main-container">
     
@@ -144,3 +154,4 @@ const qrSvg = await QRCode.toString(chofer.urlTarjeta, {
 
   </main>
 </TarjetaLayout>
+)}

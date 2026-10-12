@@ -6,6 +6,7 @@
 //    y, solo para el chofer, la del pasajero. Se borra solo (6 h, o 30 min tras terminar).
 //  - Durable Object "Guard": bloquea 15 min tras 5 PIN incorrectos de un mismo chofer.
 import { DurableObject } from "cloudflare:workers";
+import { admin } from "./admin.js";
 
 const HORAS_MAX = 6;
 const MIN_TRAS_FIN = 30;
@@ -41,6 +42,7 @@ const ID_CHOFER = /^[a-z0-9][a-z0-9-]{1,39}$/;
 export default {
   async fetch(req, env) {
     const url = new URL(req.url);
+    if (url.pathname.startsWith("/api/admin/")) return admin(req, env, { json, igual });
     const m = url.pathname.match(/^\/api\/trips(?:\/([2-9a-hj-km-np-z]{10}))?(?:\/(loc|end|passenger))?$/);
     if (!m) return json({ error: "not_found" }, 404);
     const [, id, op] = m;

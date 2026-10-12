@@ -19,6 +19,7 @@ export interface Flota {
   whatsappDueno: string; // WhatsApp del dueño de la flota (521899XXXXXXX)
 }
 export interface Chofer {
+  activo: boolean; // false = desactivado desde el editor: sin directorio, sin panel, su tarjeta muestra aviso
   flota: string; // id de la flota o '' si es chofer independiente
   flotaNombre: string;
   whatsappDueno: string; // el de su flota; si no tiene, el general de negocio.json
@@ -68,11 +69,12 @@ export function sitioBase(): string {
   return negocio.sitio.replace(/\/$/, '');
 }
 
-export const choferes: Chofer[] = (choferesRaw as any[]).map((c) => {
+export const choferesTodos: Chofer[] = (choferesRaw as any[]).map((c) => {
   const telefono = String(c.telefono).replace(/\D/g, '').slice(-10);
   const flota = flotas.find((f) => f.id === (c.flota || ''));
   return {
     id: c.id,
+    activo: c.activo !== false,
     flota: flota ? flota.id : '',
     flotaNombre: flota ? flota.nombre : '',
     whatsappDueno: (flota && flota.whatsappDueno) || String(negocio.whatsappDueno || ''),
@@ -104,6 +106,9 @@ export const choferes: Chofer[] = (choferesRaw as any[]).map((c) => {
     urlTarjeta: `${sitioBase()}/t/${c.id}/`,
   };
 });
+
+// Solo los activos aparecen en el directorio, el acceso de choferes y el panel.
+export const choferes: Chofer[] = choferesTodos.filter((c) => c.activo);
 
 // Datos públicos que necesita la página de seguimiento (sin PIN, sin nada privado).
 export const directorioPublico = Object.fromEntries(

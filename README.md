@@ -150,3 +150,14 @@ Cálculo del límite gratuito: cada consulta pasa por la Pages Function, el Work
 - El código del viaje (10 caracteres) es el "permiso" para verlo: quien tenga el enlace puede ver el viaje. Por eso se comparte solo por WhatsApp.
 - La ubicación del pasajero solo la recibe el chofer, y solo si el pasajero lo pide.
 - Las páginas `/chofer/*` y `/viaje/*` no se indexan en buscadores y no envían la URL completa a terceros (mapas).
+
+## Administrador de choferes en línea (`/admin/`)
+
+Página protegida con contraseña para dar de alta, editar, **activar/desactivar**, borrar choferes y flotas, y generar PIN (con botón para enviarlo por WhatsApp). Cada cambio es un commit en GitHub (`src/data/choferes.json` / `flotas.json`) y Cloudflare Pages reconstruye el sitio solo en 1-2 min. Los PIN viven en KV, nunca en GitHub. Un chofer desactivado sale del directorio, su panel desaparece, su tarjeta muestra aviso y su PIN se borra.
+
+Configuración única (en `api/`):
+1. Crea un token en GitHub: Settings > Developer settings > Fine-grained tokens, solo el repo `rexi-movility`, permiso **Contents: Read and write**.
+2. `npx wrangler secret put GITHUB_TOKEN` (pega el token) y `npx wrangler secret put ADMIN_PASSWORD` (elige una contraseña larga).
+3. `npx wrangler deploy` y abre `https://rexi-movility.pages.dev/admin/`.
+
+Tras 5 contraseñas incorrectas el editor se bloquea 15 minutos.

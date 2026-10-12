@@ -1,0 +1,210 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+<Layout titulo="Administrar choferes" noindex tema="#14213d">
+  <div class="adm">
+    <div class="wrap">
+      <header class="top">
+        <a class="volver" href="/">← Inicio</a>
+        <h1>Administrar choferes</h1>
+        <p class="lema">Altas, cambios, PIN y estado de cada chofer y flota.</p>
+      </header>
+
+      <form id="login" class="login" autocomplete="off">
+        <h2>Entrar al administrador</h2>
+        <label for="clave">Contraseña</label>
+        <input id="clave" type="password" autocomplete="current-password" required />
+        <p id="err-login" class="err" role="alert" hidden></p>
+        <button class="btn-main" type="submit">Entrar</button>
+      </form>
+
+      <div id="app" hidden>
+        <div class="barra">
+          <div class="seg" role="tablist" aria-label="Sección">
+            <button role="tab" id="tab-c" aria-selected="true">Choferes</button>
+            <button role="tab" id="tab-f" aria-selected="false">Flotas</button>
+          </div>
+          <button id="salir" class="ghost">Salir</button>
+        </div>
+
+        <section id="sec-c" aria-labelledby="tab-c">
+          <div class="resumen" id="resumen" role="group" aria-label="Filtrar por estado"></div>
+          <div class="herr">
+            <input id="buscar" type="search" placeholder="Buscar por nombre, teléfono o placa" aria-label="Buscar chofer" />
+            <button id="nuevo-c" class="btn-main">Nuevo chofer</button>
+          </div>
+          <ul id="lista-c" class="lista"></ul>
+        </section>
+
+        <section id="sec-f" hidden aria-labelledby="tab-f">
+          <div class="herr"><p class="ayuda">Una flota agrupa choferes y avisa al WhatsApp de su dueño.</p><button id="nueva-f" class="btn-main">Nueva flota</button></div>
+          <ul id="lista-f" class="lista"></ul>
+        </section>
+      </div>
+    </div>
+
+    <div id="toast" role="status" aria-live="polite" hidden></div>
+
+    <dialog id="dlg-c">
+      <form method="dialog" id="form-c">
+        <div class="dlg-cab"><h2 id="dlg-c-t">Chofer</h2><button type="button" class="ghost" id="cerrar-c" aria-label="Cerrar">✕</button></div>
+        <fieldset><legend>Quién es</legend>
+          <div class="grid">
+            <label>Nombre completo<input name="nombre" required maxlength="60" autocomplete="off" /></label>
+            <label>Teléfono y WhatsApp<input name="telefono" inputmode="tel" required maxlength="20" placeholder="10 dígitos" /></label>
+            <label>Título en su tarjeta<input name="titulo" maxlength="60" placeholder="Movilidad Ejecutiva" /></label>
+            <label>Zona<input name="zona" maxlength="60" placeholder="Reynosa, Tamaulipas" /></label>
+          </div>
+        </fieldset>
+        <fieldset><legend>Su unidad</legend>
+          <div class="grid">
+            <label>Placa<input name="placa" maxlength="14" /></label>
+            <label>Descripción de la unidad<input name="unidad" maxlength="40" placeholder="Nissan Versa blanco 2022" /></label>
+            <label>Flota<select name="flota"></select></label>
+          </div>
+        </fieldset>
+        <fieldset><legend>Plan y comisión</legend>
+          <div class="grid">
+            <label>Plan<select name="plan"><option value="">Sin definir</option><option value="tarjeta">Tarjeta</option><option value="pro">Chofer Pro</option><option value="flota">Flota</option></select></label>
+            <label>Forma de pago<select name="pago"><option value="">Mensual</option><option value="anual">Anual</option></select></label>
+            <label>Lo refirió (vendedor)<input name="referido" maxlength="60" /></label>
+            <label>Fecha de alta<input name="fechaAlta" type="date" /></label>
+          </div>
+        </fieldset>
+        <fieldset><legend>Servicios de su tarjeta</legend>
+          <div id="servicios"></div>
+          <button type="button" id="mas-sv" class="ghost">Agregar servicio</button>
+        </fieldset>
+        <details class="avanzado"><summary>Identificador del enlace</summary>
+          <label>Id (no se puede cambiar después)<input name="id" required maxlength="40" pattern="[a-z0-9]+(-[a-z0-9]+)*" title="minúsculas, números y guiones" /></label>
+          <p class="ayuda" id="id-url"></p>
+        </details>
+        <p id="err-c" class="err" role="alert" hidden></p>
+        <div class="acciones"><button type="button" id="cancel-c" class="ghost">Cancelar</button><button type="submit" class="btn-main" id="guardar-c">Guardar chofer</button></div>
+      </form>
+    </dialog>
+
+    <dialog id="dlg-f">
+      <form method="dialog" id="form-f">
+        <div class="dlg-cab"><h2>Flota</h2><button type="button" class="ghost" id="cerrar-f" aria-label="Cerrar">✕</button></div>
+        <div class="grid">
+          <label>Nombre de la flota<input name="nombre" required maxlength="60" /></label>
+          <label>WhatsApp del dueño<input name="whatsappDueno" inputmode="tel" maxlength="16" placeholder="5218991234567" /></label>
+        </div>
+        <details class="avanzado"><summary>Identificador</summary>
+          <label>Id (no se puede cambiar después)<input name="id" required maxlength="40" pattern="[a-z0-9]+(-[a-z0-9]+)*" /></label>
+        </details>
+        <p id="err-f" class="err" role="alert" hidden></p>
+        <div class="acciones"><button type="button" id="cancel-f" class="ghost">Cancelar</button><button type="submit" class="btn-main">Guardar flota</button></div>
+      </form>
+    </dialog>
+
+    <dialog id="dlg-pin">
+      <div class="pin-box">
+        <h2>PIN de <span id="pin-quien"></span></h2>
+        <p class="pin" id="pin-val" aria-live="polite"></p>
+        <p class="ayuda">Solo se muestra ahora. Si se pierde, genera uno nuevo.</p>
+        <div class="acciones">
+          <button id="pin-copiar" class="ghost">Copiar PIN</button>
+          <a id="pin-wa" class="btn-wa" target="_blank" rel="noopener">Enviar por WhatsApp</a>
+          <button id="pin-ok" class="btn-main">Listo</button>
+        </div>
+      </div>
+    </dialog>
+  </div>
+</Layout>
+
+<script src="/js/admin.js" is:inline defer></script>
+
+<style is:global>
+  .adm { --tinta:#14213d; --taxi:#ffc72c; --papel:#f3f5f8; --linea:#dbe1ea; --suave:#5b6577; --ok:#0f7b4b; --mal:#b42318; --av:#8a5a00;
+    min-height: 100vh; background: var(--papel); color: var(--tinta); font-family: "Segoe UI Variable Text","Segoe UI",system-ui,-apple-system,sans-serif; }
+  .adm .wrap { width: min(52rem, 100% - 1.5rem); margin: 0 auto; padding: 1rem 0 5rem; display: grid; gap: 1.1rem; }
+  .adm .top { display: grid; gap: .2rem; }
+  .adm h1 { font-size: clamp(1.7rem, 5vw, 2.3rem); font-weight: 800; letter-spacing: -.02em; line-height: 1.1; }
+  .adm .lema, .adm .ayuda { color: var(--suave); }
+  .adm .volver { color: var(--tinta); font-weight: 600; min-height: 44px; display: inline-flex; align-items: center; text-decoration: underline; text-underline-offset: 3px; }
+  .adm button, .adm .btn-wa { min-height: 44px; padding: .5rem 1.1rem; border-radius: .7rem; font: inherit; font-weight: 700; cursor: pointer; border: 1.5px solid var(--tinta); background: #fff; color: var(--tinta); display: inline-flex; align-items: center; justify-content: center; gap: .4rem; text-decoration: none; }
+  .adm button:focus-visible, .adm input:focus-visible, .adm select:focus-visible, .adm summary:focus-visible, .adm .btn-wa:focus-visible { outline: 3px solid #1d4ed8; outline-offset: 2px; }
+  .adm .btn-main { background: var(--taxi); border-color: var(--tinta); box-shadow: 0 2px 0 var(--tinta); }
+  .adm .btn-main:active { transform: translateY(2px); box-shadow: none; }
+  .adm .btn-wa { background: #128c4a; border-color: #0b6b37; color: #fff; }
+  .adm .ghost { border-color: var(--linea); background: transparent; }
+  .adm button[disabled] { opacity: .6; cursor: progress; }
+  .adm input, .adm select { min-height: 44px; padding: .5rem .75rem; border-radius: .65rem; border: 1.5px solid #b6c0cf; background: #fff; color: var(--tinta); font: inherit; width: 100%; max-width: 100%; }
+  .adm input[readonly] { background: #eef1f6; color: var(--suave); }
+  .adm label { display: grid; gap: .3rem; font-weight: 600; font-size: .92rem; }
+  .adm .err { color: var(--mal); font-weight: 600; }
+
+  .adm .login { background: #fff; border: 1px solid var(--linea); border-radius: 1rem; padding: 1.25rem; display: grid; gap: .7rem; max-width: 24rem; }
+  .adm .login h2 { font-size: 1.15rem; font-weight: 800; }
+
+  .adm .barra { display: flex; justify-content: space-between; gap: .75rem; flex-wrap: wrap; align-items: center; }
+  .adm .barra { margin-bottom: .2rem; }
+  .adm .seg { display: inline-flex; background: #e6eaf1; border-radius: .85rem; padding: .25rem; gap: .25rem; }
+  .adm .seg button { border: 0; background: transparent; min-height: 40px; }
+  .adm .seg [aria-selected="true"] { background: var(--tinta); color: #fff; }
+
+  .adm .resumen { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(8rem, 100%), 1fr)); gap: .6rem; }
+  .adm .resumen button { flex-direction: column; align-items: flex-start; gap: 0; padding: .6rem .9rem; border-color: var(--linea); text-align: left; }
+  .adm .resumen b { font-size: 1.7rem; font-weight: 800; line-height: 1.1; font-variant-numeric: tabular-nums; }
+  .adm .resumen span { font-size: .85rem; font-weight: 600; color: var(--suave); }
+  .adm .resumen [aria-pressed="true"] { border-color: var(--tinta); background: var(--tinta); }
+  .adm .resumen [aria-pressed="true"] b, .adm .resumen [aria-pressed="true"] span { color: #fff; }
+  .adm .herr { display: flex; gap: .6rem; flex-wrap: wrap; align-items: center; margin-top: .6rem; }
+  .adm .herr input { flex: 1 1 14rem; width: auto; }
+
+  .adm .lista { list-style: none; display: grid; gap: .7rem; margin-top: .9rem; padding: 0; }
+  .adm .chofer { background: #fff; border: 1px solid var(--linea); border-left: 6px solid var(--taxi); border-radius: .9rem; padding: .85rem; display: grid; grid-template-columns: auto 1fr auto; gap: .35rem .85rem; align-items: center; }
+  .adm .chofer.off { border-left-color: #b6c0cf; background: #f8f9fb; }
+  .adm .chofer.off .avatar, .adm .chofer.off h3 { opacity: .55; }
+  .adm .avatar { width: 3rem; height: 3rem; border-radius: 50%; display: grid; place-content: center; font-weight: 800; font-size: 1.05rem; background: hsl(var(--h) 75% 88%); color: hsl(var(--h) 65% 22%); grid-row: span 2; }
+  .adm .chofer h3 { font-size: 1.1rem; font-weight: 800; line-height: 1.2; overflow-wrap: anywhere; }
+  .adm .sub { color: var(--suave); font-size: .92rem; overflow-wrap: anywhere; }
+  .adm .tags { grid-column: 2 / -1; display: flex; flex-wrap: wrap; gap: .4rem; align-items: center; }
+  .adm .placa { background: #fff; border: 2px solid var(--tinta); border-radius: .4rem; padding: .05rem .5rem; font-weight: 800; letter-spacing: .08em; font-size: .88rem; box-shadow: inset 0 -3px 0 var(--taxi); }
+  .adm .chip { padding: .12rem .6rem; border-radius: 99px; font-size: .82rem; font-weight: 700; background: #e6eaf1; color: var(--tinta); }
+  .adm .chip.av { background: #fff3cd; color: var(--av); }
+  .adm button.sinpin { min-height: 32px; padding: .1rem .7rem; font-size: .85rem; background: #fff3cd; border-color: #e0b43a; color: var(--av); }
+  .adm .acc { grid-column: 2 / -1; display: flex; gap: .5rem; align-items: center; flex-wrap: wrap; margin-top: .25rem; position: relative; }
+
+  .adm .sw { display: inline-flex; flex-direction: row; align-items: center; gap: .5rem; cursor: pointer; min-height: 44px; font-weight: 700; }
+  .adm .sw input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+  .adm .sw i { width: 3rem; height: 1.75rem; border-radius: 99px; background: #aab4c4; position: relative; transition: background .15s; flex: none; }
+  .adm .sw i::after { content: ""; position: absolute; top: .2rem; left: .2rem; width: 1.35rem; height: 1.35rem; border-radius: 50%; background: #fff; transition: transform .15s; }
+  .adm .sw input:checked + i { background: var(--ok); }
+  .adm .sw input:checked + i::after { transform: translateX(1.25rem); }
+  .adm .sw input:focus-visible + i { outline: 3px solid #1d4ed8; outline-offset: 2px; }
+  .adm .chofer > .sw { grid-column: 3; grid-row: 1; justify-self: end; }
+
+  .adm .mas { position: relative; }
+  .adm .mas summary { list-style: none; min-height: 44px; min-width: 44px; display: inline-flex; align-items: center; justify-content: center; border: 1.5px solid var(--linea); border-radius: .7rem; cursor: pointer; font-weight: 800; background: #fff; }
+  .adm .mas summary::-webkit-details-marker { display: none; }
+  .adm .menu { position: absolute; left: 0; top: calc(100% + .3rem); z-index: 5; min-width: 13rem; background: #fff; border: 1px solid var(--linea); border-radius: .8rem; box-shadow: 0 10px 30px rgba(20,33,61,.18); padding: .3rem; display: grid; }
+  .adm .menu button { border: 0; justify-content: flex-start; background: transparent; font-weight: 600; }
+  .adm .menu button:hover { background: var(--papel); }
+  .adm .menu .peligro { color: var(--mal); }
+  .adm .vacio { text-align: center; padding: 2rem 1rem; color: var(--suave); display: grid; gap: .75rem; justify-items: center; background: #fff; border: 1px dashed #b6c0cf; border-radius: 1rem; }
+
+  .adm #toast { position: fixed; left: 50%; bottom: 1rem; transform: translateX(-50%); z-index: 50; width: min(30rem, 100% - 1.5rem); background: var(--tinta); color: #fff; padding: .85rem 1rem; border-radius: .8rem; box-shadow: 0 10px 30px rgba(0,0,0,.35); font-weight: 600; display: flex; gap: .75rem; align-items: center; justify-content: space-between; }
+  .adm #toast.error { background: var(--mal); }
+  .adm #toast button { min-height: 36px; background: transparent; color: #fff; border-color: rgba(255,255,255,.6); }
+
+  .adm dialog { width: min(40rem, 100% - 1rem); max-height: 94dvh; overflow: auto; border: 0; border-radius: 1.1rem; background: var(--papel); color: var(--tinta); padding: 1.1rem; box-shadow: 0 20px 60px rgba(0,0,0,.4); }
+  .adm dialog::backdrop { background: rgba(20,33,61,.65); }
+  .adm dialog form { display: grid; gap: .9rem; }
+  .adm .dlg-cab { display: flex; justify-content: space-between; align-items: center; }
+  .adm .dlg-cab h2 { font-size: 1.3rem; font-weight: 800; }
+  .adm fieldset { border: 1px solid var(--linea); background: #fff; border-radius: .9rem; padding: .8rem .9rem .9rem; display: grid; gap: .7rem; min-width: 0; }
+  .adm legend { font-weight: 800; padding: 0 .35rem; }
+  .adm .grid { display: grid; gap: .7rem; grid-template-columns: repeat(auto-fit, minmax(min(14rem, 100%), 1fr)); }
+  .adm .sv { display: grid; gap: .5rem; padding: .7rem; border: 1px solid var(--linea); border-radius: .7rem; background: var(--papel); margin-bottom: .6rem; }
+  .adm .sv .peligro, .adm .peligro { color: var(--mal); }
+  .adm .avanzado summary { cursor: pointer; font-weight: 600; min-height: 44px; display: flex; align-items: center; }
+  .adm .acciones { display: flex; gap: .6rem; justify-content: flex-end; flex-wrap: wrap; position: sticky; bottom: -1.1rem; background: var(--papel); padding: .6rem 0; }
+  .adm .pin-box { display: grid; gap: .8rem; text-align: center; }
+  .adm .pin { font-size: clamp(2.4rem, 12vw, 3.4rem); font-weight: 800; letter-spacing: .2em; font-variant-numeric: tabular-nums; background: #fff; border: 2px dashed var(--tinta); border-radius: .9rem; padding: .5rem 0 .5rem .2em; }
+  .adm .pin-box .acciones { justify-content: center; position: static; }
+  @media (max-width: 30rem) { .adm .chofer { grid-template-columns: auto 1fr; } .adm .chofer > .sw { grid-column: 1 / -1; grid-row: auto; justify-self: start; } .adm .tags, .adm .acc { grid-column: 1 / -1; } }
+  @media (prefers-reduced-motion: reduce) { .adm * { transition: none !important; } }
+</style>
