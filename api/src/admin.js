@@ -23,21 +23,25 @@ const enc = (s) => {
   return btoa(bin);
 };
 
+async function motivo(r) {
+  try { const j = await r.json(); return String(j.message || "sin detalle").slice(0, 200); } catch { return "sin detalle"; }
+}
+
 function gh(env) {
   const repo = env.GITHUB_REPO || "1booksexpert/rexi-movility";
   const rama = env.GITHUB_BRANCH || "main";
   if (!env.GITHUB_TOKEN) throw new Err("Falta el secreto GITHUB_TOKEN en el Worker.", 503);
   const h = {
-    authorization: `Bearer ${env.GITHUB_TOKEN}`,
+    authorization: `Bearer ${String(env.GITHUB_TOKEN).trim()}`,
     accept: "application/vnd.github+json",
     "user-agent": "rexi-admin",
     "x-github-api-version": "2022-11-28",
   };
-  const base = `https://api.github.com/repos/${repo}/contents/`;
+  const base = `https://api.github.com/repos/${repo.trim()}/contents/`;
   return {
     async leer(ruta) {
       const r = await fetch(`${base}${ruta}?ref=${rama}`, { headers: h });
-      if (!r.ok) throw new Err(`No pude leer ${ruta} de GitHub (${r.status}). Revisa el token.`, 502);
+      if (!r.ok) throw new Err(`No pude leer ${ruta} de GitHub (${r.status}): ${await motivo(r)}`, 502);
       const j = await r.json();
       return { datos: JSON.parse(dec(j.content)), sha: j.sha };
     },
@@ -48,7 +52,7 @@ function gh(env) {
         body: JSON.stringify({ message: mensaje, content: enc(JSON.stringify(datos, null, 2) + "\n"), sha, branch: rama }),
       });
       if (r.status === 409 || r.status === 422) throw new Err("conflicto", 409);
-      if (!r.ok) throw new Err(`GitHub rechazó el cambio (${r.status}). ¿El token tiene permiso de escritura?`, 502);
+      if (!r.ok) throw new Err(`GitHub rechazó el cambio (${r.status}): ${await motivo(r)}`, 502);
     },
   };
 }
