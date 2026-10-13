@@ -23,8 +23,12 @@ const enc = (s) => {
   return btoa(bin);
 };
 
-async function motivo(r) {
-  try { const j = await r.json(); return String(j.message || "sin detalle").slice(0, 200); } catch { return "sin detalle"; }
+async function motivo(r, info) {
+  let t = "";
+  try { t = await r.text(); } catch {}
+  let m = t;
+  try { m = JSON.parse(t).message || t; } catch {}
+  return `${String(m || r.statusText || "sin detalle").slice(0, 200)} [${info}]`;
 }
 
 function gh(env) {
@@ -37,11 +41,13 @@ function gh(env) {
     "user-agent": "rexi-admin",
     "x-github-api-version": "2022-11-28",
   };
+  const tk = String(env.GITHUB_TOKEN).trim();
+  const info = `token de ${tk.length} caracteres que empieza con "${tk.slice(0, 4)}", repo ${repo.trim()}, rama ${rama}`;
   const base = `https://api.github.com/repos/${repo.trim()}/contents/`;
   return {
     async leer(ruta) {
       const r = await fetch(`${base}${ruta}?ref=${rama}`, { headers: h });
-      if (!r.ok) throw new Err(`No pude leer ${ruta} de GitHub (${r.status}): ${await motivo(r)}`, 502);
+      if (!r.ok) throw new Err(`No pude leer ${ruta} de GitHub (${r.status}): ${await motivo(r, info)}`, 502);
       const j = await r.json();
       return { datos: JSON.parse(dec(j.content)), sha: j.sha };
     },
@@ -52,7 +58,7 @@ function gh(env) {
         body: JSON.stringify({ message: mensaje, content: enc(JSON.stringify(datos, null, 2) + "\n"), sha, branch: rama }),
       });
       if (r.status === 409 || r.status === 422) throw new Err("conflicto", 409);
-      if (!r.ok) throw new Err(`GitHub rechazó el cambio (${r.status}): ${await motivo(r)}`, 502);
+      if (!r.ok) throw new Err(`GitHub rechazó el cambio (${r.status}): ${await motivo(r, info)}`, 502);
     },
   };
 }
