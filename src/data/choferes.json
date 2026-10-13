@@ -52,5 +52,50 @@
     "referido": "",
     "plan": "pro",
     "fechaAlta": "2026-10-10"
+  },
+  {
+    "nombre": "Juan Perezito",
+    "telefono": "5554684871",
+    "titulo": "Movilidad Ejecutiva",
+    "zona": "Zona Conurbada Tampico-Madero",
+    "placa": "HVB-6543D",
+    "unidad": "Hyundai Sedan Blanco",
+    "plan": "tarjeta",
+    "referido": "Juana",
+    "flota": "",
+    "fechaAlta": "2026-10-13",
+    "id": "juan-perezito",
+    "servicios": [
+      {
+        "nombre": "Hospitales",
+        "icono": "🚖",
+        "descripcion": "Traslados dentro de la ciudad y a los Hospitales",
+        "mensaje": "Hola, necesito un traslado local o a un Hospital"
+      },
+      {
+        "nombre": "MMTM Aeropuerto Internacional de Tampico",
+        "icono": "✈️",
+        "descripcion": "Salida programada al aeropuerto.",
+        "mensaje": "Hola, quiero cotizar un traslado al aeropuerto."
+      },
+      {
+        "nombre": "Turismo Médico",
+        "icono": "🏥",
+        "descripcion": "Traslado puntual a clínicas y hospitales, con espera y regreso.",
+        "mensaje": "Hola, necesito un traslado para una consulta médica."
+      },
+      {
+        "nombre": "Paquetería Urgente",
+        "icono": "📦",
+        "descripcion": "Sobres, documentos y paquetes pequeños el mismo día.",
+        "mensaje": "Hola, necesito enviar un sobre o paquete urgente."
+      },
+      {
+        "nombre": "Facturación CFDI",
+        "icono": "🧾",
+        "descripcion": "Servicio con factura para empresas y viajes de trabajo.",
+        "mensaje": "Hola, necesito el servicio con factura (CFDI)."
+      }
+    ]
   }
 ]
