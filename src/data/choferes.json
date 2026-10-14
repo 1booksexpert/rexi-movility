@@ -3,7 +3,6 @@
     "id": "ivan-rivera",
     "nombre": "Iván Rivera",
     "telefono": "8992165262",
-    "telefonoFormateado": "899 216 5262",
     "titulo": "Movilidad Ejecutiva",
     "zona": "Reynosa, Tamaulipas",
     "placa": "",
@@ -43,6 +42,11 @@
         "color": "slate",
         "descripcion": "Servicio con factura para empresas y viajes de trabajo.",
         "mensaje": "Hola, necesito el servicio con factura (CFDI)."
+      },
+      {
+        "nombre": "Traslados a Centros Educativos",
+        "icono": "🏫",
+        "descripcion": "Transporte seguro y puntual para estudiantes hacia escuelas, colegios y universidades. Disponible para viajes de ida, vuelta o rutas diarias fijas."
       }
     ],
     "logo": "ivan-rivera.png",
@@ -51,7 +55,8 @@
     },
     "referido": "",
     "plan": "pro",
-    "fechaAlta": "2026-10-10"
+    "fechaAlta": "2026-10-10",
+    "flota": ""
   },
   {
     "nombre": "Juan Perezito",
