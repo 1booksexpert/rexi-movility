@@ -580,7 +580,7 @@ const wsDueno = chofer.whatsappDueno;
     }
 
     async function compartirTarjeta() {
-      const d = { title: CONFIG.businessName, text: 'Movilidad ejecutiva en Reynosa', url: CONFIG.currentUrl };
+      const d = { title: CONFIG.businessName, text: 'Traslados y Movilidad ejecutiva', url: CONFIG.currentUrl };
       if (navigator.share) { try { await navigator.share(d); } catch (e) {} }
       else if (navigator.clipboard) { await navigator.clipboard.writeText(CONFIG.currentUrl); estado('Enlace de la tarjeta copiado.'); }
     }
