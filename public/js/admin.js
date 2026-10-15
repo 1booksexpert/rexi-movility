@@ -1,18 +1,15 @@
 (function () {
   var $ = function (s) { return document.querySelector(s); };
+  var cobertura = [], CAT = { rubros: [], ciudades: [] }, MAX_SV = 16, MAX_COB = 14;
+  try { CAT = JSON.parse(document.getElementById("catalogo").textContent); } catch (e) {}
+  var COB_BASE = ["Centro y Zona Dorada", "Zona Conurbada", "Parques Industriales", "Puentes Internacionales"];
+  var COB_SUG = ["Centro", "Zona conurbada", "Parques industriales", "Puentes internacionales", "Aeropuerto", "Zona de hospitales", "Zona turística", "Universidades", "Central de autobuses", "Zona residencial", "Foráneos"];
+  var BOTON = { local: "Pedir taxi", puentes: "Cotizar cruce", aeropuertos: "Cotizar viaje", medico: "Reservar traslado", paqueteria: "Enviar paquete", empresas: "Consultar convenio", cfdi: "Pedir con factura", hora: "Reservar chofer", eventos: "Cotizar evento", adultos: "Pedir apoyo", escolar: "Cotizar traslado" };
   var clave = "", D = null, filtro = "todos", q = "", editando = null, editF = null, tToast = 0;
   try { clave = sessionStorage.getItem("rexi-admin") || ""; } catch (e) {}
   var SITIO = location.origin;
-  var CAMPOS = ["nombre", "telefono", "id", "titulo", "zona", "placa", "unidad", "flota", "plan", "pago", "referido", "fechaAlta"];
+  var CAMPOS = ["nombre", "telefono", "id", "titulo", "zona", "ciudad", "placa", "unidad", "flota", "plan", "pago", "referido", "fechaAlta"];
   var PLAN = { tarjeta: "Tarjeta", pro: "Chofer Pro", flota: "Flota" };
-  var SV_BASE = [
-    { nombre: "Puentes y Local", icono: "🚖", descripcion: "Traslados dentro de la ciudad y a los puentes internacionales.", mensaje: "Hola, necesito un traslado local o a un puente internacional." },
-    { nombre: "Aeropuerto", icono: "✈️", descripcion: "Salida programada al aeropuerto.", mensaje: "Hola, quiero cotizar un traslado al aeropuerto." },
-    { nombre: "Turismo Médico", icono: "🏥", descripcion: "Traslado puntual a clínicas y hospitales, con espera y regreso.", mensaje: "Hola, necesito un traslado para una consulta médica." },
-    { nombre: "Paquetería Urgente", icono: "📦", descripcion: "Sobres, documentos y paquetes pequeños el mismo día.", mensaje: "Hola, necesito enviar un sobre o paquete urgente." },
-    { nombre: "Facturación CFDI", icono: "🧾", descripcion: "Servicio con factura para empresas y viajes de trabajo.", mensaje: "Hola, necesito el servicio con factura (CFDI)." }
-  ];
-
   function el(t, a, kids) {
     var n = document.createElement(t);
     for (var k in (a || {})) { if (k === "text") n.textContent = a[k]; else if (k === "onclick") n.onclick = a[k]; else n.setAttribute(k, a[k]); }
@@ -146,33 +143,129 @@
 
   // ---- Formulario de chofer
   function filaSv(s) {
-    var d = el("div", { "class": "sv" }, [
+    function mover(d) { var n = d < 0 ? row.previousElementSibling : row.nextElementSibling; if (!n) return; if (d < 0) n.before(row); else n.after(row); pintarSv(); }
+    var row = el("div", { "class": "sv" }, [
+      el("div", { "class": "sv-cab" }, [
+        el("b", { "class": "sv-t", text: s.nombre || "Servicio nuevo" }),
+        el("div", { "class": "fila-btn" }, [
+          el("button", { type: "button", "class": "ghost", "aria-label": "Subir servicio", text: "↑", onclick: function () { mover(-1); } }),
+          el("button", { type: "button", "class": "ghost", "aria-label": "Bajar servicio", text: "↓", onclick: function () { mover(1); } }),
+          el("button", { type: "button", "class": "peligro ghost", text: "Quitar", onclick: function () { row.remove(); pintarSv(); } })
+        ])
+      ]),
       el("div", { "class": "grid" }, [
         el("label", { text: "Icono" }, [el("input", { "data-k": "icono", maxlength: "8", value: s.icono || "🚖" })]),
-        el("label", { text: "Nombre del servicio" }, [el("input", { "data-k": "nombre", maxlength: "40", value: s.nombre || "" })])
+        el("label", { text: "Nombre del servicio" }, [el("input", { "data-k": "nombre", maxlength: "60", value: s.nombre || "" })])
       ]),
-      el("label", { text: "Descripción" }, [el("input", { "data-k": "descripcion", maxlength: "160", value: s.descripcion || "" })]),
+      el("label", { text: "Descripción en la tarjeta" }, [el("input", { "data-k": "descripcion", maxlength: "160", value: s.descripcion || "" })]),
       el("label", { text: "Mensaje de WhatsApp" }, [el("input", { "data-k": "mensaje", maxlength: "200", value: s.mensaje || "" })]),
-      el("button", { type: "button", "class": "peligro", text: "Quitar servicio", onclick: function () { d.remove(); } })
+      el("label", { text: "Texto del botón" }, [el("input", { "data-k": "boton", maxlength: "24", value: s.boton || "", placeholder: "Pedir por WhatsApp" })])
     ]);
-    d.dataset.color = s.color || "";
-    return d;
+    row.dataset.color = s.color || "";
+    row.querySelector('[data-k="nombre"]').addEventListener("input", function (e) { row.querySelector(".sv-t").textContent = e.target.value || "Servicio nuevo"; });
+    return row;
   }
+  function pintarSv() {
+    var n = $("#servicios").children.length;
+    $("#sv-vacio").hidden = n > 0; $("#sv-cuenta").textContent = n + " de " + MAX_SV;
+  }
+  function agregarSv(s) {
+    if ($("#servicios").children.length >= MAX_SV) { toast("Máximo " + MAX_SV + " servicios por tarjeta.", true); return false; }
+    $("#servicios").appendChild(filaSv(s)); pintarSv(); return true;
+  }
+  function nombresSv() { return [].map.call($("#servicios").querySelectorAll('[data-k="nombre"]'), function (i) { return i.value.trim().toLowerCase(); }); }
+
+  // ---- Zonas de cobertura
+  function pintarCob() {
+    var c = $("#cob-chips"); c.textContent = "";
+    cobertura.forEach(function (z, i) { c.appendChild(el("button", { type: "button", "class": "chip-on", "aria-label": "Quitar " + z, text: z + " ✕", onclick: function () { cobertura.splice(i, 1); pintarCob(); } })); });
+    if (!cobertura.length) c.appendChild(el("span", { "class": "ayuda", text: "Sin zonas: la sección no se muestra en la tarjeta." }));
+    var ciudad = ciudadSel(), sug = COB_SUG.concat(ciudad ? [ciudad.corto] : []).concat(COB_BASE);
+    var lo = cobertura.map(function (x) { return x.toLowerCase(); }), vistos = {};
+    var sg = $("#cob-sug"); sg.textContent = "";
+    sug.forEach(function (z) { var k = z.toLowerCase(); if (lo.indexOf(k) >= 0 || vistos[k]) return; vistos[k] = 1; sg.appendChild(el("button", { type: "button", text: "+ " + z, onclick: function () { addCob(z); } })); });
+  }
+  function addCob(z) {
+    z = (z || "").trim(); if (!z) return;
+    if (cobertura.some(function (x) { return x.toLowerCase() === z.toLowerCase(); })) return;
+    if (cobertura.length >= MAX_COB) { toast("Máximo " + MAX_COB + " zonas.", true); return; }
+    cobertura.push(z.slice(0, 40)); pintarCob();
+  }
+  function ciudadSel() { var id = $("#form-c").ciudad.value; return CAT.ciudades.filter(function (c) { return c.id === id; })[0] || null; }
+
+  // ---- Catálogo
+  function rellenar(t, ciudad, lugares) { return t.replace(/\{ciudad\}/g, ciudad ? ciudad.corto : "tu ciudad").replace(/\{lugares\}/g, lugares || "").replace(/\s+/g, " ").replace(/\.\./g, ".").trim(); }
+  function lista(l) { var a = l.slice(0, 4); var t = a.length > 1 ? a.slice(0, -1).join(", ") + " y " + a[a.length - 1] : a[0] || ""; return t + (l.length > 4 ? " y más" : "") + "."; }
+  function itemsCat(ciudad) {
+    var out = [];
+    CAT.rubros.forEach(function (r) {
+      var lug = ciudad && ciudad.lugares[r.id] || [];
+      var boton = BOTON[r.id] || "Cotizar por WhatsApp";
+      if (r.categoria && !lug.length) return;
+      out.push({ grupo: r.categoria ? "En " + ciudad.corto : "Servicios generales", s: { nombre: r.nombre, icono: r.icono, descripcion: rellenar(r.plantilla, ciudad, lista(lug)), mensaje: rellenar(r.mensaje, ciudad), boton: boton }, lugares: lug.map(function (l) { return { nombre: l, icono: r.icono, descripcion: r.nombre, mensaje: "Hola, necesito un traslado a " + l + ".", boton: "Cotizar viaje" }; }) });
+    });
+    return out;
+  }
+  var catSel = [];
+  function pintarCat() {
+    var ciudad = CAT.ciudades.filter(function (c) { return c.id === $("#cat-ciudad").value; })[0] || null;
+    var q = $("#cat-buscar").value.toLowerCase().trim(), ya = nombresSv(), box = $("#cat-lista"), ultimo = "";
+    box.textContent = ""; catSel = [];
+    function fila(s, extra) {
+      var dup = ya.indexOf(s.nombre.toLowerCase()) >= 0, cb = el("input", { type: "checkbox" });
+      cb.disabled = dup; cb.onchange = function () { var i = catSel.indexOf(s); if (cb.checked && i < 0) catSel.push(s); if (!cb.checked && i >= 0) catSel.splice(i, 1); $("#cat-cuenta").textContent = catSel.length ? catSel.length + " seleccionados" : ""; };
+      return el("label", { "class": "cat-item" + (dup ? " ya" : "") }, [cb, el("span", { text: s.nombre + (dup ? " (ya está)" : "") }), el("small", { text: extra || s.descripcion })]);
+    }
+    itemsCat(ciudad).forEach(function (it) {
+      var hit = !q || it.s.nombre.toLowerCase().indexOf(q) >= 0 || it.s.descripcion.toLowerCase().indexOf(q) >= 0;
+      var lug = it.lugares.filter(function (l) { return !q || hit || l.nombre.toLowerCase().indexOf(q) >= 0; });
+      if (!hit && !lug.length) return;
+      if (it.grupo !== ultimo) { ultimo = it.grupo; box.appendChild(el("div", { "class": "cat-grupo", text: it.grupo })); }
+      if (hit) box.appendChild(fila(it.s));
+      if (lug.length) {
+        var d = el("details", { "class": "lug" }, [el("summary", { text: "Lugares específicos (" + lug.length + ")" })]);
+        if (q) d.open = true;
+        lug.forEach(function (l) { d.appendChild(fila(l, "Servicio individual")); });
+        box.appendChild(d);
+      }
+    });
+    if (!box.children.length) box.appendChild(el("p", { "class": "ayuda", text: "Sin resultados. Prueba otra palabra o crea un servicio propio." }));
+    $("#cat-cuenta").textContent = "";
+  }
+  function abrirCat() {
+    var sel = $("#cat-ciudad"); sel.textContent = ""; sel.appendChild(el("option", { value: "", text: "Solo servicios generales" }));
+    CAT.ciudades.forEach(function (c) { sel.appendChild(el("option", { value: c.id, text: c.corto + ", " + c.estado })); });
+    sel.value = $("#form-c").ciudad.value || ""; $("#cat-buscar").value = ""; pintarCat(); $("#dlg-cat").showModal();
+  }
+  $("#del-cat").onclick = abrirCat;
+  $("#cat-ciudad").onchange = pintarCat; $("#cat-buscar").addEventListener("input", pintarCat);
+  $("#cerrar-cat").onclick = function () { $("#dlg-cat").close(); };
+  $("#cat-ok").onclick = function () {
+    var n = 0; catSel.forEach(function (s) { if (agregarSv(s)) n++; });
+    $("#dlg-cat").close(); if (n) toast(n + (n === 1 ? " servicio agregado" : " servicios agregados") + ". Revisa los textos y pulsa Guardar.");
+  };
+
   function abrirC(c) {
     editando = c; var f = $("#form-c"); f.reset(); $("#err-c").hidden = true;
     $("#dlg-c-t").textContent = c ? "Editar a " + c.nombre : "Nuevo chofer";
     $("#guardar-c").textContent = c ? "Guardar cambios" : "Crear chofer y generar PIN";
     var sel = f.flota; sel.textContent = ""; sel.appendChild(el("option", { value: "", text: "Independiente (sin flota)" }));
     D.flotas.forEach(function (x) { sel.appendChild(el("option", { value: x.id, text: x.nombre })); });
-    var v = c || { fechaAlta: new Date().toISOString().slice(0, 10), servicios: SV_BASE };
+    var cs = f.ciudad; cs.textContent = ""; cs.appendChild(el("option", { value: "", text: "Sin ciudad (solo servicios generales)" }));
+    CAT.ciudades.forEach(function (x) { cs.appendChild(el("option", { value: x.id, text: x.corto + ", " + x.estado })); });
+    var v = c || { fechaAlta: new Date().toISOString().slice(0, 10), servicios: [] };
     CAMPOS.forEach(function (k) { f[k].value = v[k] || ""; });
     f.id.readOnly = !!c; urlId();
-    $("#servicios").textContent = ""; (v.servicios || []).forEach(function (s) { $("#servicios").appendChild(filaSv(s)); });
+    $("#servicios").textContent = ""; (v.servicios || []).forEach(function (s) { $("#servicios").appendChild(filaSv(s)); }); pintarSv();
+    cobertura = c ? (Array.isArray(c.cobertura) ? c.cobertura.slice() : COB_BASE.slice()) : []; pintarCob();
     $("#dlg-c").showModal();
   }
   function urlId() { $("#id-url").textContent = "Su tarjeta: " + SITIO + "/t/" + ($("#form-c").id.value || "…") + "/"; }
   $("#nuevo-c").onclick = function () { abrirC(null); };
-  $("#mas-sv").onclick = function () { $("#servicios").appendChild(filaSv({})); };
+  $("#mas-sv").onclick = function () { agregarSv({}); };
+  $("#cob-add").onclick = function () { addCob($("#cob-nuevo").value); $("#cob-nuevo").value = ""; $("#cob-nuevo").focus(); };
+  $("#cob-nuevo").addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); $("#cob-add").click(); } });
+  $("#form-c").ciudad.addEventListener("change", pintarCob);
   $("#cancel-c").onclick = $("#cerrar-c").onclick = function () { $("#dlg-c").close(); };
   $("#form-c").nombre.addEventListener("input", function (e) { if (!editando) { $("#form-c").id.value = slug(e.target.value); urlId(); } });
   $("#form-c").id.addEventListener("input", urlId);
@@ -182,6 +275,7 @@
     o.servicios = [].map.call($("#servicios").children, function (d) {
       var s = {}; [].forEach.call(d.querySelectorAll("[data-k]"), function (i) { s[i.dataset.k] = i.value; }); if (d.dataset.color) s.color = d.dataset.color; return s;
     });
+    o.cobertura = cobertura.slice();
     var b = $("#guardar-c"), txt = b.textContent; b.disabled = true; b.textContent = "Guardando…";
     api("chofer", { nuevo: !editando, id: o.id, chofer: o }).then(function (r) {
       D.choferes = r.choferes; $("#dlg-c").close();

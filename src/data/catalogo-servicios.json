@@ -1,0 +1,788 @@
+{
+ "version": 1,
+ "nota": "Catálogo editable a mano. Revisa nombres con los choferes de cada ciudad antes de publicar. Los lugares sirven para armar la descripción de cada servicio.",
+ "rubros": [
+  {
+   "id": "local",
+   "nombre": "Traslados locales",
+   "icono": "🚖",
+   "color": "blue",
+   "categoria": "local",
+   "plantilla": "Traslados dentro de {ciudad}: hoteles, zonas, colonias y plazas. {lugares}",
+   "mensaje": "Hola, necesito un traslado local en {ciudad}."
+  },
+  {
+   "id": "puentes",
+   "nombre": "Puentes y cruces internacionales",
+   "icono": "🌉",
+   "color": "blue",
+   "categoria": "puentes",
+   "plantilla": "Te llevo y te recojo en {lugares}.",
+   "mensaje": "Hola, necesito un traslado a un puente internacional desde {ciudad}."
+  },
+  {
+   "id": "aeropuertos",
+   "nombre": "Aeropuertos",
+   "icono": "✈️",
+   "color": "purple",
+   "categoria": "aeropuertos",
+   "plantilla": "Salida programada a {lugares}.",
+   "mensaje": "Hola, quiero cotizar un traslado al aeropuerto desde {ciudad}."
+  },
+  {
+   "id": "terminales",
+   "nombre": "Central de autobuses y terminales",
+   "icono": "🚌",
+   "color": "slate",
+   "categoria": "terminales",
+   "plantilla": "Traslado a {lugares}, con tiempo para tu salida.",
+   "mensaje": "Hola, necesito un traslado a la central de autobuses en {ciudad}."
+  },
+  {
+   "id": "medico",
+   "nombre": "Turismo médico y hospitales",
+   "icono": "🏥",
+   "color": "teal",
+   "categoria": "medico",
+   "plantilla": "Traslado puntual a {lugares}, con espera y regreso.",
+   "mensaje": "Hola, necesito un traslado para una consulta médica en {ciudad}."
+  },
+  {
+   "id": "cultural",
+   "nombre": "Cultura, museos e historia",
+   "icono": "🏛️",
+   "color": "purple",
+   "categoria": "cultural",
+   "plantilla": "Recorridos a {lugares}.",
+   "mensaje": "Hola, quiero un recorrido cultural en {ciudad}."
+  },
+  {
+   "id": "turistico",
+   "nombre": "Turismo y paseos",
+   "icono": "🌴",
+   "color": "orange",
+   "categoria": "turistico",
+   "plantilla": "Paseos a {lugares}.",
+   "mensaje": "Hola, quiero un paseo turístico en {ciudad}."
+  },
+  {
+   "id": "industrial",
+   "nombre": "Turismo industrial y visitas a plantas",
+   "icono": "🏭",
+   "color": "slate",
+   "categoria": "industrial",
+   "plantilla": "Traslado de ejecutivos, auditores y visitas a {lugares}.",
+   "mensaje": "Hola, necesito un traslado a un parque industrial en {ciudad}."
+  },
+  {
+   "id": "expos",
+   "nombre": "Expos, convenciones, estadios y conciertos",
+   "icono": "🎟️",
+   "color": "orange",
+   "categoria": "expos",
+   "plantilla": "Ida y vuelta a {lugares}.",
+   "mensaje": "Hola, necesito un traslado a un evento, expo o estadio en {ciudad}."
+  },
+  {
+   "id": "compras",
+   "nombre": "Compras y outlets",
+   "icono": "🛍️",
+   "color": "orange",
+   "categoria": "compras",
+   "plantilla": "Te llevo de compras a {lugares}.",
+   "mensaje": "Hola, quiero ir de compras. ¿Me cotizas desde {ciudad}?"
+  },
+  {
+   "id": "tramites",
+   "nombre": "Trámites, consulados y citas de visa",
+   "icono": "🛂",
+   "color": "teal",
+   "categoria": "tramites",
+   "plantilla": "Traslado puntual a {lugares}.",
+   "mensaje": "Hola, necesito un traslado para un trámite o cita en {ciudad}."
+  },
+  {
+   "id": "educacion",
+   "nombre": "Universidades y escuelas",
+   "icono": "🎓",
+   "color": "blue",
+   "categoria": "educacion",
+   "plantilla": "Traslado a {lugares}.",
+   "mensaje": "Hola, necesito un traslado a una universidad o escuela en {ciudad}."
+  },
+  {
+   "id": "foraneos",
+   "nombre": "Viajes foráneos y carretera",
+   "icono": "🛣️",
+   "color": "blue",
+   "categoria": null,
+   "plantilla": "Viajes a otras ciudades con precio acordado de antemano.",
+   "mensaje": "Hola, quiero cotizar un viaje foráneo."
+  },
+  {
+   "id": "empresas",
+   "nombre": "Personal y empresas",
+   "icono": "💼",
+   "color": "slate",
+   "categoria": null,
+   "plantilla": "Traslado de personal, ejecutivos y visitantes. Convenios mensuales.",
+   "mensaje": "Hola, quiero información de un convenio para mi empresa."
+  },
+  {
+   "id": "hora",
+   "nombre": "Servicio por hora o por día",
+   "icono": "⏱️",
+   "color": "blue",
+   "categoria": null,
+   "plantilla": "Chofer a tu disposición por horas o por el día completo.",
+   "mensaje": "Hola, quiero contratar un chofer por horas o por día."
+  },
+  {
+   "id": "eventos",
+   "nombre": "Bodas, XV años y eventos sociales",
+   "icono": "💍",
+   "color": "purple",
+   "categoria": null,
+   "plantilla": "Traslado de invitados y de la familia, con puntualidad.",
+   "mensaje": "Hola, quiero cotizar el traslado para un evento social."
+  },
+  {
+   "id": "nocturno",
+   "nombre": "Servicio nocturno y 24 horas",
+   "icono": "🌙",
+   "color": "slate",
+   "categoria": null,
+   "plantilla": "Disponible de noche y de madrugada con aviso previo.",
+   "mensaje": "Hola, necesito un servicio nocturno o de madrugada."
+  },
+  {
+   "id": "adultos",
+   "nombre": "Adultos mayores y movilidad reducida",
+   "icono": "♿",
+   "color": "teal",
+   "categoria": null,
+   "plantilla": "Trato paciente, ayuda para subir y bajar y espera en consultas.",
+   "mensaje": "Hola, necesito un traslado para una persona mayor o con movilidad reducida."
+  },
+  {
+   "id": "escolar",
+   "nombre": "Niños y traslado escolar",
+   "icono": "🎒",
+   "color": "orange",
+   "categoria": null,
+   "plantilla": "Traslado de niños con puntualidad y aviso a la familia.",
+   "mensaje": "Hola, necesito un traslado escolar para niños."
+  },
+  {
+   "id": "mascotas",
+   "nombre": "Viaja con tu mascota",
+   "icono": "🐾",
+   "color": "orange",
+   "categoria": null,
+   "plantilla": "Pregunta por traslados con mascota (con transportadora).",
+   "mensaje": "Hola, necesito un traslado con mi mascota."
+  },
+  {
+   "id": "mandados",
+   "nombre": "Mandados y compras a domicilio",
+   "icono": "🛒",
+   "color": "orange",
+   "categoria": null,
+   "plantilla": "Recojo y entrego lo que necesites dentro de la ciudad.",
+   "mensaje": "Hola, necesito que me hagas un mandado."
+  },
+  {
+   "id": "paqueteria",
+   "nombre": "Paquetería urgente",
+   "icono": "📦",
+   "color": "orange",
+   "categoria": null,
+   "plantilla": "Sobres, documentos y paquetes pequeños entregados el mismo día.",
+   "mensaje": "Hola, necesito enviar un sobre o paquete urgente."
+  },
+  {
+   "id": "cfdi",
+   "nombre": "Facturación CFDI",
+   "icono": "🧾",
+   "color": "slate",
+   "categoria": null,
+   "plantilla": "Servicio con factura para empresas y viajes de trabajo.",
+   "mensaje": "Hola, necesito el servicio con factura (CFDI)."
+  },
+  {
+   "id": "gastronomia",
+   "nombre": "Ruta gastronómica",
+   "icono": "🍽️",
+   "color": "orange",
+   "categoria": null,
+   "plantilla": "Te llevo a los mejores restaurantes y a probar la comida de la región.",
+   "mensaje": "Hola, quiero que me recomiendes y me lleves a un buen restaurante."
+  }
+ ],
+ "ciudades": [
+  {
+   "id": "reynosa",
+   "nombre": "Reynosa y Río Bravo",
+   "corto": "Reynosa",
+   "estado": "Tamaulipas",
+   "lugares": {
+    "puentes": [
+     "Puente Internacional Reynosa-Hidalgo",
+     "Puente Internacional Reynosa-Pharr",
+     "Puente Internacional Anzaldúas",
+     "Puente Internacional Río Bravo-Donna"
+    ],
+    "aeropuertos": [
+     "Aeropuerto Internacional General Lucio Blanco (REX)",
+     "Aeropuerto Internacional McAllen-Miller (MFE)",
+     "Aeropuerto de Brownsville/South Padre Island (BRO)",
+     "Valley International Airport, Harlingen (HRL)",
+     "Aeropuerto Internacional de Monterrey (MTY)"
+    ],
+    "terminales": [
+     "Central de Autobuses de Reynosa"
+    ],
+    "medico": [
+     "IMSS Hospital General de Zona No. 270",
+     "Hospital General de Reynosa",
+     "Hospital General ISSSTE Reynosa",
+     "Hospital Materno Infantil de Reynosa",
+     "Cruz Roja Reynosa",
+     "DHR Health (Edinburg, TX)",
+     "McAllen Medical Center (McAllen, TX)"
+    ],
+    "cultural": [
+     "Catedral de Nuestra Señora de Guadalupe",
+     "Parque Cultural Reynosa",
+     "Casa de la Cultura de Reynosa"
+    ],
+    "turistico": [
+     "Plaza Principal de Reynosa",
+     "Mercado Zaragoza",
+     "Plaza Principal de Río Bravo"
+    ],
+    "industrial": [
+     "Zona industrial de Reynosa",
+     "Parque Industrial Río Bravo"
+    ],
+    "expos": [
+     "Centro de Convenciones de Reynosa",
+     "Estadio Adolfo López Mateos",
+     "McAllen Convention Center (McAllen, TX)"
+    ],
+    "compras": [
+     "Plaza Real Reynosa",
+     "La Plaza Mall (McAllen, TX)",
+     "Palms Crossing (McAllen, TX)",
+     "Rio Grande Valley Premium Outlets (Mercedes, TX)"
+    ],
+    "tramites": [
+     "Aduana de Reynosa",
+     "Instituto Nacional de Migración Reynosa",
+     "Delegación SRE Reynosa"
+    ],
+    "educacion": [
+     "UAT Centro Universitario Reynosa-Aztlán",
+     "Instituto Tecnológico de Reynosa",
+     "Universidad Tecnológica de Reynosa",
+     "UTRGV (Edinburg, TX)"
+    ],
+    "local": [
+     "Zona Centro de Reynosa"
+    ]
+   }
+  },
+  {
+   "id": "matamoros",
+   "nombre": "Matamoros",
+   "corto": "Matamoros",
+   "estado": "Tamaulipas",
+   "lugares": {
+    "puentes": [
+     "Puente Internacional Gateway (Puente Viejo)",
+     "Puente Internacional B&M (Puente Nuevo)",
+     "Puente Internacional Los Tomates (Veterans)",
+     "Puente Internacional Los Indios (Free Trade)"
+    ],
+    "aeropuertos": [
+     "Aeropuerto Internacional General Servando Canales (MAM)",
+     "Aeropuerto de Brownsville/South Padre Island (BRO)",
+     "Valley International Airport, Harlingen (HRL)",
+     "Aeropuerto Internacional McAllen-Miller (MFE)"
+    ],
+    "terminales": [
+     "Central de Autobuses de Matamoros"
+    ],
+    "medico": [
+     "Hospital General Dr. Alfredo Pumarejo Lafaurie",
+     "Hospital Civil de Matamoros",
+     "Hospital General ISSSTE Matamoros",
+     "Cruz Roja Matamoros",
+     "Valley Regional Medical Center (Brownsville, TX)",
+     "Brownsville Doctors Hospital (Brownsville, TX)"
+    ],
+    "cultural": [
+     "Catedral de Nuestra Señora del Refugio",
+     "Museo Casa Mata",
+     "Teatro de la Reforma",
+     "Plaza Hidalgo"
+    ],
+    "turistico": [
+     "Mercado Juárez",
+     "Playa Bagdad",
+     "Playa Lauro Villar"
+    ],
+    "industrial": [
+     "Parque Industrial Finsa Matamoros",
+     "Zona industrial de Matamoros"
+    ],
+    "compras": [
+     "Sunrise Mall (Brownsville, TX)",
+     "Rio Grande Valley Premium Outlets (Mercedes, TX)"
+    ],
+    "tramites": [
+     "Consulado General de EE.UU. en Matamoros",
+     "Aduana de Matamoros",
+     "Instituto Nacional de Migración Matamoros"
+    ],
+    "educacion": [
+     "Instituto Tecnológico de Matamoros",
+     "Universidad Tecnológica de Matamoros",
+     "UT Rio Grande Valley (Brownsville, TX)"
+    ],
+    "local": [
+     "Zona Centro de Matamoros",
+     "Best Western Plaza Matamoros"
+    ]
+   }
+  },
+  {
+   "id": "nuevo-laredo",
+   "nombre": "Nuevo Laredo",
+   "corto": "Nuevo Laredo",
+   "estado": "Tamaulipas",
+   "lugares": {
+    "puentes": [
+     "Puente Internacional No. 1 (Gateway to the Americas)",
+     "Puente Internacional No. 2 (Juárez-Lincoln)",
+     "Puente Internacional Comercio Mundial (World Trade Bridge)"
+    ],
+    "aeropuertos": [
+     "Aeropuerto Internacional Quetzalcóatl (NLD)",
+     "Laredo International Airport (LRD)",
+     "San Antonio International Airport (SAT)",
+     "Aeropuerto Internacional de Monterrey (MTY)"
+    ],
+    "terminales": [
+     "Central de Autobuses de Nuevo Laredo"
+    ],
+    "medico": [
+     "Hospital General de Nuevo Laredo",
+     "Hospital Materno Infantil de Nuevo Laredo",
+     "Cruz Roja Nuevo Laredo",
+     "Laredo Medical Center (Laredo, TX)",
+     "Doctors Hospital of Laredo (Laredo, TX)"
+    ],
+    "cultural": [
+     "Plaza Hidalgo"
+    ],
+    "turistico": [
+     "Mercado Maclovio Herrera",
+     "Avenida Guerrero (zona centro)"
+    ],
+    "industrial": [
+     "Parque Industrial Longoria",
+     "Zona industrial y de logística de Nuevo Laredo"
+    ],
+    "expos": [
+     "Estadio Nuevo Laredo",
+     "Laredo Energy Arena (Laredo, TX)"
+    ],
+    "compras": [
+     "Mall del Norte (Laredo, TX)",
+     "Outlet Shoppes at Laredo (Laredo, TX)"
+    ],
+    "tramites": [
+     "Consulado General de EE.UU. en Nuevo Laredo",
+     "Aduana de Nuevo Laredo",
+     "Instituto Nacional de Migración Nuevo Laredo"
+    ],
+    "educacion": [
+     "Instituto Tecnológico de Nuevo Laredo",
+     "Universidad Tecnológica de Nuevo Laredo",
+     "Texas A&M International University (Laredo, TX)",
+     "Laredo College (Laredo, TX)"
+    ],
+    "local": [
+     "Zona Centro de Nuevo Laredo"
+    ]
+   }
+  },
+  {
+   "id": "tampico",
+   "nombre": "Tampico, Madero y Altamira",
+   "corto": "Tampico",
+   "estado": "Tamaulipas",
+   "lugares": {
+    "puentes": [
+     "Puente Tampico (Tamaulipas–Veracruz)"
+    ],
+    "aeropuertos": [
+     "Aeropuerto Internacional General Francisco Javier Mina (TAM)"
+    ],
+    "terminales": [
+     "Central de Autobuses de Tampico",
+     "Puerto de Tampico"
+    ],
+    "medico": [
+     "Hospital General Dr. Carlos Canseco",
+     "Hospital General ISSSTE Tampico",
+     "Hospital Beneficencia Española de Tampico",
+     "Hospital Ángeles Tampico"
+    ],
+    "cultural": [
+     "Catedral de Tampico",
+     "Plaza de Armas",
+     "Plaza de la Libertad",
+     "Museo de la Ciudad de Tampico",
+     "Espacio Cultural Metropolitano (METRO)",
+     "Casa de la Cultura de Ciudad Madero"
+    ],
+    "turistico": [
+     "Playa Miramar",
+     "Escolleras y Malecón de Miramar",
+     "Laguna del Carpintero",
+     "Centro Histórico de Tampico",
+     "Mercado de Tampico",
+     "Playa Tesoro",
+     "Playa Dunas Doradas"
+    ],
+    "industrial": [
+     "Puerto Industrial de Altamira",
+     "Corredor Industrial de Altamira",
+     "North Point Industrial & Business Park",
+     "Refinería Francisco I. Madero"
+    ],
+    "expos": [
+     "Centro de Convenciones de Tampico",
+     "Estadio Tamaulipas"
+    ],
+    "educacion": [
+     "UAT Campus Tampico-Madero",
+     "Instituto Tecnológico de Ciudad Madero",
+     "Tecnológico de Monterrey Campus Tampico",
+     "Universidad Politécnica de Altamira"
+    ],
+    "local": [
+     "Plaza de Altamira",
+     "Palacio Municipal de Tampico"
+    ]
+   }
+  },
+  {
+   "id": "ciudad-victoria",
+   "nombre": "Ciudad Victoria",
+   "corto": "Ciudad Victoria",
+   "estado": "Tamaulipas",
+   "lugares": {
+    "aeropuertos": [
+     "Aeropuerto Internacional General Pedro José Méndez (CVM)"
+    ],
+    "terminales": [
+     "Central de Autobuses de Ciudad Victoria"
+    ],
+    "medico": [
+     "Hospital General Victoria",
+     "Hospital Infantil de Ciudad Victoria",
+     "Hospital Regional de Alta Especialidad de Ciudad Victoria",
+     "IMSS Hospital General de Zona No. 1"
+    ],
+    "cultural": [
+     "Plaza Hidalgo",
+     "Basílica de Nuestra Señora del Refugio",
+     "Catedral del Sagrado Corazón",
+     "Teatro Juárez",
+     "Teatro Amalia G. Castillo Ledón",
+     "Museo Regional de Historia de Tamaulipas",
+     "Pinacoteca de Tamaulipas",
+     "Museo de Historia Natural TAMux",
+     "Planetario Dr. Ramiro Iglesias Leal"
+    ],
+    "turistico": [
+     "Parque Cultural y Recreativo Siglo XXI",
+     "Parque Bicentenario",
+     "Zoológico de Tamatán",
+     "Parque Ecológico Los Troncones",
+     "Cascadas de Juan Capitán",
+     "Balcón de Moctezuma"
+    ],
+    "expos": [
+     "Estadio Marte R. Gómez",
+     "Estadio Universitario Eugenio Alvizo Porras"
+    ],
+    "tramites": [
+     "Palacio de Gobierno de Tamaulipas"
+    ],
+    "educacion": [
+     "Universidad Autónoma de Tamaulipas (UAT) Victoria",
+     "Instituto Tecnológico de Ciudad Victoria",
+     "Universidad Politécnica de Victoria",
+     "CINVESTAV Unidad Tamaulipas"
+    ],
+    "local": [
+     "Torre Bicentenario"
+    ]
+   }
+  },
+  {
+   "id": "monterrey",
+   "nombre": "Monterrey y área metropolitana",
+   "corto": "Monterrey",
+   "estado": "Nuevo León",
+   "lugares": {
+    "puentes": [
+     "Autopista Monterrey–Nuevo Laredo (acceso a los puentes de Nuevo Laredo)",
+     "Autopista Monterrey–Reynosa (acceso a los puentes de Reynosa)",
+     "Puente Internacional Solidaridad-Colombia"
+    ],
+    "aeropuertos": [
+     "Aeropuerto Internacional General Mariano Escobedo (MTY)",
+     "Aeropuerto del Norte (NTR)"
+    ],
+    "terminales": [
+     "Central de Autobuses de Monterrey"
+    ],
+    "medico": [
+     "Hospital Universitario Dr. José Eleuterio González",
+     "TecSalud Hospital San José",
+     "TecSalud Hospital Zambrano Hellion",
+     "Christus Muguerza Hospital Alta Especialidad",
+     "Christus Muguerza Hospital Sur",
+     "Hospital Metropolitano Dr. Bernardo Sepúlveda",
+     "IMSS UMAE Hospital de Especialidades No. 25"
+    ],
+    "cultural": [
+     "Museo de Arte Contemporáneo (MARCO)",
+     "Museo de Historia Mexicana",
+     "Horno3 Museo del Acero",
+     "Papalote Museo del Niño",
+     "Museo Metropolitano de Monterrey",
+     "Museo Regional de Nuevo León El Obispado",
+     "Catedral Metropolitana",
+     "Basílica de Nuestra Señora de Guadalupe",
+     "Teatro de la Ciudad"
+    ],
+    "turistico": [
+     "Parque Fundidora",
+     "Macroplaza",
+     "Paseo Santa Lucía",
+     "Barrio Antiguo",
+     "Parque Ecológico Chipinque",
+     "Parque Nacional Cumbres de Monterrey (La Huasteca)",
+     "Grutas de García",
+     "Parque La Pastora",
+     "Cascada Cola de Caballo",
+     "Santiago, Pueblo Mágico",
+     "Presa La Boca"
+    ],
+    "industrial": [
+     "Parque Industrial Finsa",
+     "Parque Industrial Stiva Aeropuerto",
+     "Corredor industrial de Apodaca",
+     "Zona industrial de Santa Catarina",
+     "Zona industrial de Escobedo",
+     "Planta Kia en Pesquería"
+    ],
+    "expos": [
+     "Cintermex",
+     "Auditorio Pabellón M",
+     "Arena Monterrey",
+     "Estadio BBVA",
+     "Estadio Universitario",
+     "Showcenter Complex"
+    ],
+    "compras": [
+     "Galerías Monterrey",
+     "Paseo San Pedro",
+     "Plaza Fiesta San Agustín",
+     "Galerías Valle Oriente",
+     "Paseo La Fe",
+     "Fashion Drive",
+     "Paseo Santa Catarina"
+    ],
+    "tramites": [
+     "Consulado General de Estados Unidos en Monterrey",
+     "Palacio de Gobierno de Nuevo León",
+     "Instituto Nacional de Migración Monterrey"
+    ],
+    "educacion": [
+     "Tecnológico de Monterrey Campus Monterrey",
+     "UANL Ciudad Universitaria",
+     "Universidad de Monterrey (UDEM)",
+     "Universidad Regiomontana (UR)"
+    ],
+    "local": [
+     "Gran Hotel Ancira",
+     "Quinta Real Monterrey",
+     "Zona Valle Oriente",
+     "Distrito Tec"
+    ]
+   }
+  },
+  {
+   "id": "saltillo",
+   "nombre": "Saltillo, Ramos Arizpe y Arteaga",
+   "corto": "Saltillo",
+   "estado": "Coahuila",
+   "lugares": {
+    "puentes": [
+     "Autopista Saltillo–Monterrey",
+     "Carretera Saltillo–Monclova–Piedras Negras (ruta a Eagle Pass)"
+    ],
+    "aeropuertos": [
+     "Aeropuerto Plan de Guadalupe (SLW)",
+     "Aeropuerto Internacional de Monterrey (MTY)"
+    ],
+    "terminales": [
+     "Central de Autobuses de Saltillo"
+    ],
+    "medico": [
+     "Hospital Universitario de Saltillo",
+     "Hospital General de Saltillo",
+     "IMSS Hospital General de Zona No. 2",
+     "Hospital General ISSSTE Saltillo",
+     "Cruz Roja Saltillo"
+    ],
+    "cultural": [
+     "Museo del Desierto (MUDE)",
+     "Museo de las Aves de México",
+     "Museo del Sarape y Textiles de México",
+     "Catedral de Santiago Apóstol",
+     "Teatro de la Ciudad Fernando Soler"
+    ],
+    "turistico": [
+     "Plaza de Armas de Saltillo",
+     "Alameda Zaragoza",
+     "Parque Las Maravillas",
+     "Sierra de Arteaga",
+     "Parras de la Fuente, Pueblo Mágico"
+    ],
+    "industrial": [
+     "Complejo GM Ramos Arizpe",
+     "Complejo Stellantis Saltillo",
+     "Parque Industrial Ramos Arizpe"
+    ],
+    "expos": [
+     "Estadio Olímpico Francisco I. Madero"
+    ],
+    "compras": [
+     "Galerías Saltillo",
+     "Paseo Capital",
+     "Mercado Juárez"
+    ],
+    "tramites": [
+     "Palacio de Gobierno de Coahuila",
+     "Instituto Nacional de Migración Saltillo"
+    ],
+    "educacion": [
+     "UAdeC Camporredondo",
+     "Universidad Autónoma Agraria Antonio Narro",
+     "Tecnológico de Monterrey Campus Saltillo"
+    ],
+    "local": [
+     "Courtyard by Marriott Saltillo",
+     "Wyndham Garden Saltillo"
+    ]
+   }
+  },
+  {
+   "id": "monclova",
+   "nombre": "Monclova y Frontera",
+   "corto": "Monclova",
+   "estado": "Coahuila",
+   "lugares": {
+    "puentes": [
+     "Carretera 57 Monclova–Piedras Negras (ruta a Eagle Pass)"
+    ],
+    "aeropuertos": [
+     "Aeropuerto Internacional Venustiano Carranza (LOV)"
+    ],
+    "terminales": [
+     "Central de Autobuses de Monclova"
+    ],
+    "medico": [
+     "IMSS Hospital General de Zona No. 7",
+     "Hospital General de Monclova",
+     "Hospital ISSSTE Monclova",
+     "Cruz Roja Monclova"
+    ],
+    "turistico": [
+     "Plaza Principal de Monclova",
+     "Cuatro Ciénegas, Pueblo Mágico",
+     "Poza Azul (Cuatro Ciénegas)",
+     "Dunas de Yeso"
+    ],
+    "industrial": [
+     "Zona industrial de Frontera"
+    ],
+    "expos": [
+     "Estadio Monclova"
+    ],
+    "tramites": [
+     "Presidencia Municipal de Monclova"
+    ],
+    "educacion": [
+     "UAdeC Unidad Norte",
+     "Instituto Tecnológico de Monclova"
+    ],
+    "local": [
+     "Zona Centro de Monclova"
+    ]
+   }
+  },
+  {
+   "id": "piedras-negras",
+   "nombre": "Piedras Negras",
+   "corto": "Piedras Negras",
+   "estado": "Coahuila",
+   "lugares": {
+    "puentes": [
+     "Puente Internacional I (Eagle Pass)",
+     "Puente Internacional II Camino Real (Eagle Pass)",
+     "Puente Internacional Ciudad Acuña–Del Río"
+    ],
+    "aeropuertos": [
+     "Aeropuerto Internacional de Piedras Negras (PDS)",
+     "Aeropuerto Internacional de Monterrey (MTY)"
+    ],
+    "terminales": [
+     "Central de Autobuses de Piedras Negras"
+    ],
+    "medico": [
+     "IMSS Hospital General de Zona No. 11",
+     "Hospital General de Piedras Negras",
+     "Hospital ISSSTE Piedras Negras",
+     "Cruz Roja Piedras Negras"
+    ],
+    "turistico": [
+     "Plaza de las Culturas",
+     "Zona Centro de Piedras Negras",
+     "Eagle Pass, Texas"
+    ],
+    "industrial": [
+     "Parque industrial de Piedras Negras"
+    ],
+    "tramites": [
+     "Aduana de Piedras Negras",
+     "Instituto Nacional de Migración Piedras Negras",
+     "Consulado de México en Eagle Pass",
+     "Presidencia Municipal de Piedras Negras"
+    ],
+    "educacion": [
+     "Instituto Tecnológico de Piedras Negras",
+     "UAdeC campus Piedras Negras"
+    ]
+   }
+  }
+ ]
+}

@@ -12,6 +12,7 @@ export interface Servicio {
   color: string;
   descripcion: string;
   mensaje: string;
+  boton: string; // texto del botón de la tarjeta (ej. "Pedir taxi")
 }
 export interface Flota {
   id: string;
@@ -33,12 +34,14 @@ export interface Chofer {
   placa: string;
   unidad: string;
   servicios: Servicio[];
+  cobertura: string[]; // "Zonas de cobertura" que se muestran bajo la cuadrícula de servicios
   logo: string; // ruta pública, siempre existe
   foto: string; // foto del chofer (public/fotos/<id>.jpg|png|webp) o '' si no hay
   mensajes: Record<string, string> & { general: string };
   urlTarjeta: string;
 }
 
+const COBERTURA_BASE = ['Centro y Zona Dorada', 'Zona Conurbada', 'Parques Industriales', 'Puentes Internacionales'];
 const COLORES = ['blue', 'purple', 'teal', 'orange', 'slate'];
 export { negocio };
 
@@ -91,7 +94,9 @@ export const choferesTodos: Chofer[] = (choferesRaw as any[]).map((c) => {
       color: s.color || COLORES[i % COLORES.length],
       descripcion: s.descripcion || '',
       mensaje: s.mensaje || `Hola, me interesa el servicio: ${s.nombre}.`,
+      boton: s.boton || 'Pedir por WhatsApp',
     })),
+    cobertura: Array.isArray(c.cobertura) ? c.cobertura.map((z: any) => String(z).trim()).filter(Boolean) : COBERTURA_BASE,
     logo: logoPublico(c.logo),
     foto: fotoPublica(c.id),
     mensajes: {
@@ -132,7 +137,7 @@ export const directorioPublico = Object.fromEntries(
     else if (telefonos.has(tel)) console.warn(`[REXI] Aviso: ${etiqueta} comparte teléfono (${tel}) con "${telefonos.get(tel)}". ¿Es un error de captura?`);
     telefonos.set(tel, c.id);
     if (c.flota && !flotas.some((f) => f.id === c.flota)) errores.push(`${etiqueta}: la flota "${c.flota}" no existe en src/data/flotas.json.`);
-    if (!Array.isArray(c.servicios) || c.servicios.length === 0) errores.push(`${etiqueta}: necesita al menos un servicio.`);
+    if (!Array.isArray(c.servicios)) errores.push(`${etiqueta}: "servicios" debe ser una lista (puede ir vacía).`);
   });
   const fid = new Set<string>();
   flotas.forEach((f) => { if (fid.has(f.id)) errores.push(`flota "${f.id}": id repetido.`); fid.add(f.id); });

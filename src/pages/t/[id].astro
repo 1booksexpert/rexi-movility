@@ -90,60 +90,33 @@ const qrSvg = await QRCode.toString(chofer.urlTarjeta, {
       <span>Cuando tu chofer salga, te enviará un enlace por WhatsApp para ver su unidad en el mapa.</span>
     </div>
 
-    <!-- SOLUCIONES DE MOVILIDAD (GRID) -->
-    <section class="services-section">
-      <h2 class="section-title">Soluciones de Movilidad</h2>
-      <p class="section-subtitle">Selecciona una opción para enviarme un mensaje predeterminado por WhatsApp.</p>
-      
-      <div class="services-grid">
-        <div class="service-card">
-          <div class="service-card-icon">🚕</div>
-          <h3>Local y Puentes</h3>
-          <p>Traslados rápidos a Hidalgo, Pharr o Anzaldúas.</p>
-          <button class="btn-service" onclick="enviarWhatsApp('local')">Pedir Taxi</button>
+    <!-- SOLUCIONES DE MOVILIDAD (GRID): salen de los servicios de este chofer -->
+    {chofer.servicios.length > 0 && (
+      <section class="services-section">
+        <h2 class="section-title">Soluciones de Movilidad</h2>
+        <p class="section-subtitle">Selecciona una opción para enviarme un mensaje predeterminado por WhatsApp.</p>
+        <div class="services-grid">
+          {chofer.servicios.map((servicio, i) => (
+            <div class="service-card">
+              <div class="service-card-icon">{servicio.icono || '🚖'}</div>
+              <h3>{servicio.nombre}</h3>
+              {servicio.descripcion && <p>{servicio.descripcion}</p>}
+              <button class="btn-service" onclick={`pedirServicio(${i})`}>{servicio.boton}</button>
+            </div>
+          ))}
         </div>
+      </section>
+    )}
 
-        <div class="service-card">
-          <div class="service-card-icon">✈️</div>
-          <h3>Aeropuerto</h3>
-          <p>Recepción en REX.</p>
-          <button class="btn-service" onclick="enviarWhatsApp('aeropuerto')">Cotizar Viaje</button>
+    <!-- ZONAS DE COBERTURA: editables desde el administrador -->
+    {chofer.cobertura.length > 0 && (
+      <section class="coverage-section">
+        <h2 class="section-title">Zonas de Cobertura</h2>
+        <div class="coverage-tags">
+          {chofer.cobertura.map((zona) => <span class="tag">{zona}</span>)}
         </div>
-
-        <div class="service-card">
-          <div class="service-card-icon">🏥</div>
-          <h3>Turismo Médico</h3>
-          <p>Traslados discretos a clínicas, hospitales o recogida en hotel.</p>
-          <button class="btn-service" onclick="enviarWhatsApp('medico')">Reservar Traslado</button>
-        </div>
-
-        <div class="service-card">
-          <div class="service-card-icon">📦</div>
-          <h3>Paquetería Express</h3>
-          <p>Envío seguro de documentos, refacciones o compras.</p>
-          <button class="btn-service" onclick="enviarWhatsApp('paqueteria')">Enviar Paquete</button>
-        </div>
-
-        <div class="service-card">
-          <div class="service-card-icon">🏢</div>
-          <h3>Corporativo</h3>
-          <p>Convenios para traslado de personal y facturación mensual.</p>
-          <button class="btn-service" onclick="enviarWhatsApp('corporativo')">Consultar Convenio</button>
-        </div>
-      </div>
-    </section>
-
-    <!-- ZONAS DE COBERTURA -->
-    <section class="coverage-section">
-      <h2 class="section-title">Zonas de Cobertura</h2>
-      <div class="coverage-tags">
-        <span class="tag">Centro y Zona Dorada</span>
-        <span class="tag">Zona Conurbada</span>
-        <span class="tag">Parques Industriales</span>
-        <span class="tag">Puentes Internacionales</span>
-      </div>
-    </section>
-
+      </section>
+    )}
 
     <!-- FOOTER -->
     <footer class="main-footer">

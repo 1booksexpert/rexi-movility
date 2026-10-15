@@ -9,7 +9,8 @@
 const ID_RE = /^[a-z0-9]+(-[a-z0-9]+)*$/;
 const PLANES = ["", "tarjeta", "pro", "flota"];
 const PAGOS = ["", "mensual", "anual"];
-const CAMPOS = ["nombre", "telefono", "titulo", "zona", "placa", "unidad", "plan", "pago", "referido", "flota", "fechaAlta"];
+const CAMPOS = ["nombre", "telefono", "titulo", "zona", "placa", "unidad", "plan", "pago", "referido", "flota", "fechaAlta", "ciudad"];
+const MAX_SERVICIOS = 16, MAX_COBERTURA = 14;
 
 class Err extends Error {
   constructor(mensaje, status = 400) { super(mensaje); this.status = status; }
@@ -88,20 +89,31 @@ function validarChoferes(lista, flotas) {
     if (!c.nombre) throw new Err(`${e}: falta el nombre.`);
     if (String(c.telefono || "").replace(/\D/g, "").slice(-10).length !== 10) throw new Err(`${e}: el teléfono debe tener 10 dígitos.`);
     if (c.flota && !flotas.some((f) => f.id === c.flota)) throw new Err(`${e}: la flota "${c.flota}" no existe.`);
-    if (!Array.isArray(c.servicios) || !c.servicios.length) throw new Err(`${e}: necesita al menos un servicio.`);
+    if (!Array.isArray(c.servicios)) throw new Err(`${e}: los servicios deben ser una lista.`);
   });
 }
 
 function limpiarServicios(arr) {
   if (!Array.isArray(arr)) return null;
-  return arr.slice(0, 12).map((s) => {
-    const nombre = limpio(s.nombre, 40);
+  if (arr.length > MAX_SERVICIOS) throw new Err(`Máximo ${MAX_SERVICIOS} servicios por tarjeta.`);
+  return arr.map((s) => {
+    const nombre = limpio(s.nombre, 60);
     if (!nombre) throw new Err("Cada servicio necesita nombre.");
-    const o = { nombre, icono: limpio(s.icono, 8) || "🚖", color: limpio(s.color, 10) || undefined, descripcion: limpio(s.descripcion, 160), mensaje: limpio(s.mensaje, 200) };
-    if (!o.color) delete o.color;
-    if (!o.mensaje) delete o.mensaje;
+    const o = { nombre, icono: limpio(s.icono, 8) || "🚖", color: limpio(s.color, 10), descripcion: limpio(s.descripcion, 160), mensaje: limpio(s.mensaje, 200), boton: limpio(s.boton, 24) };
+    for (const k of ["color", "mensaje", "boton"]) if (!o[k]) delete o[k];
     return o;
   });
+}
+
+function limpiarCobertura(arr) {
+  if (!Array.isArray(arr)) return null;
+  const vistos = new Set(), out = [];
+  for (const z of arr) {
+    const t = limpio(z, 40), k = t.toLowerCase();
+    if (t && !vistos.has(k)) { vistos.add(k); out.push(t); }
+  }
+  if (out.length > MAX_COBERTURA) throw new Err(`Máximo ${MAX_COBERTURA} zonas de cobertura.`);
+  return out;
 }
 
 function normalizarChofer(b, previo) {
@@ -116,6 +128,9 @@ function normalizarChofer(b, previo) {
   if (!c.pago) delete c.pago;
   const sv = limpiarServicios(b.servicios);
   if (sv) c.servicios = sv;
+  const cob = limpiarCobertura(b.cobertura);
+  if (cob) c.cobertura = cob;
+  if (!c.ciudad) delete c.ciudad;
   if (!c.servicios) c.servicios = [];
   return c;
 }

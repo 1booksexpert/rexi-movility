@@ -1,5 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import catalogo from '../../data/catalogo-servicios.json';
 ---
 <Layout titulo="Administrar choferes" noindex tema="#14213d">
   <div class="adm">
@@ -54,6 +55,7 @@ import Layout from '../../layouts/Layout.astro';
             <label>Teléfono y WhatsApp<input name="telefono" inputmode="tel" required maxlength="20" placeholder="10 dígitos" /></label>
             <label>Título en su tarjeta<input name="titulo" maxlength="60" placeholder="Movilidad Ejecutiva" /></label>
             <label>Zona<input name="zona" maxlength="60" placeholder="Reynosa, Tamaulipas" /></label>
+            <label>Ciudad del catálogo<select name="ciudad"></select></label>
           </div>
         </fieldset>
         <fieldset><legend>Su unidad</legend>
@@ -72,8 +74,19 @@ import Layout from '../../layouts/Layout.astro';
           </div>
         </fieldset>
         <fieldset><legend>Servicios de su tarjeta</legend>
+          <p class="ayuda">Aparecen en la cuadrícula "Soluciones de Movilidad" y en el reverso de la tarjeta. <span id="sv-cuenta"></span></p>
+          <div id="sv-vacio" class="vacio-mini" hidden>Aún no hay servicios. Agrégalos del catálogo o crea uno propio.</div>
           <div id="servicios"></div>
-          <button type="button" id="mas-sv" class="ghost">Agregar servicio</button>
+          <div class="fila-btn">
+            <button type="button" id="del-cat" class="btn-main">Agregar del catálogo</button>
+            <button type="button" id="mas-sv" class="ghost">Servicio propio</button>
+          </div>
+        </fieldset>
+        <fieldset><legend>Zonas de cobertura</legend>
+          <p class="ayuda">Aparecen bajo la cuadrícula de servicios. Toca una sugerencia o escribe la tuya.</p>
+          <div id="cob-chips" class="chips" aria-live="polite"></div>
+          <div class="fila-btn"><input id="cob-nuevo" maxlength="40" placeholder="Ej. Zona Dorada" aria-label="Nueva zona de cobertura" /><button type="button" id="cob-add" class="ghost">Agregar</button></div>
+          <div id="cob-sug" class="chips sug" aria-label="Sugerencias"></div>
         </fieldset>
         <details class="avanzado"><summary>Identificador del enlace</summary>
           <label>Id (no se puede cambiar después)<input name="id" required maxlength="40" pattern="[a-z0-9]+(-[a-z0-9]+)*" title="minúsculas, números y guiones" /></label>
@@ -99,6 +112,18 @@ import Layout from '../../layouts/Layout.astro';
       </form>
     </dialog>
 
+    <dialog id="dlg-cat">
+      <div class="pin-box" style="text-align:left">
+        <div class="dlg-cab"><h2>Catálogo de servicios</h2><button type="button" class="ghost" id="cerrar-cat" aria-label="Cerrar">✕</button></div>
+        <div class="grid">
+          <label>Ciudad<select id="cat-ciudad"></select></label>
+          <label>Buscar<input id="cat-buscar" type="search" placeholder="Aeropuerto, hospital, puente…" /></label>
+        </div>
+        <div id="cat-lista" class="cat-lista"></div>
+        <div class="acciones"><span id="cat-cuenta" class="ayuda"></span><button type="button" id="cat-ok" class="btn-main">Agregar seleccionados</button></div>
+      </div>
+    </dialog>
+
     <dialog id="dlg-pin">
       <div class="pin-box">
         <h2>PIN de <span id="pin-quien"></span></h2>
@@ -114,6 +139,7 @@ import Layout from '../../layouts/Layout.astro';
   </div>
 </Layout>
 
+<script type="application/json" id="catalogo" is:inline set:html={JSON.stringify(catalogo)} />
 <script src="/js/admin.js" is:inline defer></script>
 
 <style is:global>
@@ -205,6 +231,23 @@ import Layout from '../../layouts/Layout.astro';
   .adm .pin-box { display: grid; gap: .8rem; text-align: center; }
   .adm .pin { font-size: clamp(2.4rem, 12vw, 3.4rem); font-weight: 800; letter-spacing: .2em; font-variant-numeric: tabular-nums; background: #fff; border: 2px dashed var(--tinta); border-radius: .9rem; padding: .5rem 0 .5rem .2em; }
   .adm .pin-box .acciones { justify-content: center; position: static; }
+  .adm .fila-btn { display: flex; gap: .5rem; flex-wrap: wrap; align-items: center; }
+  .adm .fila-btn input { flex: 1 1 12rem; width: auto; }
+  .adm .vacio-mini { padding: .8rem; border: 1px dashed #b6c0cf; border-radius: .7rem; color: var(--suave); }
+  .adm .chips { display: flex; flex-wrap: wrap; gap: .4rem; }
+  .adm .chips button { min-height: 36px; padding: .15rem .75rem; border-radius: 99px; font-size: .9rem; }
+  .adm .chips .chip-on { background: var(--tinta); color: #fff; }
+  .adm .chips.sug button { border-style: dashed; border-color: #8a96aa; color: var(--tinta); font-weight: 600; }
+  .adm .sv-cab { display: flex; justify-content: space-between; align-items: center; gap: .5rem; flex-wrap: wrap; }
+  .adm .sv-cab .fila-btn button { min-height: 36px; padding: .1rem .7rem; }
+  .adm .cat-lista { display: grid; gap: .5rem; max-height: 50vh; overflow: auto; padding: .2rem; }
+  .adm .cat-grupo { font-weight: 800; margin-top: .5rem; }
+  .adm .cat-item { display: grid; grid-template-columns: auto 1fr; gap: .1rem .6rem; align-items: start; background: #fff; border: 1px solid var(--linea); border-radius: .7rem; padding: .55rem .7rem; font-weight: 600; cursor: pointer; }
+  .adm .cat-item input { width: 1.3rem; min-height: 1.3rem; height: 1.3rem; margin-top: .15rem; }
+  .adm .cat-item small { grid-column: 2; color: var(--suave); font-weight: 400; }
+  .adm .cat-item.ya { opacity: .55; }
+  .adm details.lug { margin-left: .5rem; }
+  .adm details.lug summary { cursor: pointer; min-height: 40px; display: flex; align-items: center; font-weight: 600; color: var(--suave); }
   @media (max-width: 30rem) { .adm .chofer { grid-template-columns: auto 1fr; } .adm .chofer > .sw { grid-column: 1 / -1; grid-row: auto; justify-self: start; } .adm .tags, .adm .acc { grid-column: 1 / -1; } }
   @media (prefers-reduced-motion: reduce) { .adm * { transition: none !important; } }
 </style>
