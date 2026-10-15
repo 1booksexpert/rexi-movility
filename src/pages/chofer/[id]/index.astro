@@ -136,7 +136,10 @@ const grupos = [
   .panel-app .luz.ok { background: #3ddc84; box-shadow: 0 0 10px #3ddc84; }
   .panel-app .luz.mal { background: #dc2626; }
   .panel-app .enlace { word-break: break-all; padding: .75rem; background: #0f172a; border-radius: .6rem; font-size: .9375rem; color: #cbd5e1; }
-  .panel-app .oferta summary { cursor: pointer; font-weight: 700; min-height: 44px; display: flex; align-items: center; }
+  .panel-app .oferta summary { cursor: pointer; font-weight: 700; min-height: 44px; display: flex; align-items: center; justify-content: space-between; gap: .75rem; list-style: none; }
+  .panel-app .oferta summary::-webkit-details-marker { display: none; }
+  .panel-app .oferta summary::after { content: '▾'; color: #ffc72c; font-size: 1.25rem; transition: transform .2s; }
+  .panel-app .oferta[open] summary::after { transform: rotate(180deg); }
   .panel-app .oferta { display: grid; gap: .8rem; }
   .panel-app .oferta fieldset { border: 1px solid #334155; border-radius: .75rem; padding: .6rem .8rem .8rem; display: grid; gap: .1rem; }
   .panel-app .oferta legend { padding: 0 .4rem; color: #ffc72c; font-weight: 700; font-size: .9375rem; }
