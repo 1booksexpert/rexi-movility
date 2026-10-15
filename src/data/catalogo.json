@@ -1,45 +1,298 @@
 {
   "tipos": [
-    { "id": "terminales", "emoji": "✈️", "nombre": "Terminales de transporte", "descripcion": "Aeropuertos, centrales de autobuses, estaciones de tren, puertos y muelles.", "activo": true },
-    { "id": "hospedaje", "emoji": "🏨", "nombre": "Hospedaje", "descripcion": "Hoteles, hostales, moteles y alojamientos temporales.", "activo": true },
-    { "id": "salud", "emoji": "🏥", "nombre": "Salud y atención médica", "descripcion": "Hospitales, clínicas, consultorios, laboratorios, rehabilitación y farmacias.", "activo": true },
-    { "id": "movilidad-asistida", "emoji": "♿", "nombre": "Movilidad asistida", "descripcion": "Traslados para personas con movilidad reducida que requieren asistencia o vehículos adaptados.", "activo": true },
-    { "id": "educacion", "emoji": "🎓", "nombre": "Educación", "descripcion": "Escuelas, universidades, guarderías, academias y centros de capacitación.", "activo": true },
-    { "id": "trabajo", "emoji": "🏢", "nombre": "Trabajo e industria", "descripcion": "Oficinas, fábricas, parques industriales, talleres, almacenes y centros empresariales.", "activo": true },
-    { "id": "compras", "emoji": "🛍️", "nombre": "Compras y diligencias", "descripcion": "Centros comerciales, supermercados, mercados, bancos, oficinas gubernamentales y trámites.", "activo": true },
-    { "id": "eventos", "emoji": "🎉", "nombre": "Eventos y celebraciones", "descripcion": "Conciertos, estadios, ferias, convenciones, bodas, graduaciones y fiestas.", "activo": true },
-    { "id": "vida-nocturna", "emoji": "🌙", "nombre": "Entretenimiento y vida nocturna", "descripcion": "Restaurantes, bares, discotecas, cines, teatros y espectáculos.", "activo": true },
-    { "id": "turismo", "emoji": "🏖️", "nombre": "Turismo y recreación", "descripcion": "Playas, parques, museos, centros históricos, balnearios y atractivos turísticos.", "activo": true },
-    { "id": "domicilios", "emoji": "🏠", "nombre": "Domicilios y visitas", "descripcion": "Regreso a casa, visitas familiares, reuniones y recogidas en domicilios particulares.", "activo": true },
-    { "id": "deporte", "emoji": "🏋️", "nombre": "Deporte y bienestar", "descripcion": "Gimnasios, clubes deportivos, albercas, academias de baile, spas y centros de bienestar.", "activo": true },
-    { "id": "legal-funerario", "emoji": "⚖️", "nombre": "Servicios legales y funerarios", "descripcion": "Juzgados, tribunales, notarías, funerarias, velatorios y cementerios.", "activo": true },
-    { "id": "automotriz", "emoji": "🚗", "nombre": "Servicios automotrices", "descripcion": "Agencias, talleres mecánicos, llanteras y centros de inspección vehicular.", "activo": true },
-    { "id": "rural", "emoji": "🌾", "nombre": "Zonas rurales y periféricas", "descripcion": "Comunidades alejadas, ranchos y localidades con transporte limitado.", "activo": true },
-    { "id": "foraneos", "emoji": "🛣️", "nombre": "Viajes foráneos", "descripcion": "Traslados entre ciudades, municipios y localidades distantes.", "activo": true },
-    { "id": "imprevisto", "emoji": "🆘", "nombre": "Viaje por imprevisto", "descripcion": "Traslados por averías, pérdida de transporte u otras situaciones inesperadas.", "activo": true }
+    {
+      "id": "terminales",
+      "emoji": "✈️",
+      "nombre": "Terminales de transporte",
+      "descripcion": "Aeropuertos, centrales de autobuses, estaciones de tren, puertos y muelles.",
+      "activo": true
+    },
+    {
+      "id": "hospedaje",
+      "emoji": "🏨",
+      "nombre": "Hospedaje",
+      "descripcion": "Hoteles, hostales, moteles y alojamientos temporales.",
+      "activo": true
+    },
+    {
+      "id": "salud",
+      "emoji": "🏥",
+      "nombre": "Salud y atención médica",
+      "descripcion": "Hospitales, clínicas, consultorios, laboratorios, rehabilitación y farmacias.",
+      "activo": true
+    },
+    {
+      "id": "movilidad-asistida",
+      "emoji": "♿",
+      "nombre": "Movilidad asistida",
+      "descripcion": "Traslados para personas con movilidad reducida que requieren asistencia o vehículos adaptados.",
+      "activo": true
+    },
+    {
+      "id": "educacion",
+      "emoji": "🎓",
+      "nombre": "Educación",
+      "descripcion": "Escuelas, universidades, guarderías, academias y centros de capacitación.",
+      "activo": true
+    },
+    {
+      "id": "trabajo",
+      "emoji": "🏢",
+      "nombre": "Trabajo e industria",
+      "descripcion": "Oficinas, fábricas, parques industriales, talleres, almacenes y centros empresariales.",
+      "activo": true
+    },
+    {
+      "id": "compras",
+      "emoji": "🛍️",
+      "nombre": "Compras y diligencias",
+      "descripcion": "Centros comerciales, supermercados, mercados, bancos, oficinas gubernamentales y trámites.",
+      "activo": true
+    },
+    {
+      "id": "eventos",
+      "emoji": "🎉",
+      "nombre": "Eventos y celebraciones",
+      "descripcion": "Conciertos, estadios, ferias, convenciones, bodas, graduaciones y fiestas.",
+      "activo": true
+    },
+    {
+      "id": "vida-nocturna",
+      "emoji": "🌙",
+      "nombre": "Entretenimiento y vida nocturna",
+      "descripcion": "Restaurantes, bares, discotecas, cines, teatros y espectáculos.",
+      "activo": true
+    },
+    {
+      "id": "turismo",
+      "emoji": "🏖️",
+      "nombre": "Turismo y recreación",
+      "descripcion": "Playas, parques, museos, centros históricos, balnearios y atractivos turísticos.",
+      "activo": true
+    },
+    {
+      "id": "domicilios",
+      "emoji": "🏠",
+      "nombre": "Domicilios y visitas",
+      "descripcion": "Regreso a casa, visitas familiares, reuniones y recogidas en domicilios particulares.",
+      "activo": true
+    },
+    {
+      "id": "deporte",
+      "emoji": "🏋️",
+      "nombre": "Deporte y bienestar",
+      "descripcion": "Gimnasios, clubes deportivos, albercas, academias de baile, spas y centros de bienestar.",
+      "activo": true
+    },
+    {
+      "id": "legal-funerario",
+      "emoji": "⚖️",
+      "nombre": "Servicios legales y funerarios",
+      "descripcion": "Juzgados, tribunales, notarías, funerarias, velatorios y cementerios.",
+      "activo": true
+    },
+    {
+      "id": "automotriz",
+      "emoji": "🚗",
+      "nombre": "Servicios automotrices",
+      "descripcion": "Agencias, talleres mecánicos, llanteras y centros de inspección vehicular.",
+      "activo": true
+    },
+    {
+      "id": "rural",
+      "emoji": "🌾",
+      "nombre": "Zonas rurales y periféricas",
+      "descripcion": "Comunidades alejadas, ranchos y localidades con transporte limitado.",
+      "activo": true
+    },
+    {
+      "id": "foraneos",
+      "emoji": "🛣️",
+      "nombre": "Viajes foráneos",
+      "descripcion": "Traslados entre ciudades, municipios y localidades distantes.",
+      "activo": true
+    },
+    {
+      "id": "imprevisto",
+      "emoji": "🆘",
+      "nombre": "Viaje por imprevisto",
+      "descripcion": "Traslados por averías, pérdida de transporte u otras situaciones inesperadas.",
+      "activo": true
+    }
   ],
   "modalidades": [
-    { "id": "sencillo", "emoji": "➡️", "nombre": "Viaje sencillo", "descripcion": "Traslado desde un punto de origen hasta un destino.", "activo": true },
-    { "id": "redondo", "emoji": "🔁", "nombre": "Viaje redondo", "descripcion": "Traslado de ida y regreso contratado como un solo servicio.", "activo": true },
-    { "id": "paradas", "emoji": "📍", "nombre": "Recorrido con varias paradas", "descripcion": "Un viaje que incluye dos o más destinos acordados.", "activo": true },
-    { "id": "espera", "emoji": "⏱️", "nombre": "Viaje con espera", "descripcion": "El conductor espera al pasajero mientras realiza una actividad, según las condiciones contratadas.", "activo": true },
-    { "id": "programado", "emoji": "📅", "nombre": "Viaje programado", "descripcion": "Servicio reservado con anticipación para una fecha y hora específicas.", "activo": true },
-    { "id": "recurrente", "emoji": "🔄", "nombre": "Traslado recurrente", "descripcion": "Viajes periódicos por trabajo, estudios, tratamientos médicos u otras actividades.", "activo": true },
-    { "id": "grupos", "emoji": "👥", "nombre": "Transporte para grupos", "descripcion": "Traslado de varias personas en un vehículo con capacidad autorizada.", "activo": true },
-    { "id": "equipaje", "emoji": "🧳", "nombre": "Viaje con equipaje", "descripcion": "Servicio que contempla maletas, bolsas u objetos personales.", "activo": true },
-    { "id": "nocturno", "emoji": "🌅", "nombre": "Servicio nocturno o de madrugada", "descripcion": "Viajes en horarios nocturnos, de madrugada o fuera de los horarios habituales.", "activo": true }
+    {
+      "id": "sencillo",
+      "emoji": "➡️",
+      "nombre": "Viaje sencillo",
+      "descripcion": "Traslado desde un punto de origen hasta un destino.",
+      "activo": true
+    },
+    {
+      "id": "redondo",
+      "emoji": "🔁",
+      "nombre": "Viaje redondo",
+      "descripcion": "Traslado de ida y regreso contratado como un solo servicio.",
+      "activo": true
+    },
+    {
+      "id": "paradas",
+      "emoji": "📍",
+      "nombre": "Recorrido con varias paradas",
+      "descripcion": "Un viaje que incluye dos o más destinos acordados.",
+      "activo": true
+    },
+    {
+      "id": "espera",
+      "emoji": "⏱️",
+      "nombre": "Viaje con espera",
+      "descripcion": "El conductor espera al pasajero mientras realiza una actividad, según las condiciones contratadas.",
+      "activo": true
+    },
+    {
+      "id": "programado",
+      "emoji": "📅",
+      "nombre": "Viaje programado",
+      "descripcion": "Servicio reservado con anticipación para una fecha y hora específicas.",
+      "activo": true
+    },
+    {
+      "id": "recurrente",
+      "emoji": "🔄",
+      "nombre": "Traslado recurrente",
+      "descripcion": "Viajes periódicos por trabajo, estudios, tratamientos médicos u otras actividades.",
+      "activo": true
+    },
+    {
+      "id": "grupos",
+      "emoji": "👥",
+      "nombre": "Transporte para grupos",
+      "descripcion": "Traslado de varias personas en un vehículo con capacidad autorizada.",
+      "activo": true
+    },
+    {
+      "id": "equipaje",
+      "emoji": "🧳",
+      "nombre": "Viaje con equipaje",
+      "descripcion": "Servicio que contempla maletas, bolsas u objetos personales.",
+      "activo": true
+    },
+    {
+      "id": "nocturno",
+      "emoji": "🌅",
+      "nombre": "Servicio nocturno o de madrugada",
+      "descripcion": "Viajes en horarios nocturnos, de madrugada o fuera de los horarios habituales.",
+      "activo": true
+    }
   ],
   "servicios": [
-    { "id": "local-puentes", "icono": "🚖", "color": "blue", "nombre": "Local y Puentes Fronterizos", "descripcion": "Traslados rápidos dentro de la ciudad y a los puentes internacionales.", "mensaje": "Hola, necesito un traslado local o a un puente fronterizo.", "activo": true },
-    { "id": "aeropuertos", "icono": "✈️", "color": "purple", "nombre": "Aeropuertos Principales", "descripcion": "Hacia los aeropuertos, y espera en aeropuertos.", "mensaje": "Hola, quiero cotizar un traslado al aeropuerto.", "activo": true },
-    { "id": "turismo-medico", "icono": "🏥", "color": "teal", "nombre": "Turismo Médico", "descripcion": "Traslados discretos a clínicas, hospitales o recogida en hotel.", "mensaje": "Hola, necesito un traslado para una consulta médica.", "activo": true },
-    { "id": "paqueteria", "icono": "📦", "color": "orange", "nombre": "Paquetería Express y pequeños fletes", "descripcion": "Envío seguro de documentos, refacciones o compras.", "mensaje": "Hola, necesito enviar un paquete o un pequeño flete.", "activo": true },
-    { "id": "corporativo", "icono": "💼", "color": "purple", "nombre": "Corporativo", "descripcion": "Convenios para traslado de personal y facturación mensual.", "mensaje": "Hola, me interesa un convenio corporativo de traslado.", "activo": true },
-    { "id": "facturacion-cfdi", "icono": "🧾", "color": "slate", "nombre": "Facturación CFDI", "descripcion": "Servicio con factura para empresas y viajes de trabajo.", "mensaje": "Hola, necesito el servicio con factura (CFDI).", "activo": true },
-    { "id": "foraneos", "icono": "🛣️", "color": "teal", "nombre": "Viajes foráneos", "descripcion": "Traslados a otras ciudades y municipios, con tarifa acordada.", "mensaje": "Hola, quiero cotizar un viaje a otra ciudad.", "activo": true },
-    { "id": "por-hora", "icono": "⏱️", "color": "orange", "nombre": "Chofer por hora o día", "descripcion": "Disponibilidad por horas para recorridos, diligencias o agenda de trabajo.", "mensaje": "Hola, quiero contratar un chofer por horas.", "activo": true },
-    { "id": "eventos", "icono": "🎉", "color": "purple", "nombre": "Eventos y grupos", "descripcion": "Bodas, graduaciones, convenciones y traslado de grupos.", "mensaje": "Hola, quiero cotizar transporte para un evento o grupo.", "activo": true },
-    { "id": "movilidad-asistida", "icono": "♿", "color": "teal", "nombre": "Movilidad asistida", "descripcion": "Traslados con asistencia para personas con movilidad reducida.", "mensaje": "Hola, necesito un traslado con asistencia para movilidad reducida.", "activo": true },
-    { "id": "mandados", "icono": "🛍️", "color": "orange", "nombre": "Mandados y diligencias", "descripcion": "Trámites, bancos, compras y recados con espera y regreso.", "mensaje": "Hola, necesito apoyo con una diligencia o mandado.", "activo": true }
+    {
+      "id": "local-puentes",
+      "icono": "🚖",
+      "color": "blue",
+      "nombre": "Local y Puentes Fronterizos",
+      "descripcion": "Traslados rápidos dentro de la ciudad y a los puentes internacionales.",
+      "mensaje": "Hola, necesito un traslado local o a un puente fronterizo.",
+      "activo": true
+    },
+    {
+      "id": "aeropuertos",
+      "icono": "✈️",
+      "color": "purple",
+      "nombre": "Aeropuertos Principales",
+      "descripcion": "Hacia los aeropuertos, y espera en aeropuertos.",
+      "mensaje": "Hola, quiero cotizar un traslado al aeropuerto.",
+      "activo": true
+    },
+    {
+      "id": "turismo-medico",
+      "icono": "🏥",
+      "color": "teal",
+      "nombre": "Turismo Médico",
+      "descripcion": "Traslados discretos a clínicas, hospitales o recogida en hotel.",
+      "mensaje": "Hola, necesito un traslado para una consulta médica.",
+      "activo": true
+    },
+    {
+      "id": "paqueteria",
+      "icono": "📦",
+      "color": "orange",
+      "nombre": "Paquetería Express y pequeños fletes",
+      "descripcion": "Envío seguro de documentos, refacciones o compras.",
+      "mensaje": "Hola, necesito enviar un paquete o un pequeño flete.",
+      "activo": true
+    },
+    {
+      "id": "corporativo",
+      "icono": "💼",
+      "color": "purple",
+      "nombre": "Corporativo",
+      "descripcion": "Convenios para traslado de personal y facturación mensual.",
+      "mensaje": "Hola, me interesa un convenio corporativo de traslado.",
+      "activo": true
+    },
+    {
+      "id": "centros-educativos",
+      "icono": "🎓",
+      "color": "blue",
+      "nombre": "Traslados a Centros Educativos",
+      "descripcion": "Traslados a escuelas, universidades y guarderías, de ida, de regreso o recurrentes.",
+      "mensaje": "Hola, necesito un traslado a un centro educativo.",
+      "activo": true
+    },
+    {
+      "id": "facturacion-cfdi",
+      "icono": "🧾",
+      "color": "slate",
+      "nombre": "Facturación CFDI",
+      "descripcion": "Servicio con factura para empresas y viajes de trabajo.",
+      "mensaje": "Hola, necesito el servicio con factura (CFDI).",
+      "activo": true
+    },
+    {
+      "id": "foraneos",
+      "icono": "🛣️",
+      "color": "teal",
+      "nombre": "Viajes foráneos",
+      "descripcion": "Traslados a otras ciudades y municipios, con tarifa acordada.",
+      "mensaje": "Hola, quiero cotizar un viaje a otra ciudad.",
+      "activo": true
+    },
+    {
+      "id": "por-hora",
+      "icono": "⏱️",
+      "color": "orange",
+      "nombre": "Chofer por hora o día",
+      "descripcion": "Disponibilidad por horas para recorridos, diligencias o agenda de trabajo.",
+      "mensaje": "Hola, quiero contratar un chofer por horas.",
+      "activo": true
+    },
+    {
+      "id": "eventos",
+      "icono": "🎉",
+      "color": "purple",
+      "nombre": "Eventos y grupos",
+      "descripcion": "Bodas, graduaciones, convenciones y traslado de grupos.",
+      "mensaje": "Hola, quiero cotizar transporte para un evento o grupo.",
+      "activo": true
+    },
+    {
+      "id": "movilidad-asistida",
+      "icono": "♿",
+      "color": "teal",
+      "nombre": "Movilidad asistida",
+      "descripcion": "Traslados con asistencia para personas con movilidad reducida.",
+      "mensaje": "Hola, necesito un traslado con asistencia para movilidad reducida.",
+      "activo": true
+    },
+    {
+      "id": "mandados",
+      "icono": "🛍️",
+      "color": "orange",
+      "nombre": "Mandados y diligencias",
+      "descripcion": "Trámites, bancos, compras y recados con espera y regreso.",
+      "mensaje": "Hola, necesito apoyo con una diligencia o mandado.",
+      "activo": true
+    }
   ]
 }

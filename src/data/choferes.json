@@ -3,11 +3,52 @@
     "id": "ivan-rivera",
     "nombre": "Iván Rivera",
     "telefono": "8992165262",
-    "telefonoFormateado": "899 216 5262",
     "titulo": "Movilidad Ejecutiva",
     "zona": "Reynosa, Tamaulipas",
     "placa": "",
     "unidad": "",
+    "servicios": [
+      {
+        "nombre": "Puentes y Local",
+        "icono": "🚖",
+        "color": "blue",
+        "descripcion": "Traslados dentro de Reynosa y a los puentes internacionales.",
+        "mensaje": "Hola, necesito un traslado local o a un puente internacional."
+      },
+      {
+        "nombre": "Aeropuerto REX",
+        "icono": "✈️",
+        "color": "purple",
+        "descripcion": "Salida programada al aeropuerto de Reynosa.",
+        "mensaje": "Hola, quiero cotizar un traslado al aeropuerto."
+      },
+      {
+        "nombre": "Turismo Médico",
+        "icono": "🏥",
+        "color": "teal",
+        "descripcion": "Traslado puntual a clínicas y hospitales, con espera y regreso.",
+        "mensaje": "Hola, necesito un traslado para una consulta médica."
+      },
+      {
+        "nombre": "Paquetería Urgente",
+        "icono": "📦",
+        "color": "orange",
+        "descripcion": "Sobres, documentos y paquetes pequeños entregados el mismo día.",
+        "mensaje": "Hola, necesito enviar un sobre o paquete urgente."
+      },
+      {
+        "nombre": "Facturación CFDI",
+        "icono": "🧾",
+        "color": "slate",
+        "descripcion": "Servicio con factura para empresas y viajes de trabajo.",
+        "mensaje": "Hola, necesito el servicio con factura (CFDI)."
+      },
+      {
+        "nombre": "Traslados a Centros Educativos",
+        "icono": "🏫",
+        "descripcion": "Transporte seguro y puntual para estudiantes hacia escuelas, colegios y universidades. Disponible para viajes de ida, vuelta o rutas diarias fijas."
+      }
+    ],
     "logo": "ivan-rivera.png",
     "mensajes": {
       "general": "Hola, me interesa tu servicio de movilidad ejecutiva."
@@ -15,7 +56,7 @@
     "referido": "",
     "plan": "pro",
     "fechaAlta": "2026-10-10",
-    "ciudadId": "reynosa",
+    "flota": "",
     "asignado": {
       "servicios": [
         "local-puentes",
@@ -34,11 +75,51 @@
         "reynosa-puentes-internacionales"
       ]
     },
-    "pausado": {
-      "servicios": [],
-      "tipos": [],
-      "modalidades": [],
-      "zonas": []
-    }
+    "ciudadId": "reynosa"
+  },
+  {
+    "nombre": "Juan Perezito",
+    "telefono": "5554684871",
+    "titulo": "Movilidad Ejecutiva",
+    "zona": "Zona Conurbada Tampico-Madero",
+    "placa": "HVB-6543D",
+    "unidad": "Hyundai Sedan Blanco",
+    "plan": "tarjeta",
+    "referido": "Juana",
+    "flota": "",
+    "fechaAlta": "2026-10-13",
+    "id": "juan-perezito",
+    "servicios": [
+      {
+        "nombre": "Hospitales",
+        "icono": "🚖",
+        "descripcion": "Traslados dentro de la ciudad y a los Hospitales",
+        "mensaje": "Hola, necesito un traslado local o a un Hospital"
+      },
+      {
+        "nombre": "MMTM Aeropuerto Internacional de Tampico",
+        "icono": "✈️",
+        "descripcion": "Salida programada al aeropuerto.",
+        "mensaje": "Hola, quiero cotizar un traslado al aeropuerto."
+      },
+      {
+        "nombre": "Turismo Médico",
+        "icono": "🏥",
+        "descripcion": "Traslado puntual a clínicas y hospitales, con espera y regreso.",
+        "mensaje": "Hola, necesito un traslado para una consulta médica."
+      },
+      {
+        "nombre": "Paquetería Urgente",
+        "icono": "📦",
+        "descripcion": "Sobres, documentos y paquetes pequeños el mismo día.",
+        "mensaje": "Hola, necesito enviar un sobre o paquete urgente."
+      },
+      {
+        "nombre": "Facturación CFDI",
+        "icono": "🧾",
+        "descripcion": "Servicio con factura para empresas y viajes de trabajo.",
+        "mensaje": "Hola, necesito el servicio con factura (CFDI)."
+      }
+    ]
   }
 ]
