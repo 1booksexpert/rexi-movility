@@ -8,49 +8,36 @@
     "zona": "Reynosa, Tamaulipas",
     "placa": "",
     "unidad": "",
-    "servicios": [
-      {
-        "nombre": "Puentes y Local",
-        "icono": "🚖",
-        "color": "blue",
-        "descripcion": "Traslados dentro de Reynosa y a los puentes internacionales.",
-        "mensaje": "Hola, necesito un traslado local o a un puente internacional."
-      },
-      {
-        "nombre": "Aeropuerto REX",
-        "icono": "✈️",
-        "color": "purple",
-        "descripcion": "Salida programada al aeropuerto de Reynosa.",
-        "mensaje": "Hola, quiero cotizar un traslado al aeropuerto."
-      },
-      {
-        "nombre": "Turismo Médico",
-        "icono": "🏥",
-        "color": "teal",
-        "descripcion": "Traslado puntual a clínicas y hospitales, con espera y regreso.",
-        "mensaje": "Hola, necesito un traslado para una consulta médica."
-      },
-      {
-        "nombre": "Paquetería Urgente",
-        "icono": "📦",
-        "color": "orange",
-        "descripcion": "Sobres, documentos y paquetes pequeños entregados el mismo día.",
-        "mensaje": "Hola, necesito enviar un sobre o paquete urgente."
-      },
-      {
-        "nombre": "Facturación CFDI",
-        "icono": "🧾",
-        "color": "slate",
-        "descripcion": "Servicio con factura para empresas y viajes de trabajo.",
-        "mensaje": "Hola, necesito el servicio con factura (CFDI)."
-      }
-    ],
     "logo": "ivan-rivera.png",
     "mensajes": {
       "general": "Hola, me interesa tu servicio de movilidad ejecutiva."
     },
     "referido": "",
     "plan": "pro",
-    "fechaAlta": "2026-10-10"
+    "fechaAlta": "2026-10-10",
+    "ciudadId": "reynosa",
+    "asignado": {
+      "servicios": [
+        "local-puentes",
+        "aeropuertos",
+        "turismo-medico",
+        "paqueteria",
+        "facturacion-cfdi"
+      ],
+      "tipos": [],
+      "modalidades": [],
+      "zonas": [
+        "reynosa-centro-zona-dorada",
+        "reynosa-zona-conurbada",
+        "reynosa-parques-industriales",
+        "reynosa-puentes-internacionales"
+      ]
+    },
+    "pausado": {
+      "servicios": [],
+      "tipos": [],
+      "modalidades": [],
+      "zonas": []
+    }
   }
 ]

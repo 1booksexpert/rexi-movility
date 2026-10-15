@@ -1,0 +1,41 @@
+[
+  {
+    "id": "reynosa",
+    "nombre": "Reynosa",
+    "estado": "Tamaulipas",
+    "activo": true,
+    "servicios": [
+      {
+        "id": "reynosa-aeropuerto-rex",
+        "icono": "🛫",
+        "color": "purple",
+        "nombre": "Aeropuerto de Reynosa (REX)",
+        "descripcion": "Traslados al aeropuerto de Reynosa, con espera si se requiere.",
+        "mensaje": "Hola, quiero un traslado al aeropuerto de Reynosa (REX).",
+        "activo": true
+      }
+    ],
+    "zonas": [
+      {
+        "id": "reynosa-centro-zona-dorada",
+        "nombre": "Centro y Zona Dorada",
+        "activo": true
+      },
+      {
+        "id": "reynosa-zona-conurbada",
+        "nombre": "Zona Conurbada",
+        "activo": true
+      },
+      {
+        "id": "reynosa-parques-industriales",
+        "nombre": "Parques Industriales",
+        "activo": true
+      },
+      {
+        "id": "reynosa-puentes-internacionales",
+        "nombre": "Puentes Internacionales",
+        "activo": true
+      }
+    ]
+  }
+]

@@ -5,6 +5,9 @@
 //  - Durable Object "Trip": un viaje activo. Guarda la última posición del chofer
 //    y, solo para el chofer, la del pasajero. Se borra solo (6 h, o 30 min tras terminar).
 //  - Durable Object "Guard": bloquea 15 min tras 5 PIN incorrectos de un mismo chofer.
+//  - KV "PINS", llave "pausa:<id-chofer>": lo que el chofer apagó en su cuenta (servicios, tipos, modalidades, zonas).
+//    GET  /api/chofer/<id>/pausa  -> público (la tarjeta lo lee para ocultar lo pausado).
+//    POST /api/chofer/<id>/pausa  -> con x-pin del chofer; guarda la lista de ids pausados.
 import { DurableObject } from "cloudflare:workers";
 
 const HORAS_MAX = 6;
@@ -38,9 +41,55 @@ const num = (v, min, max) => (typeof v === "number" && isFinite(v) && v >= min &
 const txt = (v, n) => (typeof v === "string" ? v.replace(/[<>]/g, "").trim().slice(0, n) : "");
 const ID_CHOFER = /^[a-z0-9][a-z0-9-]{1,39}$/;
 
+const ID_ITEM = /^[a-z0-9][a-z0-9-]{0,59}$/;
+const CLAVES_PAUSA = ["servicios", "tipos", "modalidades", "zonas"];
+
+async function pausa(req, env, choferId) {
+  if (req.method === "GET") {
+    let p = null;
+    try { p = JSON.parse((await env.PINS.get(`pausa:${choferId}`)) || "null"); } catch {}
+    const out = {};
+    for (const k of CLAVES_PAUSA) out[k] = Array.isArray(p?.[k]) ? p[k] : [];
+    return json(out);
+  }
+  if (req.method !== "POST") return json({ error: "method" }, 405);
+
+  const raw = await req.text();
+  if (raw.length > 4096) return json({ error: "too_large" }, 413);
+  let b = {};
+  try { b = JSON.parse(raw || "{}"); } catch {}
+  const pin = String(req.headers.get("x-pin") || "");
+  if (!pin) return json({ error: "pin" }, 401);
+
+  const guard = env.GUARD.get(env.GUARD.idFromName(choferId));
+  const estado = await (await guard.fetch("https://do/check")).json();
+  if (estado.bloqueado) return json({ error: "bloqueado", reintentar_en_s: estado.segundos }, 429);
+
+  const guardado = await env.PINS.get(`pin:${choferId}`);
+  const ok = guardado && igual(await hashPin(choferId, pin), guardado);
+  if (!ok) {
+    await guard.fetch("https://do/fail", { method: "POST" });
+    return json({ error: "pin" }, 401);
+  }
+  await guard.fetch("https://do/ok", { method: "POST" });
+
+  const out = {};
+  for (const k of CLAVES_PAUSA) {
+    out[k] = Array.isArray(b[k]) ? [...new Set(b[k].filter((x) => typeof x === "string" && ID_ITEM.test(x)))].slice(0, 60) : [];
+  }
+  out.ts = Date.now();
+  await env.PINS.put(`pausa:${choferId}`, JSON.stringify(out));
+  return json({ ok: true, ...out });
+}
+
 export default {
   async fetch(req, env) {
     const url = new URL(req.url);
+
+    // Lo que el chofer activa/desactiva en su cuenta.
+    const mp = url.pathname.match(/^\/api\/chofer\/([a-z0-9][a-z0-9-]{1,39})\/pausa$/);
+    if (mp) return pausa(req, env, mp[1]);
+
     const m = url.pathname.match(/^\/api\/trips(?:\/([2-9a-hj-km-np-z]{10}))?(?:\/(loc|end|passenger))?$/);
     if (!m) return json({ error: "not_found" }, 404);
     const [, id, op] = m;

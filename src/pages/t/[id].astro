@@ -12,6 +12,8 @@ export async function getStaticPaths() {
 }
 
 const { chofer } = Astro.props;
+// Con ciudad asignada la tarjeta se arma con lo que el administrador asignó; sin ciudad conserva el diseño anterior.
+const dinamico = !!chofer.ciudadId;
 
 // QR generado al construir el sitio: no depende de ningún servicio externo.
 const qrSvg = await QRCode.toString(chofer.urlTarjeta, {
@@ -54,7 +56,7 @@ const qrSvg = await QRCode.toString(chofer.urlTarjeta, {
           <h2 class="back-title">Servicios Premium</h2>
           <ul class="services-list">
             {chofer.servicios.map(servicio => (
-              <li>
+              <li data-oferta={`servicios:${servicio.id}`}>
                 <span class="service-icon-text">{servicio.icono || '🚖'}</span>
                 {servicio.nombre}
               </li>
@@ -81,10 +83,22 @@ const qrSvg = await QRCode.toString(chofer.urlTarjeta, {
     </div>
 
     <!-- SOLUCIONES DE MOVILIDAD (GRID) -->
-    <section class="services-section">
+    <section class="services-section" data-grupo>
       <h2 class="section-title">Soluciones de Movilidad</h2>
       <p class="section-subtitle">Selecciona una opción para enviarme un mensaje predeterminado por WhatsApp.</p>
       
+      {dinamico ? (
+        <div class="services-grid">
+          {chofer.servicios.map((s, i) => (
+            <div class="service-card" data-oferta={`servicios:${s.id}`}>
+              <div class="service-card-icon">{s.icono || '🚖'}</div>
+              <h3>{s.nombre}</h3>
+              <p>{s.descripcion}</p>
+              <button class="btn-service" onclick={`pedirServicio(${i})`}>Pedir por WhatsApp</button>
+            </div>
+          ))}
+        </div>
+      ) : (
       <div class="services-grid">
         <div class="service-card">
           <div class="service-card-icon">🚕</div>
@@ -121,25 +135,80 @@ const qrSvg = await QRCode.toString(chofer.urlTarjeta, {
           <button class="btn-service" onclick="enviarWhatsApp('corporativo')">Consultar Convenio</button>
         </div>
       </div>
+      )}
     </section>
 
+    <!-- TIPOS DE VIAJE Y MODALIDADES -->
+    {dinamico && (chofer.tipos.length > 0 || chofer.modalidades.length > 0) && (
+      <section class="coverage-section" data-grupo>
+        {chofer.tipos.length > 0 && (
+          <div data-grupo>
+            <h2 class="section-title">Viajes que atiendo</h2>
+            <div class="coverage-tags">
+              {chofer.tipos.map((t) => <span class="tag" title={t.descripcion} data-oferta={`tipos:${t.id}`}>{t.emoji} {t.nombre}</span>)}
+            </div>
+          </div>
+        )}
+        {chofer.modalidades.length > 0 && (
+          <div data-grupo style="margin-top:1.5rem">
+            <h2 class="section-title">Modalidades</h2>
+            <div class="coverage-tags">
+              {chofer.modalidades.map((m) => <span class="tag" title={m.descripcion} data-oferta={`modalidades:${m.id}`}>{m.emoji} {m.nombre}</span>)}
+            </div>
+          </div>
+        )}
+      </section>
+    )}
+
     <!-- ZONAS DE COBERTURA -->
-    <section class="coverage-section">
+    <section class="coverage-section" data-grupo hidden={dinamico && chofer.zonas.length === 0}>
       <h2 class="section-title">Zonas de Cobertura</h2>
+      {dinamico ? (
+        <div class="coverage-tags">
+          {chofer.zonas.map((z) => <span class="tag" data-oferta={`zonas:${z.id}`}>{z.nombre}</span>)}
+        </div>
+      ) : (
       <div class="coverage-tags">
         <span class="tag">Centro y Zona Dorada</span>
         <span class="tag">Zona Conurbada</span>
         <span class="tag">Jarachina y Las Fuentes</span>
         <span class="tag">Puentes Internacionales</span>
       </div>
+      )}
     </section>
 
 
     <!-- FOOTER -->
     <footer class="main-footer">
-      <p>© 2026 {negocio.marca} | {chofer.nombre}. Reynosa, Tamaulipas, México.</p>
+      <p>© 2026 {negocio.marca} | {chofer.nombre}. {chofer.zona}, México.</p>
       <Credito origen="tarjeta" />
     </footer>
 
   </main>
+
+  <script define:vars={{ choferId: chofer.id }}>
+    // Oculta lo que el chofer desactivó en su panel (se guarda en la nube, no requiere nuevo despliegue).
+    (function () {
+      if (!document.querySelector('[data-oferta]')) return;
+      fetch('/api/chofer/' + choferId + '/pausa', { cache: 'no-store' })
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (p) {
+          if (!p) return;
+          ['servicios', 'tipos', 'modalidades', 'zonas'].forEach(function (k) {
+            (p[k] || []).forEach(function (id) {
+              document.querySelectorAll('[data-oferta="' + k + ':' + id + '"]').forEach(function (e) { e.hidden = true; });
+            });
+          });
+          // Un bloque sin ningún elemento visible se oculta completo (los más internos primero).
+          Array.prototype.slice.call(document.querySelectorAll('[data-grupo]')).reverse().forEach(function (g) {
+            var items = g.querySelectorAll('[data-oferta]');
+            if (items.length && Array.prototype.every.call(items, function (e) { return e.hidden; })) g.hidden = true;
+          });
+        })
+        .catch(function () {});
+    })();
+  </script>
+  <style is:global>
+    [data-oferta][hidden], [data-grupo][hidden] { display: none !important; }
+  </style>
 </TarjetaLayout>
