@@ -1,6 +1,7 @@
 ---
 import Layout from '../../../layouts/Layout.astro';
-import { choferes, negocio } from '../../../lib/datos';
+import { choferes, negocio, catalogo, ciudades } from '../../../lib/datos';
+import { resolverOferta } from '../../../lib/resolver';
 
 export async function getStaticPaths() {
   return choferes.map((chofer) => ({ params: { id: chofer.id }, props: { chofer } }));
@@ -16,6 +17,14 @@ const datos = {
   centro: negocio.centroMapa,
   tarjeta: `/t/${chofer.id}/`,
 };
+// Todo lo que el administrador le asignó (sin descontar lo que él mismo pausa: eso se lee de la nube).
+const o = resolverOferta({ ciudadId: chofer.ciudadId, asignado: chofer.asignado }, catalogo, ciudades);
+const grupos = [
+  { clave: 'servicios', titulo: 'Servicios', items: o.servicios.map((s) => ({ id: s.id, texto: `${s.icono || ''} ${s.nombre}`.trim() })) },
+  { clave: 'tipos', titulo: 'Tipos de viaje', items: o.tipos.map((t) => ({ id: t.id, texto: `${t.emoji} ${t.nombre}` })) },
+  { clave: 'modalidades', titulo: 'Modalidades', items: o.modalidades.map((m) => ({ id: m.id, texto: `${m.emoji} ${m.nombre}` })) },
+  { clave: 'zonas', titulo: `Zonas de cobertura${o.ciudad ? ' · ' + o.ciudad.nombre : ''}`, items: o.zonas.map((z) => ({ id: z.id, texto: z.nombre })) },
+].filter((g) => g.items.length > 0);
 ---
 
 <Layout titulo={`Panel de ${chofer.nombre}`} noindex referrer="origin" tema="#0f172a">
@@ -49,6 +58,24 @@ const datos = {
         <b>Mi tarjeta física</b>
         <p class="ayuda">Imprime tus tarjetas de presentación con tu foto, tu teléfono y el QR.</p>
         <a class="btn btn-borde" href={`/chofer/${chofer.id}/tarjeta-fisica/`}>Crear mi tarjeta física</a>
+
+        {grupos.length > 0 && (
+          <details class="oferta" id="oferta" data-id={chofer.id}>
+            <summary>Mis servicios y zonas</summary>
+            <p class="ayuda">Activa o desactiva lo que quieres recibir. Solo aparece lo que tu administrador te asignó; si necesitas algo más, pídeselo a él.</p>
+            {grupos.map((g) => (
+              <fieldset data-clave={g.clave}>
+                <legend>{g.titulo}</legend>
+                {g.items.map((i) => (
+                  <label class="op"><input type="checkbox" value={i.id} checked /><span>{i.texto}</span></label>
+                ))}
+              </fieldset>
+            ))}
+            <label class="campo"><span>Tu PIN para guardar</span><input id="oferta-pin" type="password" inputmode="numeric" autocomplete="current-password" /></label>
+            <button class="btn btn-amarillo" type="button" id="oferta-guardar">Guardar cambios</button>
+            <p class="msg" id="oferta-msg" role="status" aria-live="polite"></p>
+          </details>
+        )}
       </div>
 
       <!-- Viaje activo -->
@@ -81,6 +108,7 @@ const datos = {
   <script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
   <script is:inline src="/js/rexi.js"></script>
   <script is:inline src="/js/panel-chofer.js"></script>
+  <script is:inline src="/js/panel-oferta.js"></script>
 </Layout>
 
 <style is:global>
@@ -108,5 +136,14 @@ const datos = {
   .panel-app .luz.ok { background: #3ddc84; box-shadow: 0 0 10px #3ddc84; }
   .panel-app .luz.mal { background: #dc2626; }
   .panel-app .enlace { word-break: break-all; padding: .75rem; background: #0f172a; border-radius: .6rem; font-size: .9375rem; color: #cbd5e1; }
+  .panel-app .oferta summary { cursor: pointer; font-weight: 700; min-height: 44px; display: flex; align-items: center; justify-content: space-between; gap: .75rem; list-style: none; }
+  .panel-app .oferta summary::-webkit-details-marker { display: none; }
+  .panel-app .oferta summary::after { content: '▾'; color: #ffc72c; font-size: 1.25rem; transition: transform .2s; }
+  .panel-app .oferta[open] summary::after { transform: rotate(180deg); }
+  .panel-app .oferta { display: grid; gap: .8rem; }
+  .panel-app .oferta fieldset { border: 1px solid #334155; border-radius: .75rem; padding: .6rem .8rem .8rem; display: grid; gap: .1rem; }
+  .panel-app .oferta legend { padding: 0 .4rem; color: #ffc72c; font-weight: 700; font-size: .9375rem; }
+  .panel-app .oferta .op { display: flex; align-items: center; gap: .7rem; min-height: 44px; cursor: pointer; }
+  .panel-app .oferta .op input { width: 22px; height: 22px; accent-color: #ffc72c; flex: none; }
   .panel-app .pie { text-align: center; font-size: .9375rem; color: #cbd5e1; }
 </style>

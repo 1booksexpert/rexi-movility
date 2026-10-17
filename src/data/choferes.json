@@ -56,7 +56,26 @@
     "referido": "",
     "plan": "pro",
     "fechaAlta": "2026-10-10",
-    "flota": ""
+    "flota": "",
+    "asignado": {
+      "servicios": [
+        "local-puentes",
+        "aeropuertos",
+        "turismo-medico",
+        "paqueteria",
+        "facturacion-cfdi",
+        "centros-educativos"
+      ],
+      "tipos": [],
+      "modalidades": [],
+      "zonas": [
+        "reynosa-centro-zona-dorada",
+        "reynosa-zona-conurbada",
+        "reynosa-parques-industriales",
+        "reynosa-puentes-internacionales"
+      ]
+    },
+    "ciudadId": "reynosa"
   },
   {
     "nombre": "Juan Perezito",
