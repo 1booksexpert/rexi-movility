@@ -121,5 +121,102 @@
         "mensaje": "Hola, necesito el servicio con factura (CFDI)."
       }
     ]
+  },
+  {
+    "nombre": "Lorena García",
+    "telefono": "8331217806",
+    "titulo": "Movilidad Rosa Ejecutiva para Mujeres",
+    "zona": "Tampico, Tamaulipas",
+    "placa": "GH-6543B",
+    "unidad": "Scala Blanco",
+    "plan": "pro",
+    "pago": "anual",
+    "referido": "LCH",
+    "flota": "",
+    "fechaAlta": "2026-10-15",
+    "ciudad": "tampico",
+    "id": "lorena-garcia",
+    "servicios": [
+      {
+        "nombre": "Traslados locales",
+        "icono": "🚖",
+        "descripcion": "Traslados dentro de Tampico: hoteles, zonas, colonias y plazas. Plaza de Altamira y Palacio Municipal de Tampico.",
+        "mensaje": "Hola, necesito un traslado local en Tampico.",
+        "boton": "Pedir taxi"
+      },
+      {
+        "nombre": "Puentes y cruces internacionales",
+        "icono": "🌉",
+        "descripcion": "Te llevo y te recojo en Puente Tampico (Tamaulipas–Veracruz).",
+        "mensaje": "Hola, necesito un traslado a un puente internacional desde Tampico.",
+        "boton": "Cotizar cruce"
+      },
+      {
+        "nombre": "Aeropuertos",
+        "icono": "✈️",
+        "descripcion": "Salida programada a Aeropuerto Internacional General Francisco Javier Mina (TAM).",
+        "mensaje": "Hola, quiero cotizar un traslado al aeropuerto desde Tampico.",
+        "boton": "Cotizar viaje"
+      },
+      {
+        "nombre": "Central de autobuses y terminales",
+        "icono": "🚌",
+        "descripcion": "Traslado a Central de Autobuses de Tampico y Puerto de Tampico., con tiempo para tu salida.",
+        "mensaje": "Hola, necesito un traslado a la central de autobuses en Tampico.",
+        "boton": "Cotizar por WhatsApp"
+      },
+      {
+        "nombre": "Turismo médico y hospitales",
+        "icono": "🏥",
+        "descripcion": "Traslado puntual a Hospital General Dr. Carlos Canseco, Hospital General ISSSTE Tampico, Hospital Beneficencia Española de Tampico y Hospital Ángeles Tampico., ",
+        "mensaje": "Hola, necesito un traslado para una consulta médica en Tampico.",
+        "boton": "Reservar traslado"
+      },
+      {
+        "nombre": "Turismo y paseos",
+        "icono": "🌴",
+        "descripcion": "Paseos a Playa Miramar, Escolleras y Malecón de Miramar, Laguna del Carpintero y Centro Histórico de Tampico y más.",
+        "mensaje": "Hola, quiero un paseo turístico en Tampico.",
+        "boton": "Cotizar por WhatsApp"
+      },
+      {
+        "nombre": "Cultura, museos e historia",
+        "icono": "🏛️",
+        "descripcion": "Recorridos a Catedral de Tampico, Plaza de Armas, Plaza de la Libertad y Museo de la Ciudad de Tampico y más.",
+        "mensaje": "Hola, quiero un recorrido cultural en Tampico.",
+        "boton": "Cotizar por WhatsApp"
+      },
+      {
+        "nombre": "Paquetería urgente",
+        "icono": "📦",
+        "descripcion": "Sobres, documentos y paquetes pequeños entregados el mismo día.",
+        "mensaje": "Hola, necesito enviar un sobre o paquete urgente.",
+        "boton": "Enviar paquete"
+      },
+      {
+        "nombre": "Ruta gastronómica",
+        "icono": "🍽️",
+        "descripcion": "Te llevo a los mejores restaurantes y a probar la comida de la región.",
+        "mensaje": "Hola, quiero que me recomiendes y me lleves a un buen restaurante.",
+        "boton": "Cotizar por WhatsApp"
+      },
+      {
+        "nombre": "Bodas, XV años y eventos sociales",
+        "icono": "💍",
+        "descripcion": "Traslado de invitados y de la familia, con puntualidad.",
+        "mensaje": "Hola, quiero cotizar el traslado para un evento social.",
+        "boton": "Cotizar evento"
+      }
+    ],
+    "cobertura": [
+      "Centro",
+      "Aeropuerto",
+      "Playa Miramar",
+      "La Rivera",
+      "Mariscos en la entrada a Altamira",
+      "Tortas de \"La Barda\"",
+      "UAT Entrada por Lomas",
+      "UAT - Entrada por Boulevard"
+    ]
   }
 ]
