@@ -28,7 +28,19 @@ const defecto = {
   comision: { altaPct: 30, mensualPct: 15, mesesRecurrente: 12, anualPct: 25 },
   vendedores: { /* "V01": { "nombre": "Nombre del vendedor", "telefono": "55..." } */ },
 };
-const cfg = existsSync(PRIV) ? { ...defecto, ...JSON.parse(readFileSync(PRIV, 'utf8')) } : defecto;
+// Los precios viven en src/data/planes.json (unica fuente de verdad, la misma del sitio
+// y del editor). private/tarifas.json puede seguir sobrescribiendo y guarda las comisiones.
+const PLANES_JSON = join(RAIZ, 'src', 'data', 'planes.json');
+const privado = existsSync(PRIV) ? JSON.parse(readFileSync(PRIV, 'utf8')) : {};
+const desdeJSON = existsSync(PLANES_JSON)
+  ? Object.fromEntries(
+      JSON.parse(readFileSync(PLANES_JSON, 'utf8')).paquetes.map((p) => [
+        p.id,
+        { alta: p.alta, altaLanzamiento: p.altaLanzamiento, mensualidad: p.precioMensual, anual: p.anual, renovacion: p.renovacion, anualPct: p.anualPct ?? undefined },
+      ]),
+    )
+  : {};
+const cfg = { ...defecto, ...privado, planes: { ...defecto.planes, ...desdeJSON, ...(privado.planes || {}) } };
 const choferes = JSON.parse(readFileSync(join(RAIZ, 'src', 'data', 'choferes.json'), 'utf8'));
 
 const args = process.argv.slice(2);

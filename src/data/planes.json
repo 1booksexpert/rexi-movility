@@ -1,0 +1,74 @@
+{
+  "oferta": {
+    "titulo": "Oferta de lanzamiento",
+    "activa": true,
+    "cupo": 20,
+    "hasta": "2026-12-31",
+    "nota": "Cancela cuando quieras en el plan mensual. Los ahorros se comparan con el precio normal del primer año. Precios en pesos mexicanos."
+  },
+  "paquetes": [
+    {
+      "id": "tarjeta",
+      "nombre": "Tarjeta",
+      "resumen": "Para que te encuentren y te contacten.",
+      "etiqueta": "",
+      "destacado": false,
+      "precioMensual": 119,
+      "alta": 650,
+      "altaLanzamiento": 325,
+      "anual": 990,
+      "renovacion": 1190,
+      "porChofer": false,
+      "anualPct": null,
+      "caracteristicas": [
+        "Tarjeta digital con tu nombre y logo",
+        "Código QR para imprimir",
+        "Botones de WhatsApp por servicio",
+        "El pasajero envía su ubicación",
+        "Guardar en contactos"
+      ]
+    },
+    {
+      "id": "pro",
+      "nombre": "Chofer Pro",
+      "resumen": "Todo lo de Tarjeta, más viaje en vivo.",
+      "etiqueta": "El más pedido",
+      "destacado": true,
+      "precioMensual": 249,
+      "alta": 1200,
+      "altaLanzamiento": 600,
+      "anual": 1990,
+      "renovacion": 2490,
+      "porChofer": false,
+      "anualPct": null,
+      "caracteristicas": [
+        "Todo lo del plan Tarjeta",
+        "Panel privado con PIN",
+        "Viaje en tiempo real en el mapa",
+        "Enlace para el pasajero y su familia",
+        "Ubicación del pasajero solo para ti",
+        "Botón para navegar hacia el pasajero"
+      ]
+    },
+    {
+      "id": "flota",
+      "nombre": "Flota",
+      "resumen": "Para dueños con 10 o más choferes.",
+      "etiqueta": "",
+      "destacado": false,
+      "precioMensual": 175,
+      "alta": 700,
+      "altaLanzamiento": 350,
+      "anual": 1490,
+      "renovacion": 1750,
+      "porChofer": true,
+      "anualPct": 15,
+      "caracteristicas": [
+        "Todo lo del plan Pro",
+        "Directorio con todos tus choferes",
+        "Contacto directo con el dueño",
+        "Panel del dueño y mapa de flota (próximamente)"
+      ]
+    }
+  ]
+}

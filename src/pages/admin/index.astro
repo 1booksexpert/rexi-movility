@@ -24,6 +24,7 @@ import catalogo from '../../data/catalogo-servicios.json';
           <div class="seg" role="tablist" aria-label="Sección">
             <button role="tab" id="tab-c" aria-selected="true">Choferes</button>
             <button role="tab" id="tab-f" aria-selected="false">Flotas</button>
+            <button role="tab" id="tab-p" aria-selected="false">Paquetes</button>
           </div>
           <button id="salir" class="ghost">Salir</button>
         </div>
@@ -40,6 +41,12 @@ import catalogo from '../../data/catalogo-servicios.json';
         <section id="sec-f" hidden aria-labelledby="tab-f">
           <div class="herr"><p class="ayuda">Una flota agrupa choferes y avisa al WhatsApp de su dueño.</p><button id="nueva-f" class="btn-main">Nueva flota</button></div>
           <ul id="lista-f" class="lista"></ul>
+        </section>
+
+        <section id="sec-p" hidden aria-labelledby="tab-p">
+          <div class="herr"><p class="ayuda">Precios de los paquetes. Se publican solos en el sitio /planes/ en 1 o 2 minutos.</p><button id="editar-of" class="ghost">Editar oferta</button></div>
+          <p id="oferta-p" class="ayuda"></p>
+          <ul id="lista-p" class="lista"></ul>
         </section>
       </div>
     </div>
@@ -135,6 +142,43 @@ import catalogo from '../../data/catalogo-servicios.json';
           <button id="pin-ok" class="btn-main">Listo</button>
         </div>
       </div>
+    </dialog>
+
+    <dialog id="dlg-p">
+      <form method="dialog" id="form-p">
+        <div class="dlg-cab"><h2>Paquete</h2></div>
+        <div class="grid">
+          <label>Nombre<input name="nombre" required maxlength="40" /></label>
+          <label>Etiqueta (opcional)<input name="etiqueta" maxlength="40" placeholder="El más pedido" /></label>
+          <label>Resumen<input name="resumen" maxlength="90" /></label>
+          <label>Mensual<input name="precioMensual" type="number" min="0" max="50000" required /></label>
+          <label>Anual<input name="anual" type="number" min="0" max="100000" required /></label>
+          <label>Alta normal<input name="alta" type="number" min="0" max="100000" required /></label>
+          <label>Alta lanzamiento<input name="altaLanzamiento" type="number" min="0" max="100000" required /></label>
+          <label>Renovación anual<input name="renovacion" type="number" min="0" max="100000" required /></label>
+          <label>Comisión anual %<input name="anualPct" type="number" min="0" max="100" placeholder="sin comisión" /></label>
+        </div>
+        <label class="sw" style="margin:10px 0"><input type="checkbox" name="porChofer" /> <span>El precio es por chofer</span></label>
+        <label class="sw" style="margin:10px 0"><input type="checkbox" name="destacado" /> <span>Destacar (el más pedido)</span></label>
+        <label>Características (una por línea)<textarea name="caracteristicas" rows="6" required></textarea></label>
+        <p id="err-p" class="err" role="alert" hidden></p>
+        <div class="acciones"><button type="button" id="cancel-p" class="ghost">Cancelar</button><button type="submit" class="btn-main">Guardar paquete</button></div>
+      </form>
+    </dialog>
+
+    <dialog id="dlg-of">
+      <form method="dialog" id="form-of">
+        <div class="dlg-cab"><h2>Oferta de lanzamiento</h2></div>
+        <div class="grid">
+          <label>Título<input name="titulo" required maxlength="60" /></label>
+          <label>Cupo<input name="cupo" type="number" min="0" max="999" required /></label>
+          <label>Hasta (AAAA-MM-DD)<input name="hasta" maxlength="10" placeholder="2026-12-31" /></label>
+        </div>
+        <label class="sw" style="margin:10px 0"><input type="checkbox" name="activa" /> <span>Oferta activa en el sitio</span></label>
+        <label>Nota al pie<input name="nota" maxlength="240" /></label>
+        <p id="err-of" class="err" role="alert" hidden></p>
+        <div class="acciones"><button type="button" id="cancel-of" class="ghost">Cancelar</button><button type="submit" class="btn-main">Guardar oferta</button></div>
+      </form>
     </dialog>
   </div>
 </Layout>

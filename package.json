@@ -8,6 +8,7 @@
     "preview": "astro preview",
     "chofer": "node scripts/chofer.mjs",
     "reporte": "node scripts/reporte.mjs",
+    "planes": "node scripts/planes.mjs",
     "api:install": "cd api && npm install",
     "api:dev": "cd api && npm run dev",
     "api:deploy": "cd api && npm run deploy"

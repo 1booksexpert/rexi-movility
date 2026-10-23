@@ -1,0 +1,111 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Credito from '../components/Credito.astro';
+import { negocio } from '../lib/datos';
+import { oferta, paquetes, ofertaActiva, altaEfectiva, equivalenteMensual, ahorro, peso, fechaLarga } from '../lib/planes';
+
+const activa = ofertaActiva();
+const waDe = (nombre: string) =>
+  negocio.whatsappDueno
+    ? `https://wa.me/${negocio.whatsappDueno}?text=${encodeURIComponent(`Hola, quiero el plan ${nombre} de ${negocio.marca}.`)}`
+    : '';
+---
+
+<Layout titulo="Planes y precios" descripcion={`Planes de ${negocio.marca}: tarjeta digital, viaje en tiempo real y flotas. Precios en pesos mexicanos.`}>
+  <header class="portada">
+    <div class="contenedor">
+      <img src="/logos/rexi.png" alt={`Logo ${negocio.marca}`} width="72" height="96" />
+      <h1>{negocio.marca}</h1>
+      <p class="lema">Planes y precios</p>
+      <p class="sub">Tu tarjeta digital de chofer. Más pasajeros por WhatsApp, tu ubicación al instante y viaje en tiempo real. Sin apps que descargar.</p>
+      {activa && (
+        <p class="oferta">
+          <b>{oferta.titulo}</b>
+          {oferta.cupo > 0 && <span> · primeros {oferta.cupo} choferes</span>}
+          {oferta.hasta && <span> · hasta el {fechaLarga(oferta.hasta)}</span>}
+        </p>
+      )}
+    </div>
+  </header>
+
+  <main class="contenedor">
+    <ul class="planes">
+      {paquetes.map((p) => (
+        <li class:list={["plan", p.destacado && "destacado"]}>
+          {p.etiqueta && <span class="cinta">{p.etiqueta}</span>}
+          <h2>{p.nombre}</h2>
+          <p class="resumen">{p.resumen}</p>
+
+          <p class="precio">
+            <b>{peso(p.precioMensual)}</b>
+            <span>/mes{p.porChofer ? ' por chofer' : ''}</span>
+          </p>
+
+          <p class="alta">
+            Alta{' '}
+            {activa
+              ? <><s>{peso(p.alta)}</s> <b>{peso(p.altaLanzamiento)}</b></>
+              : <b>{peso(p.alta)}</b>}
+          </p>
+
+          <div class="anual">
+            <span class="rotulo">Pago anual</span>
+            <b class="monto">{peso(p.anual)}</b>
+            <span class="detalle">todo incluido, sin alta = {peso(equivalenteMensual(p))} al mes</span>
+            {activa && <span class="ahorro">Ahorras {peso(ahorro(p))}</span>}
+          </div>
+
+          <ul class="incluye">
+            {p.caracteristicas.map((c) => <li>{c}</li>)}
+          </ul>
+
+          {waDe(p.nombre) && (
+            <a class="btn btn-verde plan-btn" href={waDe(p.nombre)}>Quiero el plan {p.nombre}</a>
+          )}
+        </li>
+      ))}
+    </ul>
+
+    <p class="nota">{oferta.nota}</p>
+    <p class="volver"><a href="/">← Volver al directorio de choferes</a></p>
+  </main>
+
+  <footer class="pie">
+    <Credito origen="planes" />
+  </footer>
+</Layout>
+
+<style>
+  .portada { background: #ffc72c; padding: 2.5rem 0 2.5rem; text-align: center; }
+  .portada img { margin: 0 auto .8rem; display: block; height: auto; }
+  .portada h1 { font-size: clamp(2rem, 8vw, 2.8rem); font-weight: 800; letter-spacing: -.03em; line-height: 1.05; }
+  .lema { margin-top: .4rem; font-weight: 700; color: #1e293b; }
+  .sub { margin: .6rem auto 0; max-width: 34rem; color: #334155; }
+  .oferta { margin: 1.1rem auto 0; display: inline-block; background: #0f172a; color: #fff; padding: .5rem 1rem; border-radius: 99px; font-weight: 600; font-size: .95rem; }
+  .oferta b { color: #ffc72c; }
+
+  main { padding: 2rem 0 1rem; display: grid; gap: 1.5rem; }
+  .planes { list-style: none; display: grid; gap: 1.25rem; grid-template-columns: repeat(auto-fit, minmax(min(17rem, 100%), 1fr)); align-items: start; }
+  .plan { position: relative; background: #fff; border: 1px solid #e2e8f0; border-radius: 1.2rem; padding: 1.5rem 1.25rem 1.25rem; display: grid; gap: .7rem; }
+  .plan.destacado { border-color: #0f172a; border-width: 2px; box-shadow: 0 14px 35px rgba(15,23,42,.12); }
+  .cinta { position: absolute; top: -0.8rem; left: 50%; transform: translateX(-50%); background: #0f172a; color: #ffc72c; font-size: .8rem; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; padding: .3rem .8rem; border-radius: 99px; white-space: nowrap; }
+  .plan h2 { font-size: 1.4rem; font-weight: 800; letter-spacing: -.02em; }
+  .resumen { color: #475569; font-size: .95rem; }
+  .precio b { font-size: 2.2rem; font-weight: 800; letter-spacing: -.03em; }
+  .precio span { color: #475569; font-weight: 600; margin-left: .25rem; }
+  .alta { color: #334155; font-size: .95rem; }
+  .alta s { color: #94a3b8; }
+  .anual { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: .8rem; padding: .75rem .85rem; display: grid; gap: .1rem; }
+  .anual .rotulo { font-size: .78rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: #64748b; }
+  .anual .monto { font-size: 1.5rem; font-weight: 800; }
+  .anual .detalle { font-size: .88rem; color: #475569; }
+  .anual .ahorro { margin-top: .3rem; justify-self: start; background: #dcfce7; color: #166534; font-weight: 700; font-size: .85rem; padding: .15rem .6rem; border-radius: 99px; }
+  .incluye { list-style: none; display: grid; gap: .45rem; margin-top: .2rem; }
+  .incluye li { position: relative; padding-left: 1.6rem; font-size: .95rem; color: #334155; }
+  .incluye li::before { content: "✓"; position: absolute; left: 0; top: 0; color: #15803d; font-weight: 800; }
+  .plan-btn { margin-top: .5rem; text-align: center; justify-content: center; }
+  .nota { color: #64748b; font-size: .9rem; max-width: 44rem; }
+  .volver { font-size: .95rem; }
+  .volver a { color: #475569; }
+  .pie { margin-top: 1rem; background: #fff; border-top: 1px solid #e2e8f0; }
+</style>

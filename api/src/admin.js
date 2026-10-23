@@ -11,6 +11,9 @@ const PLANES = ["", "tarjeta", "pro", "flota"];
 const PAGOS = ["", "mensual", "anual"];
 const CAMPOS = ["nombre", "telefono", "titulo", "zona", "placa", "unidad", "plan", "pago", "referido", "flota", "fechaAlta", "ciudad"];
 const MAX_SERVICIOS = 16, MAX_COBERTURA = 14;
+const PL_JSON = "src/data/planes.json";
+const NUM = (v) => typeof v === "number" && Number.isFinite(v);
+const LIM = { precioMensual: 50000, alta: 100000, altaLanzamiento: 100000, anual: 100000, renovacion: 100000 };
 
 class Err extends Error {
   constructor(mensaje, status = 400) { super(mensaje); this.status = status; }
@@ -143,6 +146,37 @@ async function generarPin(env, id) {
   return pin;
 }
 
+// ---- Paquetes de venta (src/data/planes.json, publico: los precios ya estan en el sitio).
+function validarPaquete(p, donde) {
+  if (!p || typeof p !== "object") throw new Err(`Falta el paquete ${donde}.`);
+  if (!ID_RE.test(p.id || "")) throw new Err(`Paquete ${donde}: id invalido.`);
+  for (const k of ["nombre", "resumen", "etiqueta"]) if (typeof p[k] !== "string") throw new Err(`Paquete ${p.id}: ${k} debe ser texto.`);
+  for (const k of ["destacado", "porChofer"]) if (typeof p[k] !== "boolean") throw new Err(`Paquete ${p.id}: ${k} debe ser true/false.`);
+  for (const k of Object.keys(LIM)) if (!NUM(p[k]) || p[k] < 0 || p[k] > LIM[k]) throw new Err(`Paquete ${p.id}: ${k} invalido.`);
+  if (p.anualPct != null && (!NUM(p.anualPct) || p.anualPct < 0 || p.anualPct > 100)) throw new Err(`Paquete ${p.id}: anualPct invalido.`);
+  if (!Array.isArray(p.caracteristicas) || p.caracteristicas.length === 0 || p.caracteristicas.length > 12)
+    throw new Err(`Paquete ${p.id}: entre 1 y 12 caracteristicas.`);
+  if (!p.caracteristicas.every((x) => typeof x === "string" && x.trim() && x.length <= 120))
+    throw new Err(`Paquete ${p.id}: cada caracteristica debe ser texto corto.`);
+}
+
+function validarPlanes(nuevo) {
+  const o = nuevo.oferta;
+  if (!o || typeof o !== "object") throw new Err("Falta la oferta.");
+  if (typeof o.titulo !== "string" || !o.titulo.trim() || o.titulo.length > 60) throw new Err("Oferta: titulo invalido.");
+  if (typeof o.activa !== "boolean") throw new Err("Oferta: activa debe ser true/false.");
+  if (!NUM(o.cupo) || o.cupo < 0 || o.cupo > 999) throw new Err("Oferta: cupo invalido.");
+  if (o.hasta && !/^\d{4}-\d{2}-\d{2}$/.test(o.hasta)) throw new Err("Oferta: hasta debe ser AAAA-MM-DD.");
+  if (typeof o.nota !== "string" || o.nota.length > 240) throw new Err("Oferta: nota invalida.");
+  if (!Array.isArray(nuevo.paquetes) || nuevo.paquetes.length !== 3) throw new Err("Debe haber exactamente 3 paquetes.");
+  const ids = new Set();
+  nuevo.paquetes.forEach((p, i) => {
+    validarPaquete(p, i + 1);
+    if (ids.has(p.id)) throw new Err(`Paquete repetido: ${p.id}.`);
+    ids.add(p.id);
+  });
+}
+
 export async function admin(req, env, { json, igual }) {
   const url = new URL(req.url);
   const ruta = url.pathname.replace(/^\/api\/admin\/?/, "");
@@ -159,8 +193,8 @@ export async function admin(req, env, { json, igual }) {
 
     if (ruta === "datos" && req.method === "GET") {
       const g = gh(env);
-      const [c, f, k] = await Promise.all([g.leer("src/data/choferes.json"), g.leer("src/data/flotas.json"), env.PINS.list({ prefix: "pin:" })]);
-      return json({ choferes: c.datos, flotas: f.datos, conPin: k.keys.map((x) => x.name.slice(4)) });
+      const [c, f, p, k] = await Promise.all([g.leer("src/data/choferes.json"), g.leer("src/data/flotas.json"), g.leer(PL_JSON), env.PINS.list({ prefix: "pin:" })]);
+      return json({ choferes: c.datos, flotas: f.datos, planes: p.datos, conPin: k.keys.map((x) => x.name.slice(4)) });
     }
     if (req.method !== "POST") throw new Err("Método no permitido.", 405);
     const raw = await req.text();
@@ -233,6 +267,12 @@ export async function admin(req, env, { json, igual }) {
       if (usan.length) throw new Err(`No se puede borrar: la usan ${usan.join(", ")}. Cámbialos de flota primero.`);
       const out = await modificar(env, F, `Editor: borrar flota ${id}`, (l) => l.filter((x) => x.id !== id), () => {});
       return json({ ok: true, flotas: out });
+    }
+    if (ruta === "planes") {
+      if (!b || typeof b !== "object" || Array.isArray(b)) throw new Err("Paquetes no validos.");
+      validarPlanes(b);
+      const out = await modificar(env, PL_JSON, "Editor: actualizar paquetes de venta", () => b, validarPlanes);
+      return json({ ok: true, planes: out });
     }
     throw new Err("Ruta no encontrada.", 404);
   } catch (e) {

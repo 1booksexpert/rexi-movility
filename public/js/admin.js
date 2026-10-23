@@ -5,7 +5,7 @@
   var COB_BASE = ["Centro y Zona Dorada", "Zona Conurbada", "Parques Industriales", "Puentes Internacionales"];
   var COB_SUG = ["Centro", "Zona conurbada", "Parques industriales", "Puentes internacionales", "Aeropuerto", "Zona de hospitales", "Zona turística", "Universidades", "Central de autobuses", "Zona residencial", "Foráneos"];
   var BOTON = { local: "Pedir taxi", puentes: "Cotizar cruce", aeropuertos: "Cotizar viaje", medico: "Reservar traslado", paqueteria: "Enviar paquete", empresas: "Consultar convenio", cfdi: "Pedir con factura", hora: "Reservar chofer", eventos: "Cotizar evento", adultos: "Pedir apoyo", escolar: "Cotizar traslado" };
-  var clave = "", D = null, filtro = "todos", q = "", editando = null, editF = null, tToast = 0;
+  var clave = "", D = null, filtro = "todos", q = "", editando = null, editF = null, editP = null, tToast = 0;
   try { clave = sessionStorage.getItem("rexi-admin") || ""; } catch (e) {}
   var SITIO = location.origin;
   var CAMPOS = ["nombre", "telefono", "id", "titulo", "zona", "ciudad", "placa", "unidad", "flota", "plan", "pago", "referido", "fechaAlta"];
@@ -36,7 +36,7 @@
   function cargar() {
     return api("datos").then(function (d) { D = d; $("#login").hidden = true; $("#app").hidden = false; try { sessionStorage.setItem("rexi-admin", clave); } catch (e) {} pintar(); });
   }
-  function pintar() { pintarResumen(); pintarC(); pintarF(); }
+  function pintar() { pintarResumen(); pintarC(); pintarF(); pintarP(); }
 
   function pintarResumen() {
     var n = D.choferes, act = n.filter(function (c) { return c.activo !== false; }).length;
@@ -308,13 +308,85 @@
   }
 
   // ---- Entrada, pestañas y búsqueda
+  // ---- Paquetes de venta (los precios viven en src/data/planes.json)
+  function pesos(n) { return "$" + Number(n || 0).toLocaleString("es-MX"); }
+  function pintarP() {
+    var P = D.planes || { oferta: {}, paquetes: [] };
+    var o = P.oferta || {};
+    $("#oferta-p").textContent = "Oferta: " + (o.titulo || "sin título") + " | " + (o.activa ? "activa" : "apagada") + " | cupo " + (o.cupo || 0) + (o.hasta ? " | hasta " + o.hasta : " | sin límite");
+    var ul = $("#lista-p"); ul.textContent = "";
+    (P.paquetes || []).forEach(function (p) {
+      ul.appendChild(el("li", { "class": "chofer" }, [
+        el("div", { "class": "avatar", style: "--h:" + tono(p.id), "aria-hidden": "true", text: (p.nombre || "?")[0] }),
+        el("div", {}, [
+          el("h3", { text: p.nombre + (p.destacado ? " · " + (p.etiqueta || "destacado") : "") }),
+          el("div", { "class": "sub", text: pesos(p.precioMensual) + (p.porChofer ? " por chofer" : "") + " · alta " + pesos(p.altaLanzamiento) + " · anual " + pesos(p.anual) }),
+        ]),
+        el("span"),
+        el("div", { "class": "acc" }, [el("button", { text: "Editar", onclick: function () { abrirP(p); } })]),
+      ]));
+    });
+    if (!(P.paquetes || []).length) ul.appendChild(el("li", { "class": "vacio" }, [el("p", { text: "El Worker todavía no entrega los paquetes. Falta desplegar api/." })]));
+  }
+
+  function abrirP(p) {
+    editP = p; var f = $("#form-p"); f.reset(); $("#err-p").hidden = true;
+    f.nombre.value = p.nombre || ""; f.etiqueta.value = p.etiqueta || ""; f.resumen.value = p.resumen || "";
+    ["precioMensual", "alta", "altaLanzamiento", "anual", "renovacion"].forEach(function (k) { f[k].value = p[k]; });
+    f.anualPct.value = p.anualPct == null ? "" : p.anualPct;
+    f.porChofer.checked = !!p.porChofer; f.destacado.checked = !!p.destacado;
+    f.caracteristicas.value = (p.caracteristicas || []).join("\n");
+    $("#dlg-p").showModal();
+  }
+  $("#cancel-p").onclick = function () { $("#dlg-p").close(); };
+  $("#form-p").addEventListener("submit", function (ev) {
+    ev.preventDefault(); var f = ev.target; var b = f.querySelector("[type=submit]");
+    var p = {
+      id: editP.id, nombre: f.nombre.value.trim(), etiqueta: f.etiqueta.value.trim(), resumen: f.resumen.value.trim(),
+      precioMensual: Number(f.precioMensual.value), alta: Number(f.alta.value), altaLanzamiento: Number(f.altaLanzamiento.value),
+      anual: Number(f.anual.value), renovacion: Number(f.renovacion.value),
+      anualPct: f.anualPct.value === "" ? null : Number(f.anualPct.value),
+      porChofer: f.porChofer.checked, destacado: f.destacado.checked,
+      caracteristicas: f.caracteristicas.value.split("\n").map(function (x) { return x.trim(); }).filter(Boolean),
+    };
+    var nuevo = JSON.parse(JSON.stringify(D.planes || { oferta: {}, paquetes: [] }));
+    nuevo.paquetes = nuevo.paquetes.map(function (x) { return x.id === p.id ? p : x; });
+    b.disabled = true;
+    api("planes", nuevo).then(function (r) { D.planes = r.planes; $("#dlg-p").close(); pintarP(); toast("Paquete guardado. " + PUB); })
+      .catch(function (e) { var q = $("#err-p"); q.textContent = e.message; q.hidden = false; })
+      .then(function () { b.disabled = false; });
+  });
+
+  function abrirOf() {
+    var o = (D.planes && D.planes.oferta) || {}; var f = $("#form-of"); f.reset(); $("#err-of").hidden = true;
+    f.titulo.value = o.titulo || ""; f.nota.value = o.nota || ""; f.activa.checked = !!o.activa;
+    f.cupo.value = o.cupo == null ? 0 : o.cupo; f.hasta.value = o.hasta || "";
+    $("#dlg-of").showModal();
+  }
+  $("#editar-of").onclick = abrirOf;
+  $("#cancel-of").onclick = function () { $("#dlg-of").close(); };
+  $("#form-of").addEventListener("submit", function (ev) {
+    ev.preventDefault(); var f = ev.target; var b = f.querySelector("[type=submit]");
+    var nuevo = JSON.parse(JSON.stringify(D.planes || { oferta: {}, paquetes: [] }));
+    nuevo.oferta = { titulo: f.titulo.value.trim(), activa: f.activa.checked, cupo: Number(f.cupo.value), hasta: f.hasta.value.trim(), nota: f.nota.value.trim() };
+    b.disabled = true;
+    api("planes", nuevo).then(function (r) { D.planes = r.planes; $("#dlg-of").close(); pintarP(); toast("Oferta guardada. " + PUB); })
+      .catch(function (e) { var q = $("#err-of"); q.textContent = e.message; q.hidden = false; })
+      .then(function () { b.disabled = false; });
+  });
+
   $("#login").addEventListener("submit", function (e) {
     e.preventDefault(); clave = $("#clave").value; $("#err-login").hidden = true;
     cargar().catch(function (er) { clave = ""; var p = $("#err-login"); p.textContent = er.message; p.hidden = false; });
   });
   $("#salir").onclick = function () { try { sessionStorage.removeItem("rexi-admin"); } catch (e) {} location.reload(); };
-  function tab(c) { $("#sec-c").hidden = !c; $("#sec-f").hidden = c; $("#tab-c").setAttribute("aria-selected", c); $("#tab-f").setAttribute("aria-selected", !c); }
-  $("#tab-c").onclick = function () { tab(true); }; $("#tab-f").onclick = function () { tab(false); };
+  function tab(id) {
+    ["c", "f", "p"].forEach(function (k) {
+      $("#sec-" + k).hidden = k !== id;
+      $("#tab-" + k).setAttribute("aria-selected", String(k === id));
+    });
+  }
+  $("#tab-c").onclick = function () { tab("c"); }; $("#tab-f").onclick = function () { tab("f"); }; $("#tab-p").onclick = function () { tab("p"); };
   $("#buscar").addEventListener("input", function (e) { q = e.target.value; pintarC(); });
   document.addEventListener("click", function (e) { [].forEach.call(document.querySelectorAll("details.mas[open]"), function (d) { if (!d.contains(e.target)) d.open = false; }); });
   if (clave) cargar().catch(function () { clave = ""; });
